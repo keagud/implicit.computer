@@ -1,0 +1,60 @@
+{#
+<!--
+  title: page title 
+  favicon_path: path for favicon image
+  home_url: url for the home page
+  content: html for the page content (inserted as raw html)
+  quotes_list_json: json style list of quotes for the header, with "quotes" as key
+  css: what should go in the <style> element
+-->
+#}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>{{ title }}</title>
+    {#  <link rel="icon" type="image/x-icon" href="{{ favicon_path }}"> #}
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    {% if style is defined %}
+  <style>
+    {{style|safe}}
+  </style>
+    {% endif %}
+
+
+</head>
+
+<body>
+  <header id="page-header">
+    <h1><a href="/">implicit.computer</a></h1>
+
+    <div id="quote-box">
+      <p><em id="quote"></em></p>
+    </div>
+  </header>
+  <br>
+
+
+  <section id="page-content">
+    {{{ content }}}
+  </section>
+
+
+  <script>
+    const quotesJson = {{{quotes_list_json}}};
+    const quotesList = quotesJson["quotes"];
+    const quoteElement = document.querySelector("#quote");
+
+    quoteElement.textContent = (() => {
+      let index = Math.floor(Math.random() * (quotesList.length));
+      return quotesList[index];
+    })();
+
+  </script>
+
+</body>
+
+</html>
