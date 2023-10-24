@@ -1,26 +1,14 @@
 #!/bin/env python3
 
-from typing import Any, Callable, Type
 import datetime as dt
 import re
-import panflute
-from typing import NamedTuple
-from pprint import pprint
-from panflute import Doc, Inline, Note, RawInline, Span, convert_text
-from panflute import run_filter
-from pathlib import Path
-import panflute as pf
-from pprint import pprint
-import yaml
-import jinja2
-
-# TODO use the new 3.12 syntax
-from typing import TypeVar, Generic
-
-from bs4 import BeautifulSoup, PageElement, Tag
-
 import subprocess
-
+import tempfile
+from pathlib import Path
+from typing import Any, Callable, NamedTuple, TypeVar
+import jinja2
+import yaml
+from bs4 import BeautifulSoup, Tag
 
 T = TypeVar("T")
 
@@ -44,8 +32,13 @@ def parse_frontmatter(data: dict[str, Any]) -> PostData:
     data = {k.lower(): v for k, v in data.items()}
 
     params = {}
-    ts_sec: float = data["timestamp"]
-    params["timestamp"] = dt.datetime.fromtimestamp(ts_sec)
+
+    ts_iso: str = str(data["date"])
+
+    post_date = dt.date.fromisoformat(ts_iso)
+    post_dt = dt.datetime.combine(post_date, dt.time.min)
+
+    params["timestamp"] = post_dt
 
     params["title"] = data["title"]
     params["slug"] = data["slug"]
@@ -185,13 +178,7 @@ class SiteBuilder:
 
         self.posts_data[meta.slug] = meta
 
-        html_text = str(
-            # TODO look into removing the pandoc dependency
-            pf.convert_text(
-                md_text, input_format="markdown", output_format="html", standalone=False
-            )
-        )
-
+        html_text = markdown_to_html_pandoc(md_text)
         html_modifiers = self.transformations
         html_body = apply_transformations(html_text, html_modifiers)
 
@@ -208,6 +195,24 @@ class SiteBuilder:
 
         with open(output_file, "w") as fp:
             fp.write(rendered_html)
+
+
+def markdown_to_html_pandoc(md_text: str) -> str:
+    tmp_file = Path(tempfile.gettempdir()).joinpath(tempfile.mktemp())
+    try:
+        with open(tmp_file, "w") as fp:
+            fp.write(md_text)
+
+        proc = subprocess.run(
+            f"pandoc {str(tmp_file)} -f markdown -t html",
+            shell=True,
+            capture_output=True,
+        )
+
+        return proc.stdout.decode("utf-8")
+
+    finally:
+        tmp_file.unlink()
 
 
 def apply_transformations(
@@ -229,13 +234,20 @@ def apply_transformations(
 def main():
     templates_dir = Path(__file__).parent.joinpath("templates")
     output_dir = Path(__file__).parent.joinpath("output")
+    input_dir = Path(__file__).parent.joinpath("md")
 
     if not output_dir.exists():
         output_dir.mkdir()
 
-    builder = SiteBuilder(output_dir=output_dir, templates_dir=templates_dir, style="./styles.css")
+    with open(input_dir.joinpath("post.md")) as fp:
+        html = markdown_to_html_pandoc(fp.read())
+        print(html)
+
+    builder = SiteBuilder(
+        output_dir=output_dir, templates_dir=templates_dir, style="./styles.css"
+    )
     builder.add_transformations(footnotes_to_asides)
-    builder.build_page("./post.md")
+    builder.build_page(input_dir.joinpath("post.md"))
 
 
 if __name__ == "__main__":
