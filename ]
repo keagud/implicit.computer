@@ -100,7 +100,6 @@ def footnotes_to_asides(soup: BeautifulSoup) -> BeautifulSoup:
     return soup
 
 
-# TODO extract the config to its own class
 class SiteBuilder:
     def __init__(
         self,
@@ -110,12 +109,10 @@ class SiteBuilder:
         posts_list_template_name: str = "posts_list.html",
         style: Path | str | None = None,
         overwrite: bool = True,
-        exclude_upcoming: bool = True,
     ):
         self.posts_data: dict[str, PostData] = {}
         self.output_dir = Path(output_dir)
         self.templates_dir = Path(templates_dir)
-        self.exclude_upcoming = exclude_upcoming
 
         self.post_template_name = post_template_name
         self.posts_list_template_name = posts_list_template_name
@@ -136,7 +133,7 @@ class SiteBuilder:
         if style is not None:
             with open(Path(style), "r") as fp:
                 self.style = fp.read()
-            self.template_args["style"] = self.style
+            self.template_args["style"] = style
 
     def add_transformations(self, *args):
         for a in args:
@@ -192,10 +189,6 @@ class SiteBuilder:
 
         template = self.template_env.get_template(self.post_template_name)
         meta, md_text = extract_frontmatter(md_input)
-
-        # technically a post queue system
-        if self.exclude_upcoming and meta.timestamp > dt.datetime.now():
-            return
 
         if page_title is None:
             page_title = self.title_formatter(meta.title)
