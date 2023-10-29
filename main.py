@@ -1,6 +1,9 @@
 #!/bin/env python3
+from pprint import pprint
 
+import json
 import datetime as dt
+from dataclasses import dataclass, field
 import re
 import subprocess
 import tempfile
@@ -72,7 +75,7 @@ def footnotes_to_asides(soup: BeautifulSoup) -> BeautifulSoup:
             "li", role="doc-endnote", id=lambda val: bool(val and val.startswith("fn"))
         )
     )
-
+    
     for fn in footnote_tags:
         # find each footnote's ref in the text
         fn_id = fn.get("id")
@@ -80,49 +83,79 @@ def footnotes_to_asides(soup: BeautifulSoup) -> BeautifulSoup:
         # remove backlink from footnote text
         not_none(fn.find("a", role="doc-backlink")).extract()
 
+        for t in fn.find_all("p"):
+            t.name = "span"
+
         fn_contents = fn.contents
         fn_origin_location = not_none(soup.find("a", href=f"#{fn_id}"))
 
-        # find the parent paragraph of the reference
+        fn_label = soup.new_tag(
+            "label", attrs={"class": "margin-toggle sidenote-number", "for": fn_id}
+        )
 
-        origin_paragraph = not_none(fn_origin_location.find_parent("p"))
+        fn_checkbox = soup.new_tag(
+            "input", attrs={"id": fn_id, "class": "margin-toggle", "type": "checkbox"}
+        )
 
-        # remove the original link
-        fn_origin_location.extract()
+        fn_content_span = soup.new_tag(
+            "span", attrs={"class": "note-right note sidenote"}
+        )
 
-        aside_tag = soup.new_tag("aside")
-        aside_tag.extend(fn_contents)
-        origin_paragraph.insert_after(aside_tag)
+        fn_footnote_p = soup.new_tag("span", attrs={"class": "footnote-p"})
+        fn_footnote_p.extend(fn_contents)
 
-    # delete the footnotes section
+        fn_content_span.append(fn_footnote_p)
+
+        fn_all_span = soup.new_tag("span")
+        fn_all_span.extend([fn_label, fn_checkbox, fn_content_span])
+
+        fn_origin_location.replace_with(fn_all_span)
+
     footnotes_section.decompose()
 
     return soup
 
 
+@dataclass(kw_only=True)
+class BuildConfig:
+    output_dir: Path
+    assets_dir: Path
+    templates_dir: Path = field(init=False)
+    styles_dir: Path = field(init=False)
+    post_template_name: str = "post.html"
+    posts_list_template_name: str = "posts_list.html"
+    style_files: list[str] = field(default_factory=lambda: [])
+
+    overwrite: bool = True
+    exclude_upcoming: bool = True
+    transformations: list[Callable[[BeautifulSoup], BeautifulSoup]] = field(
+        default_factory=lambda: []
+    )
+
+    def add_transformations(self, *args):
+        for a in args:
+            self.transformations.append(a)
+
+        return self
+
+    def __post_init__(self):
+        self.templates_dir = self.assets_dir.joinpath("templates")
+        self.styles_dir = self.assets_dir.joinpath("css")
+
+
 # TODO extract the config to its own class
 class SiteBuilder:
-    def __init__(
-        self,
-        output_dir: Path | str,
-        templates_dir: Path | str,
-        post_template_name: str = "post.html",
-        posts_list_template_name: str = "posts_list.html",
-        style: Path | str | None = None,
-        overwrite: bool = True,
-        exclude_upcoming: bool = True,
-    ):
+    def __init__(self, config: BuildConfig, style_files: list[str] = []):
+        self.config = config
         self.posts_data: dict[str, PostData] = {}
-        self.output_dir = Path(output_dir)
-        self.templates_dir = Path(templates_dir)
-        self.exclude_upcoming = exclude_upcoming
 
-        self.post_template_name = post_template_name
-        self.posts_list_template_name = posts_list_template_name
+        self.style_files = style_files
+
+        self.output_dir = Path(config.output_dir)
+        self.templates_dir = Path(config.templates_dir)
+        self.styles_dir = Path(config.styles_dir)
 
         self.transformations: list[Callable[[BeautifulSoup], BeautifulSoup]] = []
-
-        self.overwrite = overwrite
 
         self.template_env = jinja2.Environment(
             loader=jinja2.FileSystemLoader(self.templates_dir)
@@ -132,11 +165,18 @@ class SiteBuilder:
 
         self.template_args = {}
 
-        self.style: str | None = None
-        if style is not None:
-            with open(Path(style), "r") as fp:
-                self.style = fp.read()
-            self.template_args["style"] = self.style
+        self.styles: str | None = None
+
+        if config.styles_dir.exists():
+            styles_block = []
+            for f in config.styles_dir.glob("*.css"):
+                if not f.name in self.config.style_files:
+                    continue
+                with open(f, "r") as fp:
+                    styles_block.append(fp.read())
+
+            self.styles = "\n".join(styles_block)
+            self.template_args["style"] = self.styles
 
     def add_transformations(self, *args):
         for a in args:
@@ -167,7 +207,7 @@ class SiteBuilder:
             page_title = self.title_formatter("All Posts")
 
         posts_list_template = self.template_env.get_template(
-            self.posts_list_template_name
+            self.config.posts_list_template_name
         )
 
         posts_list_rendered = posts_list_template.render(
@@ -190,11 +230,11 @@ class SiteBuilder:
         with open(Path(input_file), "r") as fp:
             md_input = fp.read()
 
-        template = self.template_env.get_template(self.post_template_name)
+        template = self.template_env.get_template(self.config.post_template_name)
         meta, md_text = extract_frontmatter(md_input)
 
         # technically a post queue system
-        if self.exclude_upcoming and meta.timestamp > dt.datetime.now():
+        if self.config.exclude_upcoming and meta.timestamp > dt.datetime.now():
             return
 
         if page_title is None:
@@ -211,18 +251,27 @@ class SiteBuilder:
         self.posts_data[meta.slug] = meta
 
         html_text = markdown_to_html_pandoc(md_text)
-        html_modifiers = self.transformations
+        html_modifiers = self.config.transformations
         html_body = apply_transformations(html_text, html_modifiers)
 
         template_params = {"title": page_title, "content": html_body}
 
-        if self.style is not None:
-            template_params["style"] = self.style
+        if (json_path := self.config.assets_dir.joinpath("quotes.json")).exists():
+            with open(json_path, "r") as fp:
+                json_data = json.load(fp)
+
+            quotes_literals = ", ".join([rf'"{q}"' for q in json_data["quotes"]])
+            quotes = f"[{quotes_literals}]"
+
+            template_params["quotes"] = quotes
+
+        if self.styles is not None:
+            template_params.update({"style": self.styles})
 
         rendered_html = template.render(template_params)
 
         output_file = self.output_dir.joinpath(meta.slug).with_suffix(".html")
-        if not self.overwrite and output_file.exists():
+        if not self.config.overwrite and output_file.exists():
             raise FileExistsError(f"{output_file} already exists")
 
         with open(output_file, "w") as fp:
@@ -236,7 +285,7 @@ def markdown_to_html_pandoc(md_text: str) -> str:
             fp.write(md_text)
 
         proc = subprocess.run(
-            f"pandoc {str(tmp_file)} -f markdown -t html",
+            f"pandoc {str(tmp_file)} -f markdown+fenced_code_attributes -t html",
             shell=True,
             capture_output=True,
         )
@@ -264,9 +313,9 @@ def apply_transformations(
 
 
 def main():
-    templates_dir = Path(__file__).parent.joinpath("templates")
     output_dir = Path(__file__).parent.joinpath("output")
     input_dir = Path(__file__).parent.joinpath("md")
+    assets_dir = Path(__file__).parent.joinpath("assets")
 
     if not output_dir.exists():
         output_dir.mkdir()
@@ -274,10 +323,14 @@ def main():
     with open(input_dir.joinpath("post.md")) as fp:
         html = markdown_to_html_pandoc(fp.read())
 
-    builder = SiteBuilder(
-        output_dir=output_dir, templates_dir=templates_dir, style="./styles.css"
+    builder = cfg = BuildConfig(
+        output_dir=output_dir,
+        assets_dir=assets_dir,
+        style_files=["style.css"],
+        transformations=[footnotes_to_asides],
     )
-    builder.add_transformations(footnotes_to_asides)
+
+    builder = SiteBuilder(cfg)
     builder.build_page(input_dir.joinpath("post.md"))
 
     builder.make_posts_list()

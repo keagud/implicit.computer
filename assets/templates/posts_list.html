@@ -1,0 +1,16 @@
+{% extends "base.html" %} {% block title %}Post Index{%endblock%} 
+{%block content%}
+<ul>
+  {% for item in posts_list %}
+  <li>
+    <span class = "post-date">
+      {{ item.timestamp.date().isoformat() }}
+    </span>
+    <span class="post-link">
+    <a href="/blog/{{item.slug}}">{{item.title}}</a>
+    </span>
+  </li>
+  {% endfor %}
+</ul>
+
+{%endblock content%}
