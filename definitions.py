@@ -11,6 +11,7 @@ STYLES_DIR: Final = ASSETS_DIR.joinpath("css")
 POSTS_MARKDOWN_DIR = ROOT_DIR.joinpath("md")
 POSTS_HTML_DIR = ROOT_DIR.joinpath("posts")
 STATIC_DIR = ROOT_DIR.joinpath("static")
+RESUME_DIR = ROOT_DIR.joinpath("Resume")
 
 
 _get_blog_repo_url = subprocess.run(
