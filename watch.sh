@@ -31,7 +31,6 @@ if [  "$(git -C Resume rev-parse HEAD)" != "$(git -C Resume rev-parse origin/mas
   git submodule update --init --recursive --remote
   python3 "$REPO_DIR/build_resume.py"
 
-
   echo "$(date) updated resume"  >> "$LOG_FILE"
 
 else
