@@ -10,7 +10,7 @@ TEMPLATE_DIR: Final = ASSETS_DIR.joinpath("templates")
 STYLES_DIR: Final = ASSETS_DIR.joinpath("css")
 POSTS_MARKDOWN_DIR = ROOT_DIR.joinpath("md")
 POSTS_HTML_DIR = ROOT_DIR.joinpath("posts")
-STATIC_DIR = ROOT_DIR.joinpath("static")
+STATIC_DIR = ASSETS_DIR.joinpath("static")
 RESUME_DIR = ROOT_DIR.joinpath("Resume")
 
 

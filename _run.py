@@ -1,4 +1,5 @@
 from definitions import ROOT_DIR
-from site_src import start_watch
+from site_src import build_all
 
-start_watch(lambda: None, lambda: None)
+
+build_all(ROOT_DIR.joinpath("_output"))

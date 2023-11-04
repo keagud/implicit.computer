@@ -1,2 +1,1 @@
-
-from .watch import start_watch
+from .builder import build_all  # noqa

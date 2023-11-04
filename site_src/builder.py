@@ -1,7 +1,9 @@
 #!/bin/env python3
 from pprint import pprint
 
+from shutil import copytree
 import json
+from tempfile import TemporaryDirectory
 import datetime as dt
 from dataclasses import dataclass, field
 import re
@@ -15,7 +17,15 @@ from bs4 import BeautifulSoup, Tag
 
 T = TypeVar("T")
 
-from definitions import POSTS_HTML_DIR, ROOT_DIR, STYLES_DIR, ASSETS_DIR, TEMPLATE_DIR
+from definitions import (
+    POSTS_HTML_DIR,
+    POSTS_MARKDOWN_DIR,
+    ROOT_DIR,
+    STATIC_DIR,
+    STYLES_DIR,
+    ASSETS_DIR,
+    TEMPLATE_DIR,
+)
 
 FRONT_MATTER_PATTERN = re.compile(r"(?s)---\s*\n(.*?)\n\s*---")
 
@@ -123,8 +133,12 @@ class BuildConfig:
     output_dir: Path = POSTS_HTML_DIR
     assets_dir: Path = ASSETS_DIR
     templates_dir: Path = TEMPLATE_DIR
+    posts_md_dir: Path = POSTS_MARKDOWN_DIR
     styles_dir: Path = STYLES_DIR
+    static_dir: Path = STATIC_DIR
+    base_template_name: str = "base.html"
     post_template_name: str = "post.html"
+    static_page_template_name: str = "static_page.html"
     posts_list_template_name: str = "posts_list.html"
     style_files: list[str] = field(default_factory=lambda: [])
 
@@ -174,12 +188,6 @@ class SiteBuilder:
             self.styles = "\n".join(styles_block)
             self.template_args["style"] = self.styles
 
-    # def add_transformations(self, *args):
-    #     for a in args:
-    #         self.transformations.append(a)
-
-    #     return self
-
     @property
     def title_formatter(self) -> Callable[[str], str]:
         if self._title_formatter is None:
@@ -189,6 +197,29 @@ class SiteBuilder:
     @title_formatter.setter
     def title_formatter(self, title_formatter: Callable[[str], str]):
         self.title_formatter = title_formatter
+
+    def build_static(self, page_title: str, page_name: str):
+        """Insert static HTML content (like the homepage) into the base template"""
+
+        with open(self.config.static_dir.joinpath(page_name), "r") as fp:
+            input_content = fp.read()
+
+        page_template = self.template_env.get_template(
+            self.config.static_page_template_name
+        )
+
+        render_params = self.template_args | {
+            "title": page_title,
+            "content": input_content,
+        }
+
+        rendered = page_template.render(render_params)
+
+        output_file = self.config.output_dir.joinpath(page_name).with_suffix(".html")
+        with open(output_file, "w") as fp:
+            fp.write(rendered)
+
+        return output_file
 
     def make_posts_list(
         self, page_title: str | None = None, page_name: str = "posts.html"
@@ -210,25 +241,38 @@ class SiteBuilder:
             self.template_args | template_data
         )
 
-        with open(self.output_dir.joinpath(page_name), "w") as fp:
+        filepath = self.output_dir.joinpath(page_name)
+        with open(filepath, "w") as fp:
             fp.write(posts_list_rendered)
 
-    def build_all_pages(self, input_dir: Path | str):
-        input_dir = Path(input_dir)
+        return filepath
+
+    def build_all_pages(self, dir_name: str = "posts") -> list[Path]:
+        input_dir = Path(self.config.posts_md_dir)
+
+        page_paths = []
         for page in input_dir.glob("*.md"):
-            self.build_page(page)
+            page_path = self.build_page(page, dir_name=dir_name)
+            if page_path is not None:
+                page_paths.append(page_path)
 
-    def format_title(self, title: str):
-        tf = self.title_formatter
-        return tf
+        return page_paths
 
-    def build_page(self, input_file: Path | str, page_title: str | None = None):
+    def build_page(
+        self,
+        input_file: Path | str,
+        page_title: str | None = None,
+        dir_name: str = "posts",
+    ) -> Path | None:
         with open(Path(input_file), "r") as fp:
             md_input = fp.read()
 
         template = self.template_env.get_template(self.config.post_template_name)
         meta, md_text = extract_frontmatter(md_input)
 
+        output_file = self.output_dir.joinpath(f"{dir_name}/{meta.slug}").with_suffix(
+            ".html"
+        )
         # technically a post queue system
         if self.config.exclude_upcoming and meta.timestamp > dt.datetime.now():
             return
@@ -266,12 +310,16 @@ class SiteBuilder:
 
         rendered_html = template.render(template_params)
 
-        output_file = self.output_dir.joinpath(meta.slug).with_suffix(".html")
+        output_file = self.output_dir.joinpath(f"{dir_name}/{meta.slug}").with_suffix(
+            ".html"
+        )
         if not self.config.overwrite and output_file.exists():
             raise FileExistsError(f"{output_file} already exists")
 
         with open(output_file, "w") as fp:
             fp.write(rendered_html)
+
+        return output_file
 
 
 def markdown_to_html_pandoc(md_text: str) -> str:
@@ -306,6 +354,38 @@ def apply_transformations(
 
     container_tag.extend(soup.contents)
     return container_tag.prettify()
+
+
+def build_all(output_dir: Path):
+    with TemporaryDirectory() as build_dir_str:
+        build_dir = Path(build_dir_str).joinpath("build")
+        build_dir.mkdir()
+
+        config = BuildConfig(
+            output_dir=build_dir,
+            style_files=["styles.css"],
+            transformations=[footnotes_to_asides],
+        )
+
+        page_paths: list[Path] = []
+
+        builder = SiteBuilder(config)
+        post_paths = builder.build_all_pages()
+        page_paths.extend(post_paths)
+
+        posts_list_path = builder.make_posts_list()
+        page_paths.append(posts_list_path)
+
+        static_files = [
+            {"page_title": "Home", "page_name": "home.html"},
+            {"page_title": "About", "page_name": "about.html"},
+        ]
+
+        for f in static_files:
+            filepath = builder.build_static(**f)
+            page_paths.append(filepath)
+
+        copytree(build_dir, output_dir)
 
 
 def main():

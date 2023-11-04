@@ -160,5 +160,4 @@ cython_debug/
 #.idea/
 
 output/
-md/
-watch.sh
+_output/
