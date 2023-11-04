@@ -11,6 +11,7 @@ Flask = "^3.0.0"
 Jinja2 = "^3.1.2"
 bs4 = "^0.0.1"
 pyyaml = "^6.0.1"
+#resume = {path = "./Resume", develop=true}
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.10.0"

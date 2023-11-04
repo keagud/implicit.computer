@@ -1,6 +1,4 @@
 #!/bin/env python3
-from pprint import pprint
-
 from shutil import copytree
 import json
 from tempfile import TemporaryDirectory
@@ -15,6 +13,8 @@ import jinja2
 import yaml
 from bs4 import BeautifulSoup, Tag
 
+from .Resume.scripts.render import build_resume
+
 T = TypeVar("T")
 
 from definitions import (
@@ -25,6 +25,7 @@ from definitions import (
     STYLES_DIR,
     ASSETS_DIR,
     TEMPLATE_DIR,
+    OUTPUT_DIR,
 )
 
 FRONT_MATTER_PATTERN = re.compile(r"(?s)---\s*\n(.*?)\n\s*---")
@@ -79,16 +80,12 @@ def extract_frontmatter(md_text: str) -> tuple[PostData, str]:
 
 
 def footnotes_to_asides(soup: BeautifulSoup) -> BeautifulSoup:
-    footnotes_section = not_none(soup.find( role="doc-endnotes"))
+    footnotes_section = not_none(soup.find(role="doc-endnotes"))
     assert isinstance(footnotes_section, Tag)
     # locate all footnotes
     footnote_tags: list[Tag] = list(
-        footnotes_section.find_all(
-            id=lambda val: bool(val and val.startswith("fn"))
-        )
+        footnotes_section.find_all(id=lambda val: bool(val and val.startswith("fn")))
     )
-
-    pprint(footnotes_section)
 
     for fn in footnote_tags:
         # find each footnote's ref in the text
@@ -123,7 +120,6 @@ def footnotes_to_asides(soup: BeautifulSoup) -> BeautifulSoup:
         fn_all_span = soup.new_tag("span")
         fn_all_span.extend([fn_label, fn_checkbox, fn_content_span])
 
-        pprint(fn_all_span)
         fn_origin_location.replace_with(fn_all_span)
 
     footnotes_section.decompose()
@@ -190,6 +186,15 @@ class SiteBuilder:
 
             self.styles = "\n".join(styles_block)
             self.template_args["style"] = self.styles
+
+        if (json_path := self.config.assets_dir.joinpath("quotes.json")).exists():
+            with open(json_path, "r") as fp:
+                json_data = json.load(fp)
+
+            quotes_literals = ", ".join([rf'"{q}"' for q in json_data["quotes"]])
+            quotes = f"[{quotes_literals}]"
+
+            self.template_args["quotes"] = quotes
 
     @property
     def title_formatter(self) -> Callable[[str], str]:
@@ -299,20 +304,10 @@ class SiteBuilder:
 
         template_params = {"title": page_title, "content": html_body}
 
-        if (json_path := self.config.assets_dir.joinpath("quotes.json")).exists():
-            with open(json_path, "r") as fp:
-                json_data = json.load(fp)
-
-            quotes_literals = ", ".join([rf'"{q}"' for q in json_data["quotes"]])
-            quotes = f"[{quotes_literals}]"
-
-            template_params["quotes"] = quotes
-
         if self.styles is not None:
             template_params.update({"style": self.styles})
 
         rendered_html = template.render(template_params)
-
 
         output_dir = self.output_dir.joinpath(dir_name)
         output_dir.mkdir(exist_ok=True)

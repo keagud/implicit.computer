@@ -10,27 +10,26 @@ cd "$REPO_DIR" || return 1
 # fetch updates
 git fetch origin
 if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/master)" ]; then
-        echo "Changes were detected in the main repository"
-        # Run the action for changes in the main repository here
-fi
 
-# fetch submodule updates
-git submodule update --init --recursive
+        # merge changes destructively
+        git merge --no-edit -X theirs origin/master
 
-for submodule in $(git submodule status --recursive | awk '{print $2}'); do
-    if [ "$(git -c $submodule rev-parse head)" != "$(git -c $submodule rev-parse origin/master)" ]; then
-        echo "changes were detected in submodule: $submodule"
-        # run the action for changes in this submodule here
-    fi
-done
+        #build the site
+        python3 "$REPO_DIR/build_site.py"
 
-# merge changes destructively
-git merge --no-edit -X theirs origin/master
-
-if [ $? -eq 0 ]; then
-      # TODO  run the script to rebuild everything
-        echo "Changes were merged destructively" && \
         echo "$(date) rebuilt all files"  >> "$LOG_FILE"
-else
-  echo "$(date) [nothing to do]"  >> "$LOG_FILE"
+
 fi
+
+
+if [  "$(git -c Resume rev-parse head)" != "$(git -C Resume rev-parse origin/master)" ]; then
+
+  # fetch updates from submodule and build
+  git submodule update --init --recursive --remote
+  python3 "$REPO_DIR/build_resume.py"
+
+
+  echo "$(date) updated resume"  >> "$LOG_FILE"
+fi
+
+

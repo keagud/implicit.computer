@@ -12,6 +12,7 @@ POSTS_MARKDOWN_DIR = ROOT_DIR.joinpath("md")
 POSTS_HTML_DIR = ROOT_DIR.joinpath("posts")
 STATIC_DIR = ASSETS_DIR.joinpath("static")
 RESUME_DIR = ROOT_DIR.joinpath("Resume")
+OUTPUT_DIR = ROOT_DIR.joinpath("_output")
 
 
 _get_blog_repo_url = subprocess.run(
