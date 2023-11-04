@@ -19,10 +19,13 @@ if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/master)" ]; then
 
         echo "$(date) rebuilt all files"  >> "$LOG_FILE"
 
+      else 
+        echo "No changes to main repository"
+
 fi
 
 
-if [  "$(git -c Resume rev-parse head)" != "$(git -C Resume rev-parse origin/master)" ]; then
+if [  "$(git -C Resume rev-parse HEAD)" != "$(git -C Resume rev-parse origin/master)" ]; then
 
   # fetch updates from submodule and build
   git submodule update --init --recursive --remote
@@ -30,6 +33,9 @@ if [  "$(git -c Resume rev-parse head)" != "$(git -C Resume rev-parse origin/mas
 
 
   echo "$(date) updated resume"  >> "$LOG_FILE"
+
+else
+  echo "No resume updates needed"
 fi
 
 
