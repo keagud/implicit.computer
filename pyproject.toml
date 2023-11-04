@@ -12,6 +12,7 @@ Jinja2 = "^3.1.2"
 bs4 = "^0.0.1"
 pyyaml = "^6.0.1"
 #resume = {path = "./Resume", develop=true}
+gunicorn = "^21.2.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.10.0"
