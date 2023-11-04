@@ -79,14 +79,16 @@ def extract_frontmatter(md_text: str) -> tuple[PostData, str]:
 
 
 def footnotes_to_asides(soup: BeautifulSoup) -> BeautifulSoup:
-    footnotes_section = not_none(soup.find("section", role="doc-endnotes"))
+    footnotes_section = not_none(soup.find( role="doc-endnotes"))
     assert isinstance(footnotes_section, Tag)
     # locate all footnotes
     footnote_tags: list[Tag] = list(
         footnotes_section.find_all(
-            "li", role="doc-endnote", id=lambda val: bool(val and val.startswith("fn"))
+            id=lambda val: bool(val and val.startswith("fn"))
         )
     )
+
+    pprint(footnotes_section)
 
     for fn in footnote_tags:
         # find each footnote's ref in the text
@@ -121,6 +123,7 @@ def footnotes_to_asides(soup: BeautifulSoup) -> BeautifulSoup:
         fn_all_span = soup.new_tag("span")
         fn_all_span.extend([fn_label, fn_checkbox, fn_content_span])
 
+        pprint(fn_all_span)
         fn_origin_location.replace_with(fn_all_span)
 
     footnotes_section.decompose()
@@ -310,6 +313,10 @@ class SiteBuilder:
 
         rendered_html = template.render(template_params)
 
+
+        output_dir = self.output_dir.joinpath(dir_name)
+        output_dir.mkdir(exist_ok=True)
+
         output_file = self.output_dir.joinpath(f"{dir_name}/{meta.slug}").with_suffix(
             ".html"
         )
@@ -363,7 +370,7 @@ def build_all(output_dir: Path):
 
         config = BuildConfig(
             output_dir=build_dir,
-            style_files=["styles.css"],
+            style_files=["style.css"],
             transformations=[footnotes_to_asides],
         )
 
@@ -385,7 +392,7 @@ def build_all(output_dir: Path):
             filepath = builder.build_static(**f)
             page_paths.append(filepath)
 
-        copytree(build_dir, output_dir)
+        copytree(build_dir, output_dir, dirs_exist_ok=True)
 
 
 def main():

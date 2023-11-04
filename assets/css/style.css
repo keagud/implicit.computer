@@ -138,20 +138,22 @@ label.margin-toggle:not(.sidenote-number) {
 .sidenote-number {
   counter-increment: sidenote-counter;
 }
-.sidenote-number::after {
+.sidenote-number::after,
+.sidenote::before
+{
   /* counter-increment: sidenote-counter; */
-  content: "*";
-  /* font-size:  90%; */
-  top: -0.1rem;
-  left: 0.1rem;
+  content: "❋";
+   font-size:  40%;
+  top: -1rem;
   color: var(--gvb-cyan);
 }
+
+.sidenote-number:after {
+  left: -.7rem;
+}
+
 .sidenote::before {
-  content: "*";
-  color: var(--gvb-cyan);
-  /* font-size: 90%; */
-  top: -0.1rem;
-  right: 0.1rem;
+  right: -.1rem;
 }
 pre {
   border-radius: 0.1em;
