@@ -8,7 +8,7 @@ service cron start
 CPUS=$(nproc --all)
 
 # start with 2 workers per cpu
-gunicorn -w $(( CPUS * 2 )) -b 0.0.0.0:8000 site_src:app 
+gunicorn  --bind "0.0.0.0:8000" site_src:app --log-level DEBUG
 
 
 

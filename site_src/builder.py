@@ -80,12 +80,17 @@ def extract_frontmatter(md_text: str) -> tuple[PostData, str]:
 
 
 def footnotes_to_asides(soup: BeautifulSoup) -> BeautifulSoup:
-    footnotes_section = not_none(soup.find(role="doc-endnotes"))
+    footnotes_section = soup.find(role="doc-endnotes")
+
+    if footnotes_section is None:
+        return soup
     assert isinstance(footnotes_section, Tag)
     # locate all footnotes
     footnote_tags: list[Tag] = list(
         footnotes_section.find_all(id=lambda val: bool(val and val.startswith("fn")))
     )
+
+
 
     for fn in footnote_tags:
         # find each footnote's ref in the text
@@ -93,6 +98,7 @@ def footnotes_to_asides(soup: BeautifulSoup) -> BeautifulSoup:
 
         # remove backlink from footnote text
         not_none(fn.find("a", role="doc-backlink")).extract()
+
 
         for t in fn.find_all("p"):
             t.name = "span"

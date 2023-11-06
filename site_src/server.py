@@ -11,13 +11,13 @@ def homepage():
     return send_from_directory(OUTPUT_DIR, "home.html")
 
 
-@app.route("/blog")
+@app.route("/blog/")
 def posts_list():
-    return send_from_directory(OUTPUT_DIR, "posts_list.html")
+    return send_from_directory(OUTPUT_DIR, "posts.html")
 
 
 @app.route("/blog/<slug>")
-def blogpost(slug: str):
+def blogpost(slug):
     return send_from_directory(POSTS_HTML_DIR, f"{slug}.html")
 
 

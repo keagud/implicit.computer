@@ -3,6 +3,8 @@ WORKDIR /web
 # install dependencies
 
 RUN apt-get update && apt-get -y install cron coreutils git
+RUN apt-get install texlive-xetex texlive-full -y
+RUN apt-get install pandoc -y
 RUN pip install gunicorn
 COPY requirements.txt .
 RUN pip install -r requirements.txt
@@ -24,6 +26,9 @@ RUN chmod 0644 "$(pwd)/watch.sh"
 RUN echo "" >> /etc/cron.d/watch-cron
 RUN chmod 0644 /etc/cron.d/watch-cron
 RUN crontab /etc/cron.d/watch-cron
+
+RUN python3 build_site.py
+RUN python3 build_resume.py
 
 EXPOSE 8000
 
