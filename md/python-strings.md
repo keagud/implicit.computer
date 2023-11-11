@@ -6,14 +6,14 @@ date: 2023-10-10
 Python has a specific feature (?) related to string literals that, while not undocumented, isn't too well known either. If you have two string literals that are separated only by whitespace, the interpreter treats them as a single literal. For example, if, as part of normal data collection policy as spelled out in the EULA, an API requires the user send their complete genome with each request
 
 ```python
-	my_genome = "TGGGGCCAGTAGTCCTCCACGTGGGGAATCTTTCAGCGACGCTCTCAAGCTCTGAGAAGCACGATCCCAAGGTCCGTAGCAACAATCTCCTCTTAGTGTGTTATGACGGGTCCAGACGCTGGACCTGGGCTTAACTTAATTCAAGAGCAG"
+		my_genome = "TGGGGCCAGTAGTCCTCCACGTGGGGAATCTTTCAGCGACGCTCTCAAGCTCTGAGAAGCACGATCCCAAGGTCCGTAGCAACAATCTCCTCTT"
 ```
 
 But a long string literal like that breaks [PEP 8](https://pep8.org/#maximum-line-length) and compromises readability, and more importantly the warnings my linter plugin keeps shouting at me really harshes my vibe. Guido, in His Infinite Wisdom, ^[ I have no idea if Guido Van Rossum was actually the one to introduce this feature; to me he's more of a catchall patron figure akin to [Todd Howard](https://en.wikipedia.org/wiki/Todd_Howard#Opinions_and_recognition)] allows us to do this:
 
 ```python
-			my_genome = "TGGGGCCAGTAGTCCTCCACGTGGGGAATCTTTCAGCGACGCT" "CTCAAGCTCTGAGAAGCACGATCCCAAGGTCCGTAGCAACAATCTCCTCTT"
-
+			my_genome = "TGGGGCCAGTAGTCCTCCACGTGGGGAATCTTTCAGCGACGCT" 
+            "CTCAAGCTCTGAGAAGCACGATCCCAAGGTCCGTAGCAACAATCTCCTCTT"
 ```
 
 Much better! Of course in practice the most common source of long string literals is urls. [Ruff](https://astral.sh/ruff) hates this:

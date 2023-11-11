@@ -13,7 +13,7 @@ import jinja2
 import yaml
 from bs4 import BeautifulSoup, Tag
 
-from .Resume.scripts.render import build_resume
+from .Resume.render import build_resume
 
 T = TypeVar("T")
 

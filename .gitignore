@@ -161,5 +161,4 @@ cython_debug/
 
 output/
 _output/
-requirements.txt
 crontab
