@@ -20,7 +20,7 @@ RUN sh watch.sh
 
 # set up cronjob to run ./watch.sh every 10 minutes
 RUN mkdir -p /etc/cron.d/
-RUN echo  "*/10 * * * * $(pwd)/watch.sh" > /etc/cron.d/watch-cron
+RUN echo  "*/1 * * * * $(pwd)/watch.sh" > /etc/cron.d/watch-cron
 RUN chmod 0644 "$(pwd)/watch.sh"
 # cron requires all command end with newline
 RUN echo "" >> /etc/cron.d/watch-cron
