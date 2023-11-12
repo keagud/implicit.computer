@@ -1,6 +1,7 @@
 #!/bin/env python3
 from shutil import copytree
 import json
+import shutil
 import sys
 from tempfile import TemporaryDirectory
 import datetime as dt
@@ -17,7 +18,6 @@ import os
 import subprocess
 from typing import Final
 
-from definitions import OUTPUT_DIR
 
 
 T = TypeVar("T")
@@ -318,7 +318,7 @@ class SiteBuilder:
         html_modifiers = self.config.transformations
         html_body = apply_transformations(html_text, html_modifiers)
 
-        template_params = {"title": page_title, "content": html_body}
+        template_params = self.template_args | {"title": page_title, "content": html_body}
 
         if self.styles is not None:
             template_params.update({"style": self.styles})
@@ -445,9 +445,6 @@ def check_build_site():
     build_all(output_dir=OUTPUT_DIR)
     return True
 
-
-def configure_files_for_nginx():
-    pass
 
 
 def main():

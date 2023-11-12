@@ -1,40 +1,20 @@
 #!/bin/bash
 
 
-REPO_DIR=$(dirname "$0")
-LOG_FILE="$REPO_DIR/watcher.log"
+VENV_PATH="./.venv/bin/python3"
+OUTPUT_DIR="$1"
+
+SITE_DIR="/var/www/implicit.computer/html/"
+
+mkdir -p "$OUTPUT_DIR" || exit
+"$VENV_PATH/python3 builder.py all" || exit
 
 
-cd "$REPO_DIR" || return 1
-
-# fetch updates
-git fetch origin
-if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/master)" ]; then
-
-        # merge changes destructively
-        git merge --no-edit -X theirs origin/master
-
-        #build the site
-        python3 "$REPO_DIR/build_site.py"
-
-        echo "$(date) rebuilt all files"  >> "$LOG_FILE"
-
-      else 
-        echo "No changes to main repository"
-
+if [ ! -L "$SITE_DIR/posts" ]; then
+  ln -s "$OUTPUT_DIR" "$SITE_DIR/posts"
 fi
 
 
-if [  "$(git -C Resume rev-parse HEAD)" != "$(git -C Resume rev-parse origin/master)" ]; then
 
-  # fetch updates from submodule and build
-  git submodule update --init --recursive --remote
-  python3 "$REPO_DIR/build_resume.py"
-
-  echo "$(date) updated resume"  >> "$LOG_FILE"
-
-else
-  echo "No resume updates needed"
-fi
 
 
