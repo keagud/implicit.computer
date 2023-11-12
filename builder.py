@@ -457,6 +457,7 @@ def main():
             case "force":
                 changed = True
                 build_all()
+                build_resume()
 
             case "all":
                 site_changed = check_build_site()
