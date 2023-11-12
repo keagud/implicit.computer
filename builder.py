@@ -17,12 +17,20 @@ import os
 import subprocess
 from typing import Final
 
+from definitions import OUTPUT_DIR
+
 
 T = TypeVar("T")
 
 
 ROOT_DIR: Final = Path(__file__).parent
-OUTPUT_DIR = ROOT_DIR.joinpath("_output")
+
+
+_output_dir = os.getenv("SITE_OUTPUT_DIR", ROOT_DIR.joinpath("output"))
+
+
+OUTPUT_DIR: Final = Path(_output_dir)
+
 ASSETS_DIR: Final = ROOT_DIR.joinpath("assets")
 TEMPLATE_DIR: Final = ASSETS_DIR.joinpath("templates")
 STYLES_DIR: Final = ASSETS_DIR.joinpath("css")
@@ -31,16 +39,8 @@ POSTS_MARKDOWN_DIR = ROOT_DIR.joinpath("md")
 STATIC_DIR = ASSETS_DIR.joinpath("static")
 RESUME_DIR = ROOT_DIR.joinpath("Resume")
 
-POSTS_HTML_DIR = OUTPUT_DIR.joinpath("posts")
+POSTS_HTML_DIR = OUTPUT_DIR.joinpath("blog")
 
-_get_blog_repo_url = subprocess.run(
-    r"git config --get remote.origin.url", capture_output=True, shell=True
-)
-
-_get_blog_repo_url.check_returncode()
-
-BLOG_REPO_URL: Final = _get_blog_repo_url.stdout.decode("UTF-8")
-RESUME_REPO_URL: Final = "https://github.com/keagud/Resume.git"
 FRONT_MATTER_PATTERN = re.compile(r"(?s)---\s*\n(.*?)\n\s*---")
 
 
@@ -374,7 +374,7 @@ def apply_transformations(
     return container_tag.prettify()
 
 
-def build_all(output_dir: Path):
+def build_all(output_dir: Path = OUTPUT_DIR):
     with TemporaryDirectory() as build_dir_str:
         build_dir = Path(build_dir_str).joinpath("build")
         build_dir.mkdir()
@@ -411,18 +411,27 @@ def get_hash(dir: Path):
     return proc_bytes.decode("utf-8").strip()
 
 
+def build_resume():
+    subprocess.run(["sh", "build_resume.sh", str(OUTPUT_DIR.resolve())], cwd=ROOT_DIR)
+
+
 def check_build_resume():
     resume_dir = ROOT_DIR.joinpath("Resume")
 
     old_hash = get_hash(resume_dir)
 
-    subprocess.run("git submodule update --recursive --init --remote", shell=True)
+    subprocess.run(
+        "git submodule update --recursive --init --remote".split(), cwd=ROOT_DIR
+    )
 
     new_hash = get_hash(resume_dir)
 
     if new_hash == old_hash:
-        print("No updates")
         return False
+
+    build_resume()
+
+    return True
 
 
 def check_build_site():
@@ -437,10 +446,18 @@ def check_build_site():
     return True
 
 
+def configure_files_for_nginx():
+    pass
+
+
 def main():
     if len(sys.argv) > 1:
         changed = False
         match sys.argv[1].lower().strip():
+            case "force":
+                changed = True
+                build_all()
+
             case "all":
                 site_changed = check_build_site()
                 resume_changed = check_build_resume()
@@ -464,7 +481,6 @@ def main():
         output_dir.mkdir()
 
     build_all(output_dir)
-
 
 
 if __name__ == "__main__":
