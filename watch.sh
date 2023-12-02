@@ -15,7 +15,7 @@ eval "$VENV_PATH/pip install -r $REQS_PATH"
 eval "$VENV_PATH/pip install -r $RESUME_REQS_PATH"
 
 mkdir -p "$OUTPUT_DIR" || exit
-eval "SITE_OUTPUT_DIR=$OUTPUT_DIR $VENV_PATH/python3 builder.py force" 2>> /var/log/site_messages 
+eval "SITE_OUTPUT_DIR=$OUTPUT_DIR $VENV_PATH/python3 builder.py all" 2>> /var/log/site_messages 
 
 
 if [ ! -L "$SITE_DIR" ]; then
