@@ -1,6 +1,7 @@
 #!/bin/bash
 
 git submodule update --init --recursive --remote || exit
+python3 -m venv .venv &> /dev/null
 
 SCRIPT_DIR=$(dirname -- $(readlink -f  "$0") )
 WATCH_SCRIPT="$SCRIPT_DIR/watch.sh"
