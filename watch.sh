@@ -1,8 +1,9 @@
 #!/bin/bash
 
 
-VENV_PATH="./.venv/bin/python3"
-OUTPUT_DIR="$1"
+VENV_PATH="$(readlink -f ./.venv/bin/python3)"
+
+OUTPUT_DIR="$(readlink -f $1)"
 
 SITE_DIR="/var/www/implicit.computer/html/"
 
