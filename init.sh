@@ -1,14 +1,9 @@
 #!/bin/bash
 
-# start the cron daemon
-service cron start
+SCRIPT_DIR=$(dirname "$0")
+WATCH_SCRIPT="$SCRIPT_DIR/watch.sh"
 
-# start the web server
-# query for the number of available cpus
-CPUS=$(nproc --all)
+CRON_JOB="*/1 * * * * sh $WATCH_SCRIPT" 
 
-# start with 2 workers per cpu
-gunicorn  --bind "0.0.0.0:8000" site_src:app --log-level DEBUG
-
-
+echo "$CRON_JOB" > /tmp/crontab.txt  && crontab /tmp/crontab.txt
 
