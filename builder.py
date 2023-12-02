@@ -437,7 +437,7 @@ def check_build_resume():
 def check_build_site():
     old_hash = get_hash(ROOT_DIR)
 
-    subprocess.run("git fetch --all && git reset --hard origin/master && git pull")
+    subprocess.run("git fetch --all && git reset --hard origin/master && git pull", cwd=ROOT_DIR, shell=True)
 
     new_hash = get_hash(ROOT_DIR)
 
