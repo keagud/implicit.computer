@@ -5,7 +5,7 @@ slug: bald
 ---
 # Shave your Head!
 
-*In this post , I outline why I started keeping my head shaved and why, if you're a similar person to me in a few respects, you might benefit from doing the same. I close with some practical tips for the novice head shaver, and some pitfalls to watch out for.*
+*In this post, I outline why I started keeping my head shaved and why, if you're a similar person to me in a few respects, you might benefit from doing the same. I close with some practical tips for the novice head shaver, and some pitfalls to watch out for.*
 
 
 
@@ -40,7 +40,7 @@ Excluding half the population from the joys of baldness is a shame, but the poin
 
 Again, it's because people will assume chemotherapy, and again it sucks. But we live in a world of appearances. 
 
-When I first shaved my head, I was 19 and *very* skinny. I'm also naturally quite pale from the conjunction of genetics and life in the Pacific Northwest. Naturally, this sheet-white, bone-thin man-boy got some sympathetic looks. Nowadays I've clocked enough years of regular exercise to build up some muscle and tone, and that's no longer a problem -- I'm not Jason Statham, but at least now people immediately assume I'm in the midst of a deeply traumatizing extended medical procedure. I recommend my ectomorph brethren hold off until a few months of deadlifts.
+When I first shaved my head, I was 19 and *very* skinny. I'm also naturally quite pale from the conjunction of genetics and life in the Pacific Northwest. Naturally, this sheet-white, bone-thin man-boy got some sympathetic looks. Nowadays I've clocked enough years of regular exercise to build up some muscle and tone, and that's no longer a problem -- I'm not Jason Statham, but at least now people don't immediately assume I'm in the midst of a deeply traumatizing extended medical procedure. I recommend my ectomorph brethren hold off until a few months of deadlifts.
 
 ## Some Tips For First Time Shavers
 
