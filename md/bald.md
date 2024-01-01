@@ -11,7 +11,7 @@ slug: bald
 
 ## What's so great about being bald?
 
-The main benefit in my experience is the removal of the friction that comes from having hair. Not literal friction (although there's less of that too), I mean the small maintenance tasks that aren't significant in isolation, but that become a drain when you need to do them *every day*. My ADHD means I experience this to a higher degree than average -- in fact I'd argue excessive friction is the *paradigm* symptom of ADHD, more so than hyperactivity, but that's for another post, and I think the APA blocked my number.
+The main benefit in my experience is the removal of the friction that comes from having hair. Not literal friction (although there's less of that too), I mean the small maintenance tasks that aren't significant in isolation, but that become a drain when you need to do them *every day.* My ADHD means I experience this to a higher degree than average -- in fact I'd argue excessive friction is the *paradigm* symptom of ADHD, more so than hyperactivity, but that's for another post, and I think the APA blocked my number.
 
 But even if you don't have ADHD you can suffer from mental friction, and lot of everyday sources of friction are from things that aren't actually necessary. I know someone who felt the task of choosing what to wear every day was a pointless cognitive load, so he bought a bunch of the same shirt. I do something a bit less extreme by limiting my wardrobe to colors neutral enough I'm guaranteed to never clash too horribly, even if I just grab what's nearby. If this sounds like the sort of thing you might do, baldness may be for you! 
 
