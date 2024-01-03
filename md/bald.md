@@ -65,3 +65,8 @@ The internet is chock full of scalp shaving tips, many of them contradictory. Th
 If that describes you, you're expending a nonzero amount of effort on something you might care about a near-zero amount. It's at least worth asking yourself if this is something you *actually want* to do, or if you just never realized there was an alternative.
 
 This was once me, but I broke free. Join me, comrades! You have naught to lose but your hair!
+
+
+--- 
+
+**Update 2024-01-03:** My friend Wyatt has written a [response/rebuttal/remix](https://wyattscarpenter.github.io/blog/how_to_have_hair.txt) for this post.
