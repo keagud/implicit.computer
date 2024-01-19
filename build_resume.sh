@@ -3,6 +3,11 @@ OUTPUT_DIR="$1"
 
 mkdir -p "$OUTPUT_DIR" || exit
 
+cd ./Resume || exit
+pnpm i || exit
+cd .. || exit
+
+
 node ./Resume/convert.js web || exit
 node ./Resume/convert.js pdf || exit
 
