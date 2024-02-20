@@ -1,4 +1,5 @@
 +++
+page_template = "base.html"
 +++
 
 # About Me

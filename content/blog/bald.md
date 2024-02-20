@@ -2,6 +2,7 @@
 date = 2023-06-21
 title = "Shave Your Head!"
 slug = "bald"
+draft = true
 +++
 
 # Shave your Head!

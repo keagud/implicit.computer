@@ -1,27 +1,19 @@
-# The URL the site will be built for
 base_url = "https://implicit.computer"
-
 generate_feed = true
 feed_filename = "rss.xml"
-
-
 theme = "no-style-please"
-
 default_language = "en"
-
-# Whether to automatically compile all Sass files in the sass directory
 compile_sass = true
-
-# Whether to build a search index to be used later on by a JavaScript library
 build_search_index = true
 
 [markdown]
-# Whether to do syntax highlighting
-# Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
 highlight_code = true
 highlight_theme = "gruvbox-dark"
 
 
+[[taxonomies]] 
+name = "tags"
+feed = false
 
 [extra]
 header_nav = [
@@ -32,5 +24,3 @@ header_nav = [
 {name = "/rss", url = "/rss.xml"}
 ]
 
-
-# Put all your custom variables here

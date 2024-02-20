@@ -4,8 +4,17 @@
   {{ super() }}
   {# SCSS extensions/modifications to the base theme #}
 <link rel="stylesheet" href="{{ get_url(path='ext.css', trailing_slash=false) | safe }}"/>
+
+<script defer type="text/javascript" src="/script.js"> </script>
   {% endblock %}
 
 
 
+{% block footer %}
 
+  {{ super() }}
+
+<!-- <code> oiiii </code> -->
+{% endblock %}
+
+<code> oiiii </code>
