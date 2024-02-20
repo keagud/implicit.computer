@@ -1,8 +1,8 @@
----
-title: Implicit String Concatenation Considered Harmful
-slug: python-strings 
-date: 2023-10-10
----
++++
+title =  "Implicit String Concatenation Considered Harmful"
+slug =  "python-strings"
+date = 2023-10-10
++++
 Python has a specific feature (?) related to string literals that, while not undocumented, isn't too well known either. If you have two string literals that are separated only by whitespace, the interpreter treats them as a single literal. For example, if, as part of normal data collection policy as spelled out in the EULA, an API requires the user send their complete genome with each request
 
 ```python

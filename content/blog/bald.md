@@ -1,8 +1,9 @@
----
-date: 2023-06-21
-title: Shave Your Head!
-slug: bald
----
++++
+date = 2023-06-21
+title = "Shave Your Head!"
+slug = "bald"
++++
+
 # Shave your Head!
 
 *In this post, I outline why I started keeping my head shaved and why, if you're a similar person to me in a few respects, you might benefit from doing the same. I close with some practical tips for the novice head shaver, and some pitfalls to watch out for.*
