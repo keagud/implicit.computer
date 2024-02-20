@@ -2,7 +2,7 @@
 base_url = "https://implicit.computer"
 
 generate_feed = true
-feed_filename = "atom.xml"
+feed_filename = "rss.xml"
 
 
 theme = "no-style-please"
@@ -29,7 +29,7 @@ header_nav = [
 { name = "/blog", url = "/blog"},
 { name = "/about", url = "/about"},
 { name = "/now", url = "/now"},
-{name = "/atom", url = "/atom.xml"}
+{name = "/rss", url = "/rss.xml"}
 ]
 
 

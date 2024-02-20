@@ -1,1 +1,11 @@
 {% extends "no-style-please/templates/base.html" %}
+
+{% block css %}
+  {{ super() }}
+  {# SCSS extensions/modifications to the base theme #}
+<link rel="stylesheet" href="{{ get_url(path='ext.css', trailing_slash=false) | safe }}"/>
+  {% endblock %}
+
+
+
+
