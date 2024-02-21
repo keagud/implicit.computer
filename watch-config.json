@@ -1,7 +1,8 @@
 [
   {
-    "remote": "https://github.com/keagud/test_repo",
-    "local": "./repo/",
+    "remote": "https://github.com/keagud/implicit.computer",
+    "branch" : "zola",
+    "local": "./src",
     "on_change": "echo 'hello' > hello"
   }
 ]
