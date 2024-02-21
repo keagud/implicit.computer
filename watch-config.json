@@ -1,0 +1,7 @@
+[
+  {
+    "remote": "https://github.com/keagud/test_repo",
+    "local": "./repo/",
+    "on_change": "echo 'hello' > hello"
+  }
+]
