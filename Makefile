@@ -9,6 +9,6 @@ save:
 	docker build . -t site && docker save site:latest | gzip > site.tar.gz 
 
 run:
-	docker build . -t site && docker run -it site:latest sh
+	docker build . -t site && docker run  -p 8080:8080 -it site:latest sh
 
 
