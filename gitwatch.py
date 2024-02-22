@@ -59,7 +59,7 @@ def main():
 
     for remote, local, on_change, branch in config_vals:
         if poll_repo(remote, local, branch):
-            subprocess.run(on_change, shell=True).check_returncode()
+            subprocess.run(on_change, shell=True, cwd=Path(local)).check_returncode()
 
 
 if __name__ == "__main__":

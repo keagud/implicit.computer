@@ -3,6 +3,6 @@
     "remote": "https://github.com/keagud/implicit.computer",
     "branch" : "zola",
     "local": "./src",
-    "on_change": "echo 'hello' > hello"
+    "on_change": "mkdir -p ../public && zola build --output-dir ../public --base-url \"/\" --force"
   }
 ]
