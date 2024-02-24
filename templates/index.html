@@ -2,17 +2,45 @@
 
 {% block content %}
 
-<h1 class="title">
-  Here's the page
-</h1>
+<div class ="title-container"  style='width: 100%; display: flex; justify-content: center; flex-wrap: wrap;  '>
+    <h1 class="title" >
+      Implicit Dot Computer
+    </h1>
+    <div class="quote-container">
+    <p class="dynamic-quote">hello</p>
+    </div>
+</div>
+
+<hr/>
 
 
     {% set blog_section = get_section(path="blog/_index.md") %}
 
 
-{% for post in blog_section.pages %}
+{% for post in blog_section.pages | sort(attribute="date") | reverse %}
 
-        {{ post.content | safe }}
+<div class = "post-preview-header">
+    <a href = "{{ post.permalink }}">
+    <h3 class="post-title">{{ post.title | safe }}</h3>
+    </a>
+    {{ post.date }}
+
+</div>
+
+    <br/>
+{% if post.description %}
+<div class="post-description">
+<em>{{ post.description |  safe }}</em>
+</div>
+<br/>
+{% endif %}
+
+        {{ post.content | striptags |  truncate(length=200) | safe }}
+
+{% if not loop.last %}
+<hr/>
+{% endif %}
+
 
         {% endfor %}
 
