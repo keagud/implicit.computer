@@ -24,7 +24,7 @@ EXPOSE $port
 
 RUN echo "static-web-server --port $env_port -d ./public" > init.sh
 
-CMD ["./init.sh" ]
+CMD ["sh", "init.sh" ]
 
 
 
