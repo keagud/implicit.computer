@@ -5,7 +5,8 @@ import os
 import subprocess
 from pathlib import Path
 
-CONFIG_PATH = Path("./watch-config.json")
+CONFIG_PATH = Path(__file__).parent.joinpath("./watch-config.json")
+
 
 def poll_repo(remote: str, local: str | Path, branch: str | None = None) -> bool:
     local = Path(local)
@@ -26,7 +27,9 @@ def poll_repo(remote: str, local: str | Path, branch: str | None = None) -> bool
 
         os.chdir(local)
 
-        subprocess.run(["git", "submodule", "update", "--init", "--recursive"]).check_returncode()
+        subprocess.run(
+            ["git", "submodule", "update", "--init", "--recursive"]
+        ).check_returncode()
         subprocess.run(["git", "fetch"]).check_returncode()
 
         result = subprocess.run(
@@ -55,7 +58,10 @@ def main():
     with open(CONFIG_PATH, "r") as fp:
         config_entries = json.load(fp)
 
-    config_vals = [(d["remote"], d["local"], d["on_change"], d.get("branch")) for d in config_entries]
+    config_vals = [
+        (d["remote"], d["local"], d["on_change"], d.get("branch"))
+        for d in config_entries
+    ]
 
     for remote, local, on_change, branch in config_vals:
         if poll_repo(remote, local, branch):
