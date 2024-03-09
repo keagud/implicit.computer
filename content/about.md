@@ -10,7 +10,7 @@ I'm a longtime GNU/Linux user and Free software aficionado. I use [Debian](https
 I'm on [mastodon](https://social.lol/@keagud) and [github](https://github.com/keagud) as well.
 
 # About the Site
-This site is generated with [Zola](https://www.getzola.org) using the [no style, please!](https://gitlab.com/atgumx/no-style-please) theme (plus some light CSS tweaks).
+This site is generated with [Zola](https://www.getzola.org) using the [no style, please!](https://gitlab.com/atgumx/no-style-please) theme (plus some light CSS tweaks). Source is available [here](https://github.com/keagud/implicit.computer).
 
 Everything here is under the [Creative Commons Attribution License](https://creativecommons.org/licenses/by/4.0/deed.en) unless stated otherwise. That means you can do whatever with it, so long as you credit the original somehow.
 
