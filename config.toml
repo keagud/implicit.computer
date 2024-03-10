@@ -1,11 +1,11 @@
 base_url = "https://implicit.computer"
 
 title = "implicit.computer"
-author = "Keaton"
+author = "keagud"
 description = "A weblog from implicit.computer"
 
 generate_feed = true
-feed_filename = "rss.xml"
+feed_filename = "atom.xml"
 theme = "no-style-please"
 default_language = "en"
 compile_sass = true
@@ -26,6 +26,6 @@ header_nav = [
 { name = "/blog", url = "/blog"},
 { name = "/about", url = "/about"},
 {name = "/now", url = "/now"},
-{name = "/rss", url = "/rss.xml"}
+{name = "/feed", url = "/atom.xml"}
 ]
 
