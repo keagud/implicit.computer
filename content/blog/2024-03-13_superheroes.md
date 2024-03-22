@@ -22,6 +22,7 @@ When the second tenet is disregarded, you get quips, or more generally a constan
 When an adaptation is both given the freedom to be stupid and the restraint to avoid wallowing in it, the result might not necessarily be *good*, but it will be Recognizably Superhero. For example, Sam Raimi's *Spider-Man* trilogy is superhero as hell, but on a technical level is *Iron Man* a better piece of media that *Spider-Man 3*? Probably, but it's not really Superhero Media in the same way.
 
 
+<hr/>
 
 
 [^1]: I'm not a professional wrestling fan, but I get the impression they would also understand what I mean here.
