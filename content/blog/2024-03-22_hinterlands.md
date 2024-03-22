@@ -68,7 +68,7 @@ Well, I dunno. In any case, it's an interesting pattern to observe.
 
 One obvious difference between the digital hinterlands and the real one is the stakes involved. I've been speaking about digital "spaces" since that's the dominant metaphor, and while it's not like the online world is totally unimportant, it's inarguably far *less* important than the literal, physical world in which your human body lives. We talk about "migrating" off Twitter, but you can do that without leaving your chair.  Google will monetize the hell out of your data, but they will not literally enslave you [^5]. 
 
-At the same, it sure feels like they're the same *class* of thing, and the difference is one of degree rather than kind.  [It's like poetry, it rhymes](https://www.youtube.com/watch?v=yFqFLo_bYq0).
+At the same time, it sure feels like they're the same *class* of thing, and the difference is one of degree rather than kind.  [It's like poetry, it rhymes](https://www.youtube.com/watch?v=yFqFLo_bYq0).
 
 <hr/>
 
