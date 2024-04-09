@@ -4,7 +4,7 @@ const setQuote = () => (async () => {
   if (isNakedCSS()) {
 
     let nakedLink = document.createElement('a');
-    nakedLink.innerText = "happy naked CSS day!"
+    nakedLink.innerText = "happy CSS naked day!"
     nakedLink.href = "https://css-naked-day.github.io/";
 
     quoteElement.appendChild(nakedLink);
