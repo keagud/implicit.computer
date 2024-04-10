@@ -38,11 +38,8 @@ function removeCSS() {
 function isNakedCSS() {
   let today = new Date();
 
-
-  console.log(today.getUTCMonth());
-  console.log(today.getUTCDate());
-  //getUTCMonth is zero-indexed, so 3 is April
-  return (today.getUTCMonth() === 3 && Math.abs(today.getUTCDate() - 9 ) <= 1);
+  //getMonth is zero-indexed, so 3 is April
+  return today.getMonth() === 3 && today.getDate() === 9;
 
 
 
@@ -51,10 +48,11 @@ function isNakedCSS() {
 
 function main() {
   setQuote();
-  if (isNakedCSS()) { 
+  if (isNakedCSS()) {
     console.log("It's april 9");
 
-    removeCSS(); }
+    removeCSS();
+  }
 }
 
 main();
