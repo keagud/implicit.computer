@@ -7,11 +7,7 @@
     <meta name="description" content="" />
 
     <style>
-    @import url(https://fonts.bunny.net/css?family=ibm-plex-mono:400,400i,700,700i|ibm-plex-sans:400,400i,700);
-
-/* .stack * + * { */
-/*   margin-block-start: 1.5rem; */
-/* } */
+      @import url(https://fonts.bunny.net/css?family=ibm-plex-mono:400,400i,700,700i|ibm-plex-sans:400,400i,700);
 
 :root {
   --font-mono: "IBM Plex Mono", monospace;
@@ -19,12 +15,85 @@
 
 body {
   font-family: "IBM Plex Sans";
-  margin-left: 5%;
-  margin-right: 5%;
-  color: #111;
-  line-height: 1.2em;
-  font-size: 0.9em;
+  color: #43444e;
+  background-color: #fffeea;
 }
+
+@media screen {
+  body {
+    line-height: 1.3em;
+    font-size: 1.2em;
+    margin-left: 8%;
+    margin-right: 8%;
+  }
+
+  #full-name {
+    font-size: 2em;
+    margin-bottom: 0%;
+  }
+
+  .subsection-title {
+    margin-bottom: 0;
+    margin-top: 2%;
+    text-decoration-line: underline;
+  }
+}
+
+@media print {
+  @page {
+    size: 8.5in 11in;
+    margin: 100cm;
+  }
+
+  body {
+    page-break-inside: avoid;
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+
+  .page-header {
+    margin-bottom: 1%;
+  }
+
+  div.full-name * {
+    margin-top: 0%;
+    margin-bottom: 0%;
+  }
+
+  section * {
+    margin-top: 0.7%;
+    margin-bottom: 0.2%;
+  }
+
+  section#projects ul {
+    line-height: 0.9em;
+  }
+
+  div.experience-item ul li {
+    font-size: 0.9em;
+    line-height: 1em;
+  }
+
+  div.experience-item .past-job-header {
+    margin-top: 0.3%;
+  }
+
+  .past-job-company {
+    margin-top: 0.5%;
+    margin-bottom: 0.2%;
+    padding-bottom: 0%;
+    font-style: italic;
+  }
+
+  .experience-item + .experience-item {
+    margin-top: 1%;
+  }
+}
+
+section {
+  border-bottom: 1px solid black;
+}
+
 .container {
   display: flex;
   flex-direction: row;
@@ -32,27 +101,48 @@ body {
   justify-content: center;
 }
 
-.page-header {
-  font-size: 2em;
-  margin-bottom: 0%;
-}
-
-.resume-header {
+header {
   display: flex;
   justify-content: space-around;
+  align-items: start;
   border-bottom: solid 2px;
-  padding-bottom: 1em;
+  padding-bottom: 2%;
 }
 
-.links label::after {
+.columns-container {
+  display: flex;
+  /* column-gap: 5%; */
+  align-items: start;
+  /* grid-template-columns: 50% 40%; */
+}
+
+.certs-container {
+  padding-left: 10%;
+}
+
+.skills-list {
+  column-count: 3;
+  list-style-type: none;
+}
+
+.certifications-list {
+  column-count: 1;
+  list-style-type: none;
+}
+
+div.role-title {
+  font-style: italic;
+}
+
+#links-container label::after {
   content: ": ";
 }
 
-.links label {
+#links-container label {
   font-size: 1em;
 }
 
-.links {
+#links-container {
   flex-direction: column;
   justify-content: space-between;
   align-content: center;
@@ -60,9 +150,13 @@ body {
   margin-top: 1%;
 }
 
-.resume-section li {
-  margin-top: 0%;
-  margin-bottom: 0%;
+ul {
+  list-style-type: disc;
+}
+
+.experience-item li,
+div#projects li {
+  margin-top: 1%;
 }
 
 .section-title {
@@ -75,43 +169,26 @@ body {
   justify-content: space-between;
 }
 
-.tech-skill,
+.skills-list li,
 .lang-name {
   font-family: var(--font-mono);
 }
 
-.lang-duration {
-  font-style: italic;
-}
-
-.lang-duration::after {
-  content: "";
-}
-
-.skills-container {
-  display: flex;
-  justify-content: space-evenly;
-  align-content: start;
-  padding-right: 10%;
-  flex-direction: row;
-}
-
-#other-interests ul,
-#skills-section-other-tech ul {
+#other-interests ul {
   display: grid;
-  grid-template-columns: 50% 50%;
-  column-gap: 10%;
-  /* column-count: 2; */
-  list-style-type: "-";
+  grid-template-columns: 45% 45%;
+  column-gap: 3%;
+  list-style-type: none;
 }
 
-span.lang-duration::after {
-  margin-left: 0.5rem;
+section#projects > ul {
+  list-style-type: none;
 }
 
 a {
   text-decoration-line: underline;
 }
+
 a:link,
 a:visited {
   color: cornflowerblue;
@@ -131,17 +208,10 @@ a:active {
   display: hidden;
 }
 .past-job-title {
-  font-style: italic;
+  font-family: var(--font-mono);
 }
 .resume-section {
   border-bottom: solid 0.1em;
-}
-
-.subsection-title {
-  margin-bottom: 0;
-  margin-top: 2%;
-  text-decoration-line: underline;
-
 }
 
 .skill-subsection-title {
@@ -153,13 +223,7 @@ a:active {
 .subsection-title {
   font-size: 1.1em;
 }
-ul {
-  list-style-type: "- ";
-}
 
-#projects > ul {
-  list-style: none;
-}
 .project-title-header a {
   font-family: var(--font-mono);
   text-decoration-line: none;
@@ -187,28 +251,30 @@ ul {
 }
 .project-title-header,
 .education-institution-name {
-  font-size: 1.1em;
+  font-size: 1em;
   margin-bottom: 0%;
 }
 .education-degree-type {
   font-weight: bold;
 }
 
-#other-interests{
+#other-interests {
   border: none;
-
 }
 
     </style>
-
   </head>
+
   <body>
-    <div class="resume-header">
+    <header>
       <div class="full-name">
         <h1 id="full-name" class="page-header">Keaton Guderian</h1>
+        <div class="role-title">
+          <h2>Computer Enjoyer</h2>
+        </div>
       </div>
 
-      <div class="links">
+      <div id="links-container">
         <div class="site-link">
           <label for="personal-site-link"> Website</label>
           <a id="personal-site-link" href="https://implicit.computer">
@@ -224,8 +290,8 @@ ul {
         </div>
         <div class="site-link">
           <label for="linkedin-link"> LinkedIn </label>
-          <a id="linkedin-link" href="https://linkedin.com/in/keagud">
-            linkedin.com/in/keagud</a
+          <a id="linkedin-link" href="https://linkedin.com/in/keatong">
+            linkedin.com/in/keatong</a
           >
         </div>
         <div class="site-link">
@@ -235,89 +301,83 @@ ul {
           </a>
         </div>
       </div>
-    </div>
+    </header>
 
-    <div class="resume-section" id="education">
-      <h2 class="section-title">Education</h2>
-      <span class="education-institution-summary detail-elipsis"
-        ><span class="education-institution-name"
-          >University of Washington, Seattle</span
-        >
-        <span class="education-timespan">2016-2020</span></span
-      >
-      <ul>
-        <li class="education-degree-desc">
-          <span class="education-degree-type">Batchelor of Arts,</span>
-          <span class="education-degree-field">Linguistics</span>
-        </li>
-        <li class="education-degree-desc">
-          <span class="education-degree-type">Batchelor of Science,</span>
-          <span class="education-degree-field">Speech and Hearing Science</span>
-        </li>
-      </ul>
-    </div>
-    <div class="resume-section" id="skills">
-      <div class="skills-container">
-        <div id="skills-section-programming-languages">
-          <h3 class="subsection-title" >Programming Languages</h3>
-          <ul id="programming-languages-list">
-            <li>
-              <span class="lang-duration">For 11 years:</span>
-              <span class="lang-name">Python</span>
+    <main>
+      <section class="resume-section columns-container" id="education">
+        <div>
+          <h2 class="section-title">Education</h2>
+          <span class="education-institution-summary detail-elipsis"
+            ><span class="education-institution-name"
+              >University of Washington, Seattle</span
+            >
+            <span class="education-timespan">2016-2020</span></span
+          >
+          <ul>
+            <li class="education-degree-desc">
+              <span class="education-degree-type">Batchelor of Arts,</span>
+              <span class="education-degree-field">Linguistics</span>
             </li>
-            <li>
-              <span class="lang-duration">For 8 years:</span>
-              <span class="lang-name">HTML, Javascript</span>
-            </li>
-            <li>
-              <span class="lang-duration">For 4 years:</span>
-              <span class="lang-name">Rust, C, Typescript</span>
+            <li class="education-degree-desc">
+              <span class="education-degree-type">Batchelor of Science,</span>
+              <span class="education-degree-field"
+                >Speech and Hearing Science</span
+              >
             </li>
           </ul>
         </div>
-        <div id="skills-section-other-tech">
-          <h3 class="subsection-title">Other Technical Skills</h3>
-          <ul id="skill-list">
-            <li class="tech-skill">Django</li>
-            <li class="tech-skill">Flask</li>
-            <li class="tech-skill">Postgres</li>
-            <li class="tech-skill">Sqlite</li>
-            <li class="tech-skill">Docker</li>
-            <li class="tech-skill">Svelte</li>
-            <li class="tech-skill">React</li>
-            <li class="tech-skill">Express.js</li>
+        <div class="certs-container">
+          <h2 class="section-title">Certifications</h2>
+          <ul class="certifications-list">
+            <li>CompTIA A+</li>
           </ul>
         </div>
-      </div>
-    </div>
-    <div class="resume-section" id="experience">
-      <h2 class="section-title">Experience</h2>
-      <div class="experience-item">
-        <h3 class="past-job-company">Ikolith Recreations</h3>
-        <span class="past-job-header"
-          ><span class="past-job-title">Contractor</span>
-          <span class="past-job-timespan">2021-2022</span></span
-        >
-        <ul>
-          <li class="past-job-bullet-point">
-            Wrote and managed utility scripts, mostly in Python and bash, to
-            automate workflow tasks such as document formatting.
-          </li>
-          <li class="past-job-bullet-point">
-            Developed an automated pipeline to convert and compile Markdown
-            documentation into Latex for publication.
-          </li>
-          <li class="past-job-bullet-point">
-            Created a program to partially simulate the evolution of a fictional
-            language over time as a worldbuilding and writing aid
-          </li>
+      </section>
+
+      <section id="skills">
+        <h2 class="section-title">Skills</h2>
+        <ul class="skills-list">
+          <li>Active Directory</li>
+          <li>Django</li>
+          <li>Docker</li>
+          <li>Linux</li>
+          <li>POSIX Shell (bash/zsh)</li>
+          <li>Postgres</li>
+          <li>Powershell</li>
+          <li>Python</li>
+          <li>Windows Server</li>
         </ul>
+      </section>
+
+      <section id="experience">
+        <h2 class="section-title">Experience</h2>
+        <div class="experience-item">
+          <h3 class="past-job-company">Ikolith Recreations</h3>
+          <span class="past-job-header">
+            <h4 class="past-job-title">Technical Contractor</h4>
+            <span class="past-job-timespan">2021-2022</span>
+          </span>
+          <ul>
+            <li class="past-job-bullet-point">
+              Wrote and managed utility scripts, mostly in Python and bash, to
+              automate workflow tasks such as document formatting.
+            </li>
+            <li class="past-job-bullet-point">
+              Developed an automated pipeline to convert and compile Markdown
+              documentation into Latex for publication.
+            </li>
+            <li class="past-job-bullet-point">
+              Created a program to partially simulate the evolution of a
+              fictional language over time as a worldbuilding and writing aid
+            </li>
+          </ul>
+        </div>
         <div class="experience-item">
           <h3 class="past-job-company">Boxwave</h3>
-          <span class="past-job-header"
-            ><span class="past-job-title">Developer</span>
-            <span class="past-job-timespan">2023- present</span></span
-          >
+          <span class="past-job-header">
+            <h4 class="past-job-title">IT Applications Developer</h4>
+            <span class="past-job-timespan">2023- February 2024</span>
+          </span>
           <ul>
             <li class="past-job-bullet-point">
               Wrote internal tools in Python and C Sharp to automatically fetch
@@ -325,113 +385,76 @@ ul {
               time required for daily administrative tasks by an order of
               magnitude.
             </li>
+
             <li class="past-job-bullet-point">
-              Trained and deployed a Recurrent Neural Network using Tensorflow
-              to automate various organization tasks involving optical character
-              recognition
+              Maintained a Proxmox cluster for hosting various internal web
+              services, and spearheaded the design, implementation, testing, and
+              deployment of automation scripts.
+            </li>
+
+            <li class="past-job-bullet-point">
+              Acted as the primary technical liaison to management and
+              effectively communicated complex technical concepts to
+              stakeholders
             </li>
           </ul>
         </div>
-      </div>
-    </div>
-    <div class="resume-section" id="projects">
-      <h2 class="section-title">Projects</h2>
-      <ul>
-        <li class="project-item">
-          <span class="project-header" >
-            <span class="project-title-header" >
-              <a href="https://github.com/keagud/dateparse">Dateparse
-              </a>
-            </span > 
-            <span class="project-keywords">
-              <span class="project-keyword">Python</span> 
+      </section>
+
+      <section id="projects">
+        <h2 class="section-title">Projects</h2>
+        <ul>
+          <li class="project-item">
+            <span class="project-header">
+              <span class="project-title-header">
+                <a href="https://github.com/keagud/dateparse">Dateparse </a>
+              </span>
+              <span class="project-keywords">
+                <span class="project-keyword">Python</span>
+              </span>
             </span>
-          </span>
 
+            <ul class="project-bullet-points-list">
+              <li>
+                A pure Python library for parsing natural language expressions
+                about time, like "two weeks ago", "a week before Christmas", "in
+                four months" into Python date objects.
+              </li>
+            </ul>
+          </li>
 
-          <ul class="project-bullet-points-list">
-            <li>
-              A pure Python library for parsing natural
-              language expressions about time, like "two weeks ago", "a week
-              before Christmas", "in four months" into Python date objects.
-            </li>
-          </ul>
-        </li>
-        <li class="project-item">
-          <span class="project-header"
-            ><span class="project-title-header"
-              ><a href="https://github.com/keagud/gptui">GPTui</a></span
+          <li class="project-item">
+            <span class="project-header"
+              ><span class="project-title-header"
+                ><a href="https://github.com/keagud/tarot">Tarot</a></span
+              >
+              <span class="project-keywords"
+                ><span class="project-keyword">Typescript,</span>
+                <span class="project-keyword">React,</span>
+                <span class="project-keyword">Express.js,</span>
+                <span class="project-keyword">HTML/CSS</span></span
+              ></span
             >
-            <span class="project-keywords"
-              ><span class="project-keyword">Rust</span></span
-            ></span
-          >
-          <ul class="project-bullet-points-list">
-            <li>
-              A modern terminal user interface for the OpenAI chat completions
-              API
-            </li>
-            <li>
-              Includes: asynchronous token streaming display, syntax
-              highlighting in code blocks, system clipboard integration, and
-              local conversation history storage via Sqlite
-            </li>
-          </ul>
-        </li>
-        <li class="project-item">
-          <span class="project-header"
-            ><span class="project-title-header"
-              ><a href="https://github.com/keagud/tarot">Tarot</a></span
-            >
-            <span class="project-keywords"
-              ><span class="project-keyword">Typescript,</span>
-              <span class="project-keyword">React,</span>
-              <span class="project-keyword">Express.js,</span>
-              <span class="project-keyword">HTML/CSS</span></span
-            ></span
-          >
-          <ul class="project-bullet-points-list">
-            <li>
-              A demo React/Express web that draws and presents random Tarot
-              cards. Viewable at
-              <a href="https://pentacles.page">pentacles.page.</a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-    <div class="resume-section" id="other-interests">
-      <h2 class="section-title">Other Interests</h2>
-      <ul>
-        <li>Ancient languages (Latin, Attic Greek)</li>
-        <li>Ancient languages (Lisp, C89, Ada)</li>
-        <li>Constructed Languages</li>
-        <li>Distance running, cycling</li>
-      </ul>
+            <ul class="project-bullet-points-list">
+              <li>
+                A demo React/Express web app that draws and presents random
+                Tarot cards. Viewable at
+                <a href="https://pentacles.page">pentacles.page.</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </section>
 
-    </div>
-
-    <script>
-      window.addEventListener("DOMContentLoaded", function () {
-        const sectionTitles = document.getElementsByClassName("section-title");
-        const navLinks = document.getElementById("section-nav-bar");
-
-        for (let i = 0; i < sectionTitles.length; i++) {
-          const sectionTitle = sectionTitles[i].textContent;
-          const listItem = document.createElement("li");
-
-          listItem.className = "section-nav-bar-link";
-
-          const link = document.createElement("a");
-
-          link.textContent = sectionTitle;
-          link.href = "#" + sectionTitle.replace(/\s+/g, "-").toLowerCase();
-
-          listItem.appendChild(link);
-          navLinks.appendChild(listItem);
-        }
-      });
-    </script>
-
+      <section id="other-interests">
+        <h2 class="section-title">Other Interests</h2>
+        <ul>
+          <li>Ancient languages (Latin, Attic Greek)</li>
+          <li>Ancient languages (Lisp, C89, Ada)</li>
+          <li>Constructed Languages</li>
+          <li>Distance running, cycling</li>
+        </ul>
+      </section>
+    </main>
   </body>
 </html>
