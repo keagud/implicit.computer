@@ -26,6 +26,8 @@ header_nav = [
 { name = "/blog", url = "/blog"},
 { name = "/about", url = "/about"},
 {name = "/now", url = "/now"},
+{name = "/resume", url = "/resume.html"},
 {name = "/feed", url = "/atom.xml"}
+
 ]
 
