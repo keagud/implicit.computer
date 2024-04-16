@@ -11,7 +11,7 @@ Python is famously an easy language  to learn, but it's a hard language to *real
 
 In practice, you learn the subset of the standard library that's most useful in your day-to-day, and that's fine, but it also means there's potentially whole swaths of useful stuff you could be taking advantage of, but simply never encountered. So, here's my list of Python features you might not know about. Here are my selection criteria:
 
-1. I've excluded things I've already seen a lot of coverage for, for example the very useful [`http.server`](https://docs.python.org/3/library/http.server.html)
+1. I've excluded things I've already seen covered in these kinds of tips-and-tricks roundups, for example the very useful [`http.server`](https://docs.python.org/3/library/http.server.html)
 2. These must be tools I've actually used to solve a real world problem. It's both very cool and not well known that Python has a full [turtle graphics library](https://docs.python.org/3/library/turtle.html), but I've never needed it in practice.
 
 
