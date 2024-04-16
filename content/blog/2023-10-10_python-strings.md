@@ -66,6 +66,7 @@ This is a pretty obvious syntax error --- well, obvious to a static analysis too
 
 The immediate cause for my writing this was a bug in a script that, among other things, opened a page in [selenium](https://www.selenium.dev/) to grab some data[^3] from each element that matched one of a list of predetermined selectors.  But after what I thought was a simple formatting change, it all fell apart. 'Invalid Selector', it would say, and I would assume that I had just failed at webdev and dutifully ~~get ChatGPT to~~ rewrite the selectors, to no avail. That missing comma probably cost me half an hour, but the sum of all wasted hours induced by this feature is surely greater than the total time saved from not needing to type the '+' key between string literals.  
 
+---
 [^1]:  I have no idea if Guido Van Rossum was actually the one to introduce this feature; to me he's more of a catchall patron figure akin to [Todd Howard](https://en.wikipedia.org/wiki/Todd_Howard#Opinions_and_recognition)
 
 [^2]: [https://www.perseus.tufts.edu/hopper/text?doc=Caes.+Gal.+toc](https://www.perseus.tufts.edu/hopper/text?doc=Caes.+Gal.+toc)

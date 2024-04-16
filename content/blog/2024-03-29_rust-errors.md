@@ -69,6 +69,7 @@ I'm pretty sure I did not invent this pattern, but I did independently re-derive
 
 
 
+---
 [^1]: The actual [docs](https://doc.rust-lang.org/nightly/std/fs/fn.read_to_string.html) give a return type of `io::Result<String>`, but that's just a more concise alias. 
 
 [^2]: If you're not familiar with the question mark operator, it's just syntactic sugar for returning an error early.

@@ -22,9 +22,9 @@ When the second tenet is disregarded, you get quips, or more generally a constan
 When an adaptation is both given the freedom to be stupid and the restraint to avoid wallowing in it, the result might not necessarily be *good*, but it will be Recognizably Superhero. For example, Sam Raimi's *Spider-Man* trilogy is superhero as hell, but on a technical level is *Iron Man* a better piece of media that *Spider-Man 3*? Probably, but it's not really Superhero Media in the same way.
 
 
-<hr/>
 
 
+---
 [^1]: I'm not a professional wrestling fan, but I get the impression they would also understand what I mean here.
 
 [^2]: Sometimes, if it's a character that even diehard comics nerds don't really care that much about, this is really funny. The canonical example is Morbius, a vampire who exists so Spider-Man can punch a vampire. Acting like he has anything like a "legend" in the same way as Batman or Captain America is peak comedy. Sony please greenlight *Morbius 2: More-bius*, I promise we'll see it this time for real. 

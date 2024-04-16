@@ -39,6 +39,7 @@ And that's exactly what happened to the park. After some initial chaos the local
 
 
 
+---
 [^1]: This name and the names of the other local places I talk about here are made up so I don't dox myself too hard, but the Lushootseed words are real ones I got from Wikitionary.
 
 [^2]: Ok in practice it means "big mountain" but *in theory* it could be anything

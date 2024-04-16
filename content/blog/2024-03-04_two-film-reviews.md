@@ -43,8 +43,8 @@ There's a masterful blending of genre here that elevates *Zero Focus* above simp
 ## Final Thoughts
 Of the two, *Zero Focus* is by far the stronger film. I recommend you seek it out if you're at all into Japanese cinema and/or film noir. *Across the Bridge* I would recommend only to Graham Greene completionists, but if you happen to find it while channel scanning in a hotel or something, the first hour or so before it starts to drag is worth a look.
 
-<hr/>
 
+---
 [^1]:  The film presents Kanazawa as a remote, desolate place, but the Wikipedia article makes it look like a pretty chill mid-sized Japanese city. I don't know if this is creative license or if the city's gone through a massive transformation since 1961.
 
 [^2]: Who does not have a wikipedia page? For shame!

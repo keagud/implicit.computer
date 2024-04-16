@@ -70,10 +70,10 @@ One obvious difference between the digital hinterlands and the real one is the s
 
 At the same time, it sure feels like they're the same *class* of thing, and the difference is one of degree rather than kind.  [It's like poetry, it rhymes](https://www.youtube.com/watch?v=yFqFLo_bYq0).
 
-<hr/>
 
 
 
+---
 [^1]: I suppose I could look at nginx's logs to see who accessed the Atom feed and from where, but that's not especially helpful. I have no way of knowing which links were clicked, which pages within the feed were read the most and least, how long readers lingered on a given section before moving on, or any of the rest of the meat and potatoes of Web analytics.
 
 

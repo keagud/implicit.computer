@@ -53,4 +53,5 @@ For the time being, I decided to upgrade my old reliable Thinkpad with some of t
 
 
 
+---
 [^1]: I apologize, I got a little heated there. I did use Ubuntu for a long time and it's a pretty good general purpose distro. I'm willing to come back, Ubuntu, but you need to work on yourself first. Break your snap habit and we can talk.
