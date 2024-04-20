@@ -7,7 +7,6 @@ date = 2024-03-13
 tags = ["media", "100DaysToOffload"]
 +++
 
-*#100DaysToOffload 5/100*
 
 Once upon a time, circa my middle school/high school days, I was pretty into comics, superhero comics especially. Superficially, I should be massively into the MCU/DCU/ICU/[BTU](https://en.wikipedia.org/wiki/British_thermal_unit)/what have you. But I'm not. That's not especially noteworthy on its face; if I hated the blockbuster superhero film with a passion we could chalk it up to the [narcissism of small differences](https://en.wikipedia.org/wiki/Narcissism_of_small_differences). Instead, I don't even really register it *as* superhero media for the most part. It's a genre of its own, and one that's not my cup of tea. That's kind of strange, right? 
 

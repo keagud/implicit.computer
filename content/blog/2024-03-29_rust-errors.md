@@ -6,7 +6,6 @@ date = 2024-03-29
 tags = ["programming", "rust" ,  "100DaysToOffload"]
 +++
 
-*#100DaysToOffload 9/100*
 
 Here's a nifty pattern I use for making Rust error handling more ergonomic. Feel free to skip to the code at the end if you're already well versed in Rust error types.
 

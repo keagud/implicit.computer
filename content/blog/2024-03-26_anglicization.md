@@ -6,7 +6,6 @@ slug = "anglicization"
 tags = ["linguistics", "pnw"]
 +++
 
-*#100DaysToOffload 8/100*
 
 There's a small park near where I live that was, until recently, called Numbnutz Park,  named after the great [citation needed] community leader and semi-professional phrenologist Horatio Numbnutz [^1].  A few years ago, coinciding with a major overhaul of its physical layout by the city, it was renamed to  dxʷbaʔwiɬ, which is the name used by the indigenous Lushootseed-speaking peoples of the region to refer to that area. Yes, the name is officially spelled that way. 
 

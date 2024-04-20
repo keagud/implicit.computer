@@ -6,7 +6,6 @@ tags = ["thinkin", "100DaysToOffload"]
 +++
 
 
-*#100DaysToOffload day 7/100*
 
 The Web is getting worse. I'm not going to enumerate examples of how the big digital platforms have gotten slower/more bloated/more invasive/generally less functional in the last 5-ish years, but I'm sure you can think of some. 
 

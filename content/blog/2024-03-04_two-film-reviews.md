@@ -7,7 +7,6 @@ tags = ["film", "reviews", "100DaysToOffload"]
 +++
 
 
-*#100DaysToOffload 3/100*
 
 I recently saw two movies at the [Noir City Film Festival](https://www.noircity.com/). I won't get *too* spoiler-y in this post, but there's still a nonzero amount of spoilage below. If either of the spoiler-free plot overviews below pique your interest enough that you prefer to go in totally blind, you have the chance to stop reading and go watch one or both.  
 
