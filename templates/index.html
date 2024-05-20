@@ -7,17 +7,25 @@
       Implicit Dot Computer
     </h1>
     <div class="quote-container">
-    <p class="dynamic-quote"></p>
+        <i><p class="dynamic-quote"></p></i>
     </div>
 </div>
 <br/>
 
+<hr/>
+
+<section id="greeting">
+    <p>Hello! I'm Keaton, welcome to my "Web site"!  </p>
+    <p>You can "click" the "links" in the top bar to learn more about me and the site, or maybe look at one of these recent blog posts.  </p>
+</section>
+
+<section id="recent-posts">
 
 
     {% set blog_section = get_section(path="blog/_index.md") %}
 
 
-{% for post in blog_section.pages | sort(attribute="date") | reverse %}
+{% for post in blog_section.pages | sort(attribute="date") | reverse | slice(end=5) %}
 
 <div class = "post-preview-header">
     <a href = "{{ post.permalink }}">
@@ -37,11 +45,16 @@
 
         {{ post.content | striptags |  truncate(length=200) | safe }}
 
-{% if not loop.last %}
-<hr/>
-{% endif %}
-
 
         {% endfor %}
+
+</section>
+
+
+<div>
+
+<br/>
+    <hr/>
+    <a href="/blog"> All Posts </a></div>
 
 {% endblock content %}
