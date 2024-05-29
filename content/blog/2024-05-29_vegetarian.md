@@ -1,7 +1,7 @@
 +++
 title="My Nearly Meatless Decade"
 slug="vegetarian"
-date=2024-05-28
+date=2024-05-29
 [taxonomies]
 tags=["100DaysToOffload", "life"]
 +++
