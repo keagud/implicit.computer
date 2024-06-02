@@ -166,3 +166,7 @@ crontab
 public/
 *.tar.gz
 *.tar
+
+
+# used by deployment scripts
+updated
