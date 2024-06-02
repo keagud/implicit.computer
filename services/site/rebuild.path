@@ -1,0 +1,11 @@
+
+[Unit]
+Description=Monitor /var/site for changes
+
+[Path]
+PathChanged=/var/site/updated
+Unit=rebuild.service
+
+
+[Install]
+WantedBy=multi-user.target

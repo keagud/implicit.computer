@@ -1,0 +1,16 @@
+
+
+
+        server {
+        listen   80;
+        server_name  implicit.computer www.implicit.computer;
+
+        root /var/www/implicit.computer.html;
+        index index.html;
+
+        # Handle static files
+        location / {
+            try_files $uri $uri.html $uri/ =404;
+        }
+
+    }

@@ -1,8 +1,0 @@
-[
-  {
-    "remote": "https://github.com/keagud/implicit.computer",
-    "branch" : "master",
-    "local": "/site/src",
-    "on_change": "mkdir -p /site/public && zola build --output-dir /site/public --base-url \"/\" --force"
-  }
-]

@@ -1,0 +1,13 @@
+
+[Unit]
+Description=Run daily tasks at 4:00 UTC
+
+[Timer]
+Unit=daily-tasks.service
+OnCalendar=*-*-* 4:00:00 UTC
+Persistent=true
+
+
+[Install]
+WantedBy=timers.target
+

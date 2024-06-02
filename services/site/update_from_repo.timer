@@ -1,0 +1,11 @@
+
+[Unit]
+Description=Run update_from_repo.service every minute
+
+[Timer]
+OnBootSec=10
+OnUnitActiveSec=1min
+Unit=update_from_repo.service
+
+[Install]
+WantedBy=timers.target

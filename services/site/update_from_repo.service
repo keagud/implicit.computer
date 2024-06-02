@@ -1,0 +1,14 @@
+
+[Unit]
+Description=Pull remote changes from the site repo
+Wants=network.online.target
+After=network.online.target
+
+
+[Service]
+Type=simple
+ExecStart=/opt/site/check_git.py
+
+
+[Install]
+WantedBy=multi-user.target

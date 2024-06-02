@@ -1,0 +1,7 @@
+
+[Unit]
+Description=Dummy service for daily tasks
+
+[Service]
+Type=oneshot
+ExecStart=echo "RUNNING DAILY TASKS"

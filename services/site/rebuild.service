@@ -1,0 +1,11 @@
+
+[Unit]
+Description=Executes /opt/site/on_change.sh to rebuild site
+
+[Service]
+Type=simple
+ExecStart=/opt/site/on_change.sh
+
+
+[Install]
+WantedBy=multi-user.target

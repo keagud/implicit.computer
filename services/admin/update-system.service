@@ -1,0 +1,12 @@
+
+[Unit]
+Description=Update and upgrade packages
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/apt-get update
+ExecStart=/usr/bin/apt-get upgrade -y
+ExecStart=/usr/bin/apt-get autoremove -y
+
+[Install]
+WantedBy=daily-tasks.service
