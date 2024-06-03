@@ -1,8 +1,8 @@
 base_url = "https://implicit.computer"
 
-title = "implicit.computer"
+title = "Implicit Dot Computer"
 author = "keagud"
-description = "A weblog from implicit.computer"
+description = 'you can visit it on the "web", a "web" "site" if you will.'
 
 generate_feed = true
 feed_filename = "atom.xml"
