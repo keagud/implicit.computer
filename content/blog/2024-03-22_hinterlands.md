@@ -1,7 +1,7 @@
 +++
 title = "Hie to the Hinterlands"
 date = 2024-03-22
-slug = "hinderlands"
+slug = "hinterlands"
 [taxonomies]
 tags = ["thinkin", "100DaysToOffload"]
 +++
