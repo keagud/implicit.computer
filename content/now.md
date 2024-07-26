@@ -1,12 +1,15 @@
 +++
 page_template = "base.html"
-updated = 2024-06-01
+updated = 2024-07-26
 +++
-I've decided I'm done with being unemployed. It was ok for a bit, but enough is enough. I recently passed the Comptia Trifecta (A+, Network+, Security+) and I'm now dedicating myself to applying for jobs. 
 
+Things have recently gone from 0 to 100 very quickly; I got a job, and I'm moving to an apartment in the city. There's still a lot to do and it's kind of overwhelming, but an exciting kind of overwhelming. 
 
 ## Reading
-- *Kraken*  by China Miéville
-- *Designing An Internet* by David D. Clark
+- *Consider Phlebas* by Ian M. Banks
+
+## Playing
+- [Cryptmaster](https://store.steampowered.com/app/1885110/Cryptmaster/)
+- I recently got into the [Android: Netrunner](https://en.wikipedia.org/wiki/Android:_Netrunner) card game, and while I'm still quite bad at the actual game I'm really enjoying the challenge of constructing a good deck. 
 
 

@@ -1,15 +1,15 @@
 +++
 page_template = "base.html"
+updated = 2024-07-26
 +++
 
 # About Me
-I'm Keaton, I live in the Pacific Northwest and I like computers. Previously, I wrote internal software for a manufacturing company; before that, I was a graduate student in [audiology](https://en.wikipedia.org/wiki/Audiology). Currently I am unemployed.
+I'm Keaton, I live in the Pacific Northwest and I like computers. Previously, I wrote internal software for a manufacturing company; before that, I was a graduate student in [audiology](https://en.wikipedia.org/wiki/Audiology). 
 
 I'm a longtime GNU/Linux user and Free software aficionado. I use [Debian](https://www.debian.org/) (unstable) as my main daily driver distro. I also used [Arch Linux](https://archlinux.org/) for a stretch, and will probably return someday. 
 
 I'm on [mastodon](https://social.lol/@keagud) and [github](https://github.com/keagud) as well.
 
-If you're interested in hiring me for IT or development work in the greater Seattle area (or remote anywhere in the US), my resume is linked in the top menu and also [here.](https://implicit.computer/resume)
 
 # About the Site
 This site is generated with [Zola](https://www.getzola.org) using the [no style, please!](https://gitlab.com/atgumx/no-style-please) theme (plus some light CSS tweaks). Source is available [here](https://github.com/keagud/implicit.computer).
