@@ -1,0 +1,13 @@
+---
+layout: base.html
+permalink: /tags/index.html
+title: Tags
+---
+
+
+<ul>
+{% for tag in collections.postTags %}
+  <li><a href="/tags/{{ tag | slug }}/">{{ tag }}</a></li>
+  {% endfor %}
+
+</ul>

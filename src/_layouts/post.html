@@ -1,0 +1,19 @@
+---
+layout: base.html
+---
+<article>
+    <h1>{{ title }}</h1>
+    <time datetime="{{ date }}"</time>
+    
+    {{ content | raw }}
+    
+    {% if tags %}
+    <ul class="tags">
+        {% for tag in tags %}
+        <li><a href="/tags/{{ tag }}/">{{ tag }}</a></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+
+</article>

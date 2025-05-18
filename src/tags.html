@@ -1,0 +1,40 @@
+---
+
+{
+"layout": "base.html",
+"pagination" : {
+"data" : "collections.postTags",
+"size" : 1,
+"alias" : "tag"
+
+
+},
+
+"eleventyComputed": {
+"title": "Tagged \"{{ tag }}\"",
+"permalink": "/tags/{{ tag | slug }}.html",
+
+"eleventyExcludeFromCollections": "{% if not tag %}true{% else %}false{% endif %}"
+}
+
+}
+
+---
+
+{% if not tag %}
+<!-- This page will be skipped entirely when the tag is undefined -->
+{% else %}
+
+<h1>Tagged "{{ tag }}"</h1>
+
+<ul>
+  {% for post in collections[tag] %}
+  <li>
+    <a href="{{ post.url }}">{{ post.data.title }}</a>
+  </li>
+  {% endfor %}
+</ul>
+
+<p><a href="/tags/">View all tags</a></p>
+
+{% endif %}
