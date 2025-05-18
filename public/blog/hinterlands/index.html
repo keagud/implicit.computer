@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+        <meta content="width=device-width, initial-scale=1" name="viewport"/>
+
+        
+        
+        
+
+        
+
+        
+        
+        
+
+        
+
+        
+        
+        
+
+        <title>Hie to the Hinterlands</title>
+        
+        <meta name="title" content="Hie to the Hinterlands">
+        
+        <meta name="description" content="you can visit it on the &quot;web&quot;, a &quot;web&quot; &quot;site&quot; if you will.">
+        <meta name="generator" content="Zola v0.16.1">
+
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://implicit.computer/blog/hinterlands/">
+        <meta property="og:site_name" content="Implicit Dot Computer">
+        <meta property="og:title" content="Hie to the Hinterlands">
+        <meta property="og:description" content="you can visit it on the &quot;web&quot;, a &quot;web&quot; &quot;site&quot; if you will.">
+        
+
+        
+        
+        <meta property="twitter:card" content="summary_large_image">
+        <meta property="twitter:url" content="https://implicit.computer/blog/hinterlands/">
+        <meta property="twitter:title" content="Hie to the Hinterlands">
+        <meta property="twitter:description" content="you can visit it on the &quot;web&quot;, a &quot;web&quot; &quot;site&quot; if you will.">
+        
+        
+        
+        <link rel="canonical" href="https://implicit.computer/blog/hinterlands/">
+        
+        <script type="application/ld+json">
+            {
+                "description":"you can visit it on the "web", a "web" "site" if you will.",
+                "url":"https://implicit.computer/blog/hinterlands/",
+                "@type":"WebSite",
+                "headline":"Hie to the Hinterlands",
+                "name":"Hie to the Hinterlands",
+                
+                "@context":"https://schema.org"
+            }
+        </script>
+        
+        
+        
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://implicit.computer/atom.xml">
+        
+        
+        
+  
+        <link rel="stylesheet" href="https://implicit.computer/style.css"/>
+        
+  
+<link rel="stylesheet" href="/ext.css"/>
+
+<script defer type="text/javascript" src="/script.js"> </script>
+  
+    </head>
+    <body theme="auto">
+        <div class="w">
+            <header>
+                
+                <nav>
+                    
+                    <a href="/" >&#x2F;home</a>
+                    
+                    <a href="/blog" >&#x2F;blog</a>
+                    
+                    <a href="/about" >&#x2F;about</a>
+                    
+                    <a href="/now" >&#x2F;now</a>
+                    
+                    <a href="/resume" >&#x2F;resume</a>
+                    
+                    <a href="/atom.xml" >&#x2F;feed</a>
+                    
+                </nav>
+                
+                
+<p><a href="..">..</a>/hinterlands</p>
+<p class="post-meta"><time datetime="2024-03-22">2024-03-22</time></p>
+<h1>Hie to the Hinterlands</h1>
+
+            </header>
+            <main class="page-content" aria-label="Content">
+                
+
+
+
+<p>The Web is getting worse. I'm not going to enumerate examples of how the big digital platforms have gotten slower/more bloated/more invasive/generally less functional in the last 5-ish years, but I'm sure you can think of some.</p>
+<p>Much has been made of the concept of <a href="https://en.wikipedia.org/wiki/Enshittification">enshittification</a>, which, again, I will assume you're already familiar with. As this process becomes more blatant and the rent-seeking is laid bare, we've seen migrations away from the large FAANG platforms to alternative online spaces, most notably the Fediverse and personal blogs (such as, ahem, this one). There's no term I'm aware of that encompasses this shadow version of the Web; "small web" gets used sometimes, but that's not quite what I'm talking about. It's one part, certainly, but I also want to include the Fediverse, and stuff using the Gemini protocol, and E2E encrypted messaging like Signal that's not part of "the Web" in quite the same way. I'm going to refer to this whole set as the <em>hinterlands</em> for reasons I hope will become clear later.</p>
+<p>The hinterlands is tremendously diverse, but I propose some common traits by which to recognize if an online space qualifies:</p>
+<h3 id="growth-by-whatever-metric-is-not-considered-the-end-goal-or-an-unalloyed-good">Growth (by whatever metric) is not considered the end goal, or an unalloyed good</h3>
+<p>When I started using the Fediverse I was kind of surprised by how even posts from popular accounts or public figures didn't get a lot of likes and shares. On Mastodon a toot has gone viral if it hits a triple digit share count. On Twitter, that's <em>peanuts</em>. A lot of the difference can be chalked up to the smaller number of users, but there's also a general cultural norm of indifference to or rejection of optimizing for bigger numbers that I find more salient.</p>
+<h3 id="accurate-metrics-are-hard-er-or-impossible-to-gauge">Accurate metrics are hard(er) or impossible to gauge.</h3>
+<p>Web metrics are a hard problem. Getting accurate metrics on the section of the Web outside the central platforms is functionally impossible, for partly technical and partly cultural reasons. On the technical side, protocols like RSS and ActivityPub simply do not have the capacity for any but the coarsest telemetry<sup class="footnote-reference"><a href="#1">1</a></sup>. Perhaps the admins of my Mastodon instance can determine my general location from my login IP, but that information is unavailable to the network as a whole because the ActivityPub protocol does not define how it could be shared.</p>
+<p>Culturally, hinterlanders are prone to pre-emptively covering their tracks. They use VPNs and uBlock and LibreWolf,  maybe even dedicated anti-tracker hardware like a <a href="https://pi-hole.net/">Pi-Hole</a>. As as a made-up example: I might see in my server log that 95% of visitors to this site are using Chrome on Windows, but I have zero faith in that number's accuracy because fudging User-Agent headers is easy and widespread<sup class="footnote-reference"><a href="#2">2</a></sup>.</p>
+<h3 id="monetization-is-difficult-or-impossible-by-design-and-culture">Monetization is difficult or impossible by design and culture</h3>
+<p>How do you make a million dollars as a hinterlands influencer? You don't. Largely this follows from the above point: that which cannot be quantified cannot be sold.</p>
+<h3 id="you-need-to-be-somewhat-in-the-know-to-find-things">You need to be somewhat "in the know" to find things</h3>
+<p>It's extremely unlikely that you are reading this because The Algorithm thought it would maximize your click-through rate. Probably you saw the link posted on Mastodon, or you know me in real life. If an algorithm did bring you here, it's likely one of the more transparent ones like Hacker News's ranking system<sup class="footnote-reference"><a href="#3">3</a></sup>. In other words, you probably didn't arrive here directly from the centralized Web; you came from somewhere else in the hinterlands. In the more extreme cases, hinterland zones might be invitation only and require an existing member to vouch for you.</p>
+<h3 id="division-of-technical-labor-is-less-stark">Division of (technical) labor is less stark.</h3>
+<p>This site does not have a dedicated sysadmin or backend engineer or frontend design person; there's just me, a Docker image and some cron hacks, and this is not an especially unusual setup. That's not to say you can't post anything outside of a major platform without a CS degree, but it's generally less plug-and-play than, say, Medium.</p>
+<h2 id="digital-barbarism">Digital Barbarism</h2>
+<p>As I've migrated more and more into non-centralized Web spaces and those common traits have become more clear, I've been haunted by something familiar about the whole ecosystem. Only recently did it click into place: the Web is like the <a href="https://en.wikipedia.org/wiki/Southeast_Asian_Massif">Southeast Asian Massif</a>.</p>
+<p>Or rather, it reminds me of James C. Scott's excellent book on the geopolitics of Southeast Asia, <a href="https://en.wikipedia.org/wiki/The_Art_of_Not_Being_Governed">The Art of Not Being Governed</a>, in which that region is called out as one especially resilient example of a <em>shatter zone</em> (or less technically, a <em>hinterland</em>). These are places in the hills (or just generally in rugged landscapes, but historically the association is with hills) where the city-states, nestled in agrarian valleys, can't reach you (or tax you or enslave you). Shatter zones are where the barbarians live.</p>
+<p>"Barbarian" feels almost like a slur, or at least a negative value judgement, but that feeling alone speaks volumes. Barbarianism itself is pretty great; it's just been the target of a smear campaign going back to the literal dawn of civilization. The written historical record would lead you to believe all the cool stuff was happening in the Valley states, but that shouldn't be surprising- written language is a Valley technology!</p>
+<p>A barbarian is just defined as someone who's evaluated the contract offered by civilization and said nah, I'm good.  In fact, Scott argues that despite the Valley people constantly proclaiming the Hill folk to be a different and inferior people altogether, generally there's no significant genetic differences between the two groups and the ethnic angle is constructed <em>post hoc</em>. For most of human history, if you didn't like being a state subject, you could <em>literally just opt out and leave</em>.</p>
+<p>That's not to imply it was easy to <em>stay</em> ungoverned. It takes effort and know-how... like an Art, if you will. Scott argues that the "primitive" traits historically associated with "barbarian" peoples - illiteracy, nomadism, non-hierarchy, to name a few - are evolved cultural defenses against civilizing projects<sup class="footnote-reference"><a href="#4">4</a></sup>:</p>
+<pre style="background-color:#282828;color:#fdf4c1aa;"><code><span>Broadly speaking, whenever a society or part of a society elects to evade incorporation or appropriation, it moves toward simpler, smaller, and more dispersed social units—toward what we have earlier termed the elementary forms of social organization. The most appropriation-resistant social structures—though they also impede collective action of any kind—are acephalous (&quot;headless&quot;) small aggregates of households. Such forms of social organization, along with appropriation-resistant forms of agriculture and residence, are invariably coded &quot;barbarian,&quot; &quot;primitive,&quot; and &quot;backward&quot; by the lowland padi &quot;civilizations.&quot; It is no coincidence that this metric of more or less civilized agriculture and social organization should so perfectly map onto their suitability for appropriation and subordination, respectively 
+</span></code></pre>
+<p>To resist the yoke of civilization, you need to be agile. You need to be hard to measure, because if you can be measured you can be subjugated. You need to be at least a little out of the way and hard to reach. Crucially, you need to be able to <a href="https://en.wikipedia.org/wiki/Self-hosting_(web_services)">pack up and go somewhere else at any time</a>.</p>
+<p>Barbarians aren't unproductive in the sense that they don't make things, but they're <em>economically</em> unproductive by design. They produce, but they do not produce <a href="https://www.metafilter.com/95152/Userdriven-discontent#3256046">commodities</a>. Surplus stuff just makes it harder to keep moving, after all.</p>
+<p>Barbarian culture is simultaneously non-hierarchical and insular. Division of labor is less extreme than in the Valley, and often women enjoy comparable social status to men. But that doesn't make them friendly; you can't just waltz into camp and expect to be welcomed with open arms. Barbarians don't want to be <a href="https://en.wikipedia.org/wiki/Embrace,_extend,_and_extinguish">embraced</a>, because they know the first wave of conquest often puts on a smiling face.</p>
+<p>Scott focuses on one specific region but clarifies that this pattern of convergent evolution happens all over the world. Barbarism isn't a single culture, it's a toolkit for maximizing autonomy that re-emerges when conditions are right.</p>
+<p>First, a central authority entices people to move in and put down roots. At the time this seems like a good deal, since it makes resources like markets a lot more accessible and allows access to new kinds of goods. Maybe the authority even redistributes resources (like farmland) to new settlers as an incentive. But this isn't sustainable, and sooner or later the settlers feel the burden of taxation, conscription, and in the most extreme (but pretty common historically) case, enslavement as the powers that be must squeeze them ever-harder to keep the wheels of government turning. So the common folk hang up their citizen caps, put on barbarian furs, and move out to the hinterlands.</p>
+<p>Is it just me, or does that sound familiar?</p>
+<h2 id="what-does-this-actually-mean">What Does This Actually Mean?</h2>
+<p>Well, I dunno. In any case, it's an interesting pattern to observe.</p>
+<p>One obvious difference between the digital hinterlands and the real one is the stakes involved. I've been speaking about digital "spaces" since that's the dominant metaphor, and while it's not like the online world is totally unimportant, it's inarguably far <em>less</em> important than the literal, physical world in which your human body lives. We talk about "migrating" off Twitter, but you can do that without leaving your chair.  Google will monetize the hell out of your data, but they will not literally enslave you <sup class="footnote-reference"><a href="#5">5</a></sup>.</p>
+<p>At the same time, it sure feels like they're the same <em>class</em> of thing, and the difference is one of degree rather than kind.  <a href="https://www.youtube.com/watch?v=yFqFLo_bYq0">It's like poetry, it rhymes</a>.</p>
+<hr />
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>I suppose I could look at nginx's logs to see who accessed the Atom feed and from where, but that's not especially helpful. I have no way of knowing which links were clicked, which pages within the feed were read the most and least, how long readers lingered on a given section before moving on, or any of the rest of the meat and potatoes of Web analytics.</p>
+</div>
+<div class="footnote-definition" id="2"><sup class="footnote-definition-label">2</sup>
+<p>I know this because I use Firefox or LibreWolf on Linux, and <em>my User-Agent still says Chrome on Windows</em> because some sites will just give up if your request says you're using something else.</p>
+</div>
+<div class="footnote-definition" id="3"><sup class="footnote-definition-label">3</sup>
+<p>Does Hacker News count though? Eeeh, I think it's kind of ambiguous. On an ordinal scale it's definately closer to Lemmy than Facebook in terms of these traits.</p>
+</div>
+<div class="footnote-definition" id="4"><sup class="footnote-definition-label">4</sup>
+<p>Idk how to cite this properly since I got it from an ebook without obvious page numbering. It's from chapter 7, anyway.</p>
+</div>
+<div class="footnote-definition" id="5"><sup class="footnote-definition-label">5</sup>
+<p>If you're reading this in like, 2044, it's possible that sentence aged <em>very poorly.</em></p>
+</div>
+
+
+            </main>
+            <footer>
+                
+
+
+<p class="taxonomies">
+
+
+<a href="/tags/thinkin">#thinkin</a>
+
+<a href="/tags/100daystooffload">#100DaysToOffload</a>
+
+
+
+
+</p>
+
+
+<hr />
+<div class="quote-container">
+  <p class="dynamic-quote" id="quote"></p>
+</div>
+
+                
+            </footer>
+        </div>
+    </body>
+</html>
+        

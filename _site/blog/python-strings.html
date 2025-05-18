@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implicit String Concatenation Considered Harmful | implicit.computer</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@artalar/mono/mono.css">
+    <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/blog/">Blog</a>
+        </nav>
+    </header>
+    
+    <main>
+        <article>
+    <h1>Implicit String Concatenation Considered Harmful</h1>
+    <time datetime="2023-10-10"</time>
+    
+    <p>Python has a specific feature (?) related to string literals that, while not undocumented, isn't too well known either. If you have two string literals that are separated only by whitespace, the interpreter treats them as a single literal. For example, if, as part of normal data collection policy as spelled out in the EULA, an API requires the user send their complete genome with each request, you might have a variable like this:</p>
+<pre><code class="language-python">my_genome = &quot;TGGGGCCAGTAGTCCTCCACGTGGGGAATCTTTCAGCGACGCTCTCAAGCTCTGAGAAGCACGATCCCAAGGTCCGTAGCAACAATCTCCTCTT&quot;
+</code></pre>
+<p>But a long string literal like that breaks <a href="https://pep8.org/#maximum-line-length">PEP 8</a> and compromises readability, and more importantly the warnings my linter plugin keeps shouting at me really harshes my vibe. Guido, in His Infinite Wisdom,<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> allows us to do this:</p>
+<pre><code class="language-python">my_genome = &quot;TGGGGCCAGTAGTCCTCCACGTGGGGAATCTTTCAGCGACGCT&quot; 
+    &quot;CTCAAGCTCTGAGAAGCACGATCCCAAGGTCCGTAGCAACAATCTCCTCTT&quot;
+</code></pre>
+<p>Much better! Of course in practice the most common source of long string literals is URLs. <a href="https://astral.sh/ruff">Ruff</a> hates this:</p>
+<pre><code class="language-python">url = &quot;https://a-really-really-long-url.co.uk/that-makes-your-linter/lose-its-freaking-mind&quot;
+</code></pre>
+<p>But it chill with this:</p>
+<pre><code class="language-python">url = &quot;https://a-really-really-long-url.co.uk/&quot;
+    &quot;that-makes-your-linter/lose-its-freaking-mind&quot;
+</code></pre>
+<p>This is a feature more Python programmers should be aware of ... so they can avoid it. Implicit string literal concatenation is, in my experience, the single most devious <a href="https://en.wiktionary.org/wiki/footgun">footgun</a> in Python. If an oddly specific genie granted me one Python-related wish, I would not hesitate to send implicit concatenation to the Shadow Realm.</p>
+<p>First off, it's not even really necessary. Python already has the <code>+</code> operator to concatenate strings.</p>
+<pre><code class="language-python">url = &quot;https://a-really-really-long-url.co.uk/&quot; + 
+&quot;that-makes-your-linter/lose-its-freaking-mind&quot;
+</code></pre>
+<p>In my mind this is a lot clearer in communicating intent. It's two literals that are <em>added together</em> to create a single string. Plus (heh) you can add other non-literal stuff to your string (although you should probably just use f-strings at that point imo).</p>
+<p>But implicit concatenation is not merely useless, it's actively harmful. When dealing with string collections, it converts what should be an obvious and catchable syntax error into potential hours of debug hell.</p>
+<pre><code class="language-python">gauls = [&quot;Belgae&quot;, &quot;Aquitani&quot;, &quot;Celtae&quot;  &quot;Helvetii&quot;]
+
+for x in gauls:
+	print(x)
+
+# Belgae
+# Aquitani
+# CeltaeHelvetii
+</code></pre>
+<p><sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p>This is a pretty obvious syntax error --- well, obvious to a static analysis tool, anyway. In a long list of long strings (say, hardcoded urls or CSS selectors), you'd be forgiven if your eyes glance over the missing comma. But since two adjacent string literals are treated as one, the interpreter, and even a more pedantic third party tool like <a href="https://github.com/microsoft/pyright">pyright</a>, will consider it Heckin Validerino.</p>
+<p>The immediate cause for my writing this was a bug in a script that, among other things, opened a page in <a href="https://www.selenium.dev/">selenium</a> to grab some data<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup> from each element that matched one of a list of predetermined selectors.  But after what I thought was a simple formatting change, it all fell apart. 'Invalid Selector', it would say, and I would assume that I had just failed at webdev and dutifully <s>get ChatGPT to</s> rewrite the selectors, to no avail. That missing comma probably cost me half an hour, but the sum of all wasted hours induced by this feature is surely greater than the total time saved from not needing to type the '+' key between string literals.</p>
+<hr>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>I have no idea if Guido Van Rossum was actually the one to introduce this feature; to me he's more of a catchall patron figure akin to <a href="https://en.wikipedia.org/wiki/Todd_Howard#Opinions_and_recognition">Todd Howard</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p><a href="https://www.perseus.tufts.edu/hopper/text?doc=Caes.+Gal.+toc">https://www.perseus.tufts.edu/hopper/text?doc=Caes.+Gal.+toc</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Why did this page require a Javascript runtime to show me like 5 KB of plain text, and force me to use a full headless browser for something that should have been a simple <code>requests.get</code>? Well front-end design isn't my strong suit, but my impression is that God is dead and it is we who have killed him <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+    
+    
+    <ul class="tags">
+        
+        <li><a href="/tags/python/">python</a></li>
+        
+        <li><a href="/tags/programming/">programming</a></li>
+        
+    </ul>
+    
+
+
+</article>
+
+    </main>
+</body>
+</html>

@@ -4,8 +4,8 @@ title = "Implicit Dot Computer"
 author = "keagud"
 description = 'you can visit it on the "web", a "web" "site" if you will.'
 
-generate_feed = true
-feed_filename = "atom.xml"
+generate_feeds = true
+feed_filenames = ["atom.xml"]
 theme = "no-style-please"
 default_language = "en"
 compile_sass = true

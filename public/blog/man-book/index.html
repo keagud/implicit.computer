@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+        <meta content="width=device-width, initial-scale=1" name="viewport"/>
+
+        
+        
+        
+
+        
+
+        
+        
+        
+
+        
+
+        
+        
+        
+
+        <title>Shell Adventures: Compiling a Manpages Ebook</title>
+        
+        <meta name="title" content="Shell Adventures: Compiling a Manpages Ebook">
+        
+        <meta name="description" content="you can visit it on the &quot;web&quot;, a &quot;web&quot; &quot;site&quot; if you will.">
+        <meta name="generator" content="Zola v0.16.1">
+
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://implicit.computer/blog/man-book/">
+        <meta property="og:site_name" content="Implicit Dot Computer">
+        <meta property="og:title" content="Shell Adventures: Compiling a Manpages Ebook">
+        <meta property="og:description" content="you can visit it on the &quot;web&quot;, a &quot;web&quot; &quot;site&quot; if you will.">
+        
+
+        
+        
+        <meta property="twitter:card" content="summary_large_image">
+        <meta property="twitter:url" content="https://implicit.computer/blog/man-book/">
+        <meta property="twitter:title" content="Shell Adventures: Compiling a Manpages Ebook">
+        <meta property="twitter:description" content="you can visit it on the &quot;web&quot;, a &quot;web&quot; &quot;site&quot; if you will.">
+        
+        
+        
+        <link rel="canonical" href="https://implicit.computer/blog/man-book/">
+        
+        <script type="application/ld+json">
+            {
+                "description":"you can visit it on the "web", a "web" "site" if you will.",
+                "url":"https://implicit.computer/blog/man-book/",
+                "@type":"WebSite",
+                "headline":"Shell Adventures: Compiling a Manpages Ebook",
+                "name":"Shell Adventures: Compiling a Manpages Ebook",
+                
+                "@context":"https://schema.org"
+            }
+        </script>
+        
+        
+        
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://implicit.computer/atom.xml">
+        
+        
+        
+  
+        <link rel="stylesheet" href="https://implicit.computer/style.css"/>
+        
+  
+<link rel="stylesheet" href="/ext.css"/>
+
+<script defer type="text/javascript" src="/script.js"> </script>
+  
+    </head>
+    <body theme="auto">
+        <div class="w">
+            <header>
+                
+                <nav>
+                    
+                    <a href="/" >&#x2F;home</a>
+                    
+                    <a href="/blog" >&#x2F;blog</a>
+                    
+                    <a href="/about" >&#x2F;about</a>
+                    
+                    <a href="/now" >&#x2F;now</a>
+                    
+                    <a href="/resume" >&#x2F;resume</a>
+                    
+                    <a href="/atom.xml" >&#x2F;feed</a>
+                    
+                </nav>
+                
+                
+<p><a href="..">..</a>/man-book</p>
+<p class="post-meta"><time datetime="2024-03-21">2024-03-21</time></p>
+<h1>Shell Adventures: Compiling a Manpages Ebook</h1>
+
+            </header>
+            <main class="page-content" aria-label="Content">
+                
+
+
+
+<p><a href="https://en.wikipedia.org/wiki/Man_page">man pages</a> are truly the best software documentation out there, with famously zero problems with formatting, content, or navigability.</p>
+<p>In fact, haven't we all at some point wished we could access the man pages in a form factor more suitable for cozy reading, so we might curl up by the fire with a mug of cocoa and the documentation for <code>xargs(1)</code>?  Good news, in this post you can join me as I figure out how to accomplish just that, by compiling the man pages on my own machine into an epub with nice formatting.</p>
+<p>What's that, no one has ever wanted this and I'm just a very strange person? Well tough tapioca, I'm doing it anyway. This is <em>my</em> website and if you don't like it, you can just click <a href="https://en.wikipedia.org/wiki/Never_Gonna_Give_You_Up">here</a> to travel to a different web page.</p>
+<h1 id="part-1-scraping-and-converting">Part 1: Scraping and Converting</h1>
+<p>I spent a fair bit of time working on the problem of getting the actual page contents, but only for the pages I actually would want to read.  I had some ideas for scraping the Debian package archive and using the <a href="https://popcon.debian.org/">Debian popularity contest</a> metrics to fetch only the most used packages' docs.</p>
+<p>Then I realized, a bit emberrassed, that I was doing all this <em>on</em> a Debian machine that had all the software I considered essential, so all that scraping and sorting was moot. If I wanted to learn the details of a program enough to peruse all its docs, I would also have to have the actual program installed. <a href="https://www.youtube.com/watch?v=L_o_O7v1ews">The files are <em>inside</em> the computer!</a></p>
+<p>So, the first step is to convert all the local man files to ...something. Probably some kind of XML eventually, but I'm hoping I won't need to manually figure that part out. For now, markdown is a decent choice.</p>
+<p>Actually the <em>zeroth</em> step is collecting all the page files</p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">$ find /usr/share/man/man</span><span style="color:#fe8019;">*</span><span style="color:#fdf4c1;"> -type f </span><span style="color:#fe8019;">| </span><span style="color:#fdf4c1;">sort </span><span style="color:#fe8019;">| </span><span style="color:#fdf4c1;">head -n 5
+</span><span>
+</span><span>    </span><span style="color:#fdf4c1;">/usr/share/man/man1/7z.1.gz
+</span><span>    </span><span style="color:#fdf4c1;">/usr/share/man/man1/aa-enabled.1.gz
+</span><span>    </span><span style="color:#fdf4c1;">/usr/share/man/man1/aa-exec.1.gz
+</span><span>    </span><span style="color:#fdf4c1;">/usr/share/man/man1/aa-features-abi.1.gz
+</span><span>    </span><span style="color:#fdf4c1;">/usr/share/man/man1/acorn.1.gz
+</span></code></pre>
+<p>The vast majority are gzip compressed, some are uncompressed, and a tiny handful are bzip2 compressed. Let's sort that out.</p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fa5c4b;">function </span><span style="color:#8ec07c;">handle_decompress </span><span>{
+</span><span style="color:#fdf4c1;">  </span><span style="color:#fa5c4b;">local </span><span style="color:#fdf4c1;">page</span><span style="color:#fe8019;">=</span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">1</span><span style="color:#b8bb26;">&quot;
+</span><span style="color:#fdf4c1;">  </span><span style="color:#fa5c4b;">local </span><span style="color:#fdf4c1;">extension</span><span style="color:#fe8019;">=</span><span style="color:#b8bb26;">&quot;${</span><span style="color:#fdf4c1;">page</span><span style="color:#fe8019;">##*</span><span style="color:#b8bb26;">.}&quot;
+</span><span>  </span><span style="color:#fa5c4b;">case </span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">extension</span><span style="color:#b8bb26;">&quot; </span><span style="color:#fa5c4b;">in
+</span><span>    gz</span><span style="color:#fa5c4b;">)
+</span><span>      </span><span style="color:#fdf4c1;">gzip -dc </span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">page</span><span style="color:#b8bb26;">&quot;
+</span><span>      ;;
+</span><span>
+</span><span>    bz2</span><span style="color:#fa5c4b;">)
+</span><span>      </span><span style="color:#fdf4c1;">bzip2 -dc </span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">page</span><span style="color:#b8bb26;">&quot;
+</span><span>      ;;
+</span><span>
+</span><span>    </span><span style="color:#fe8019;">*</span><span style="color:#fa5c4b;">)
+</span><span>      </span><span style="color:#fdf4c1;">cat </span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">page</span><span style="color:#b8bb26;">&quot;
+</span><span>      ;;
+</span><span>  </span><span style="color:#fa5c4b;">esac
+</span><span>}
+</span><span>
+</span></code></pre>
+<p>OK, now those of you who've been shouting "PANDOC" at your screen - well first of all, you're worrying your neighbors. But you were correct, that's where we're going.</p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fa5c4b;">for</span><span> page </span><span style="color:#fa5c4b;">in </span><span>$( </span><span style="color:#fdf4c1;">find /usr/share/man/man</span><span style="color:#fe8019;">*</span><span style="color:#fdf4c1;"> -type f</span><span>)</span><span style="color:#fe8019;">; </span><span style="color:#fa5c4b;">do
+</span><span>    </span><span style="color:#fdf4c1;">handle_decompress $page </span><span style="color:#fe8019;">| </span><span style="color:#fdf4c1;">pandoc -f man -t markdown
+</span><span style="color:#fa5c4b;">done
+</span></code></pre>
+<p>This just prints the markdown to stdout so we can verify it's working. It does work, but it's pretty slow. With a small refactor we can use <a href="https://en.wikipedia.org/wiki/GNU_parallel">GNU parallel</a> to speed things up a lot.</p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">BOOK_PAGES</span><span style="color:#fe8019;">=</span><span style="color:#b8bb26;">&quot;./book&quot;
+</span><span style="color:#fa5c4b;">export  </span><span style="color:#fdf4c1;">BOOK_PAGES
+</span><span>
+</span><span style="font-style:italic;color:#928374;"># ..snip..
+</span><span style="color:#fa5c4b;">export </span><span style="color:#fdf4c1;">-f handle_decompress
+</span><span>
+</span><span style="color:#fa5c4b;">function </span><span style="color:#8ec07c;">process_manpage </span><span>{
+</span><span>  
+</span><span style="color:#fdf4c1;">  </span><span style="color:#fa5c4b;">local </span><span style="color:#fdf4c1;">section_dir</span><span style="color:#fe8019;">=</span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">BOOK_PAGES</span><span style="color:#b8bb26;">/$(</span><span style="color:#fdf4c1;">basename </span><span style="color:#b8bb26;">&quot;$(</span><span style="color:#fdf4c1;">dirname $1 </span><span style="color:#b8bb26;">)&quot; )&quot;
+</span><span>  </span><span style="color:#fdf4c1;">mkdir -p </span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">section_dir</span><span style="color:#b8bb26;">&quot;
+</span><span>
+</span><span style="color:#fdf4c1;">  </span><span style="color:#fa5c4b;">local </span><span style="color:#fdf4c1;">clean_filename</span><span style="color:#fe8019;">=</span><span style="color:#b8bb26;">$(</span><span style="color:#fdf4c1;">basename </span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">1</span><span style="color:#b8bb26;">&quot;</span><span style="color:#fdf4c1;"> .gz</span><span style="color:#b8bb26;">)
+</span><span style="color:#fdf4c1;">  </span><span style="color:#fa5c4b;">local </span><span style="color:#fdf4c1;">output_file</span><span style="color:#fe8019;">=</span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">section_dir</span><span style="color:#b8bb26;">/$</span><span style="color:#fdf4c1;">clean_filename</span><span style="color:#b8bb26;">.md&quot;
+</span><span>
+</span><span>  </span><span style="color:#fdf4c1;">handle_decompress </span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">1</span><span style="color:#b8bb26;">&quot; </span><span style="color:#fe8019;">| </span><span style="color:#fdf4c1;">pandoc -f man -t markdown </span><span style="color:#fe8019;">&gt; </span><span style="color:#fdf4c1;">$output file
+</span><span>}
+</span><span>
+</span><span style="color:#fa5c4b;">export </span><span style="color:#fdf4c1;">-f process_manpage
+</span><span>
+</span><span style="color:#fa5c4b;">for</span><span> man_dir </span><span style="color:#fa5c4b;">in</span><span> /usr/share/man/man</span><span style="color:#fe8019;">*; </span><span style="color:#fa5c4b;">do
+</span><span>  </span><span style="color:#fdf4c1;">find </span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">man_dir</span><span style="color:#b8bb26;">&quot;</span><span style="color:#fdf4c1;"> -type f </span><span style="color:#fe8019;">| </span><span style="color:#fdf4c1;">parallel process_manpage {} 
+</span><span style="color:#fa5c4b;">done
+</span></code></pre>
+<p>I also made the outputs redirect to a specified directory while maintaining the original subdirectory structure. The <code>export -f</code> lines are needed to make the functions available in each <code>parallel</code> sub-process. Now we've got the pages, let's make the book!</p>
+<h1 id="part-2-making-the-book">Part 2: Making the Book</h1>
+<p>I was anticipating the process for this as more or less a pandoc -&gt; <a href="https://calibre-ebook.com/">calibre</a> pipeline, with pandoc for file conversion on the individual pages and calibre for the overall book structure. But it turns out pandoc can just <a href="https://pandoc.org/epub.html">output epub directly</a>. Markdown was a lucky choice for the initial conversion <sup class="footnote-reference"><a href="#1">1</a></sup>, since pandoc <em>loves</em> working with markdown. We can just supply a list of markdown files in the correct chapter order.</p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">pandoc $( find $BOOK_DIR  -type f </span><span style="color:#fe8019;">| </span><span style="color:#fdf4c1;">sort ) -o manpages.epub
+</span></code></pre>
+<p>It works! But the chapter divisions are all borked; each subheader within a page is counted as a new chapter. To fix this we can use <code>sed</code> to bump all the headers down by one level.</p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="font-style:italic;color:#928374;"># ...
+</span><span>  </span><span style="color:#fdf4c1;">handle_decompress </span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">1</span><span style="color:#b8bb26;">&quot; </span><span style="color:#fe8019;">| </span><span style="color:#fdf4c1;">pandoc -f man -t markdown  </span><span style="color:#fe8019;">| </span><span style="color:#fdf4c1;">sed </span><span style="color:#b8bb26;">&#39;s/^\(#\+\)\s*\([^#]\+\)/#\1 \2/&#39;</span><span style="color:#fe8019;">&gt; </span><span style="color:#fdf4c1;">$output file
+</span><span style="font-style:italic;color:#928374;">#...
+</span></code></pre>
+<p>This just adds one extra '#' to all headers. So each page becomes a chapter, we can append the page's name as a <code>h1</code> header to the top</p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span>
+</span><span style="font-style:italic;color:#928374;"># ...
+</span><span>  </span><span style="color:#fabd2f;">echo </span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">clean_filename</span><span style="color:#b8bb26;">&quot; </span><span style="color:#fe8019;">| </span><span style="color:#fdf4c1;">sed </span><span style="color:#b8bb26;">&#39;s/\(.\+\).\([0-9]\)/# \1(\2)\n/&#39; </span><span style="color:#fe8019;">&gt;  </span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">output_file</span><span style="color:#b8bb26;">&quot;
+</span><span>
+</span><span>  </span><span style="color:#fdf4c1;">handle_decompress </span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">1</span><span style="color:#b8bb26;">&quot; </span><span style="color:#fe8019;">| </span><span>\
+</span><span>    </span><span style="color:#fdf4c1;">pandoc -f man -t markdown  </span><span style="color:#fe8019;">| </span><span>\
+</span><span>    </span><span style="color:#fdf4c1;">sed </span><span style="color:#b8bb26;">&#39;s/^\(#\+\)\s*\([^#]\+\)/#\1 \2/&#39; </span><span style="color:#fe8019;">&gt;&gt; </span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">output_file</span><span style="color:#b8bb26;">&quot;
+</span><span style="font-style:italic;color:#928374;"># ...
+</span></code></pre>
+<p>.. and then generate a table of contents based on those inserted headers.</p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">pandoc $(find </span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">BOOK_PAGES</span><span style="color:#b8bb26;">&quot;</span><span style="color:#fdf4c1;"> -type f </span><span style="color:#fe8019;">| </span><span style="color:#fdf4c1;">sort ) \
+</span><span style="color:#fdf4c1;">  --toc --toc-depth</span><span style="color:#fe8019;">=</span><span style="color:#fdf4c1;">1 \
+</span><span style="color:#fdf4c1;">  --metadata title=</span><span style="color:#b8bb26;">&quot;Man Pages&quot; </span><span style="color:#fdf4c1;">\
+</span><span style="color:#fdf4c1;">  -o manpages.epub 
+</span></code></pre>
+<p>Voila! Here's the full script for completeness.</p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="font-style:italic;color:#928374;">#!/bin/bash
+</span><span>
+</span><span style="color:#fdf4c1;">BOOK_PAGES</span><span style="color:#fe8019;">=</span><span style="color:#b8bb26;">&quot;./book&quot;
+</span><span style="color:#fa5c4b;">export  </span><span style="color:#fdf4c1;">BOOK_PAGES
+</span><span>
+</span><span style="font-style:italic;color:#928374;"># stop on error
+</span><span style="color:#fabd2f;">set </span><span style="color:#fdf4c1;">-eu
+</span><span>
+</span><span style="font-style:italic;color:#928374;"># print decompressed file contents to stdout
+</span><span style="color:#fa5c4b;">function </span><span style="color:#8ec07c;">handle_decompress </span><span>{
+</span><span style="color:#fdf4c1;">  </span><span style="color:#fa5c4b;">local </span><span style="color:#fdf4c1;">page</span><span style="color:#fe8019;">=</span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">1</span><span style="color:#b8bb26;">&quot;
+</span><span style="color:#fdf4c1;">  </span><span style="color:#fa5c4b;">local </span><span style="color:#fdf4c1;">extension</span><span style="color:#fe8019;">=</span><span style="color:#b8bb26;">&quot;${</span><span style="color:#fdf4c1;">page</span><span style="color:#fe8019;">##*</span><span style="color:#b8bb26;">.}&quot;
+</span><span>  </span><span style="color:#fa5c4b;">case </span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">extension</span><span style="color:#b8bb26;">&quot; </span><span style="color:#fa5c4b;">in
+</span><span>    gz</span><span style="color:#fa5c4b;">)
+</span><span>      </span><span style="color:#fdf4c1;">gzip -dc </span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">page</span><span style="color:#b8bb26;">&quot;
+</span><span>      ;;
+</span><span>
+</span><span>    bz2</span><span style="color:#fa5c4b;">)
+</span><span>      </span><span style="color:#fdf4c1;">bzip2 -dc </span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">page</span><span style="color:#b8bb26;">&quot;
+</span><span>      ;;
+</span><span>
+</span><span>    </span><span style="color:#fe8019;">*</span><span style="color:#fa5c4b;">)
+</span><span>      </span><span style="color:#fdf4c1;">cat </span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">page</span><span style="color:#b8bb26;">&quot;
+</span><span>      ;;
+</span><span>  </span><span style="color:#fa5c4b;">esac
+</span><span>}
+</span><span style="color:#fa5c4b;">export </span><span style="color:#fdf4c1;">-f handle_decompress
+</span><span>
+</span><span style="color:#fa5c4b;">function </span><span style="color:#8ec07c;">process_manpage </span><span>{
+</span><span>  
+</span><span style="color:#fdf4c1;">  </span><span style="color:#fa5c4b;">local </span><span style="color:#fdf4c1;">section_dir</span><span style="color:#fe8019;">=</span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">BOOK_PAGES</span><span style="color:#b8bb26;">/$(</span><span style="color:#fdf4c1;">basename </span><span style="color:#b8bb26;">&quot;$(</span><span style="color:#fdf4c1;">dirname $1 </span><span style="color:#b8bb26;">)&quot; )&quot;
+</span><span>  </span><span style="color:#fdf4c1;">mkdir -p </span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">section_dir</span><span style="color:#b8bb26;">&quot;
+</span><span>
+</span><span style="color:#fdf4c1;">  </span><span style="color:#fa5c4b;">local </span><span style="color:#fdf4c1;">clean_filename</span><span style="color:#fe8019;">=</span><span style="color:#b8bb26;">$(</span><span style="color:#fdf4c1;">basename </span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">1</span><span style="color:#b8bb26;">&quot;</span><span style="color:#fdf4c1;"> .gz</span><span style="color:#b8bb26;">)
+</span><span style="color:#fdf4c1;">  </span><span style="color:#fa5c4b;">local </span><span style="color:#fdf4c1;">output_file</span><span style="color:#fe8019;">=</span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">section_dir</span><span style="color:#b8bb26;">/$</span><span style="color:#fdf4c1;">clean_filename</span><span style="color:#b8bb26;">.md&quot;
+</span><span>
+</span><span>  </span><span style="font-style:italic;color:#928374;"># make the header
+</span><span>  </span><span style="color:#fabd2f;">echo </span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">clean_filename</span><span style="color:#b8bb26;">&quot; </span><span style="color:#fe8019;">| </span><span style="color:#fdf4c1;">sed </span><span style="color:#b8bb26;">&#39;s/\(.\+\).\([0-9]\)/# \1(\2)\n/&#39; </span><span style="color:#fe8019;">&gt;  </span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">output_file</span><span style="color:#b8bb26;">&quot;
+</span><span>
+</span><span>  </span><span style="font-style:italic;color:#928374;"># decompress, transform, edit headers, and write to output file
+</span><span>  </span><span style="color:#fdf4c1;">handle_decompress </span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">1</span><span style="color:#b8bb26;">&quot; </span><span style="color:#fe8019;">| </span><span>\
+</span><span>    </span><span style="color:#fdf4c1;">pandoc -f man -t markdown  </span><span style="color:#fe8019;">| </span><span>\
+</span><span>    </span><span style="color:#fdf4c1;">sed </span><span style="color:#b8bb26;">&#39;s/^\(#\+\)\s*\([^#]\+\)/#\1 \2/&#39; </span><span style="color:#fe8019;">&gt;&gt; </span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">output_file</span><span style="color:#b8bb26;">&quot;
+</span><span>}
+</span><span>
+</span><span style="color:#fa5c4b;">export </span><span style="color:#fdf4c1;">-f process_manpage
+</span><span>
+</span><span style="color:#fa5c4b;">for</span><span> man_dir </span><span style="color:#fa5c4b;">in</span><span> /usr/share/man/man</span><span style="color:#fe8019;">*; </span><span style="color:#fa5c4b;">do
+</span><span>  </span><span style="color:#fdf4c1;">find </span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">man_dir</span><span style="color:#b8bb26;">&quot;</span><span style="color:#fdf4c1;"> -type f </span><span style="color:#fe8019;">| </span><span style="color:#fdf4c1;">parallel process_manpage {} 
+</span><span style="color:#fa5c4b;">done
+</span><span>
+</span><span style="font-style:italic;color:#928374;"># actually compile the pages into a book
+</span><span style="color:#fdf4c1;">pandoc $(find </span><span style="color:#b8bb26;">&quot;$</span><span style="color:#fdf4c1;">BOOK_PAGES</span><span style="color:#b8bb26;">&quot;</span><span style="color:#fdf4c1;"> -type f </span><span style="color:#fe8019;">| </span><span style="color:#fdf4c1;">sort ) \
+</span><span style="color:#fdf4c1;">  --toc --toc-depth</span><span style="color:#fe8019;">=</span><span style="color:#fdf4c1;">1 \
+</span><span style="color:#fdf4c1;">  --metadata title=</span><span style="color:#b8bb26;">&quot;Man Pages&quot; </span><span style="color:#fdf4c1;">\
+</span><span style="color:#fdf4c1;">  -o manpages.epub 
+</span></code></pre>
+<p>It works quite well! There's a few tweaks I might make in the future</p>
+<ul>
+<li>The chapters are ordered correctly by section, and alphabetically within each section (so all the <code>man 1</code> pages come before the <code>man 2</code> pages, etc), but there's no "official" subdivision based on section; if you want to view only the pages in section 8, you need to scroll past all of sections 1-7 in the table of contents. Probably I can change the regex for headers to make this work.</li>
+<li>The actual compilation step takes a long time since it's not (easily) made parallel. I don't know a good solution to this that also keeps this project within the realm of "easy breezy afternoon one-off". That said, it's Good Enough for me.</li>
+</ul>
+<hr />
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>Or it appears that way to you anyway, through the magic of "writing the post after completing the project"</p>
+</div>
+
+
+            </main>
+            <footer>
+                
+
+
+<p class="taxonomies">
+
+
+<a href="/tags/shell">#shell</a>
+
+<a href="/tags/100daystooffload">#100DaysToOffload</a>
+
+<a href="/tags/linux">#linux</a>
+
+<a href="/tags/programming">#programming</a>
+
+
+
+
+</p>
+
+
+<hr />
+<div class="quote-container">
+  <p class="dynamic-quote" id="quote"></p>
+</div>
+
+                
+            </footer>
+        </div>
+    </body>
+</html>
+        

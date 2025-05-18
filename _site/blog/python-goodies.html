@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesser-Known Python Goodies | implicit.computer</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@artalar/mono/mono.css">
+    <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/blog/">Blog</a>
+        </nav>
+    </header>
+    
+    <main>
+        <article>
+    <h1>Lesser-Known Python Goodies</h1>
+    <time datetime="2024-04-16"</time>
+    
+    <p>Python is famously an easy language  to learn, but it's a hard language to <em>really</em> learn because there's so just much of it; Python's standard library has over <em>300</em> modules as of version 3.11! <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> Knowing a programming language in depth includes knowing how to effectively wield its standard library to solve problems, but for Python that's a tough ask.</p>
+<p>In practice, you learn the subset of the standard library that's most useful in your day-to-day, and that's fine, but it also means there's potentially whole swaths of useful stuff you could be taking advantage of, but simply never encountered. So, here's my list of Python features you might not know about. Here are my selection criteria:</p>
+<ol>
+<li>I've excluded things I've already seen covered in these kinds of tips-and-tricks roundups, for example the very useful <a href="https://docs.python.org/3/library/http.server.html"><code>http.server</code></a></li>
+<li>These must be tools I've actually used to solve a real world problem. It's both very cool and not well known that Python has a full <a href="https://docs.python.org/3/library/turtle.html">turtle graphics library</a>, but I've never needed it in practice.</li>
+</ol>
+<h2>Unicode Literals</h2>
+<p>First, a general trick rather than a module. You likely knew that Python's <code>str</code> type supports Unicode, and you maybe also knew that you can specify Unicode codepoints with the <code>\u</code> prefix:</p>
+<pre><code class="language-python">&gt;&quot;\u0D9E&quot;
+'ඞ'
+</code></pre>
+<p>But did you know <a href="https://docs.python.org/3/howto/unicode.html#the-string-type">you can also include Unicode by name?</a><sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<pre><code class="language-python">&gt;&quot;\N{MAN IN BUSINESS SUIT LEVITATING}&quot;
+'🕴️'
+</code></pre>
+<p>I haven't run into too many uses for this, but I <em>did</em> once need to include a <a href="https://en.wikipedia.org/wiki/%C3%91">ñ</a> character in a string, and specifying it directly as <code>&quot;\N{LATIN SMALL LETTER N WITH TILDE}&quot;</code> rather than copy-pasting it made me feel very smug at least.</p>
+<h2>Text Wrapping</h2>
+<p>Sure, you can write a text wrapping function in no time, it's not hard. And if you've done any amount of low-ish level text management (like for <a href="https://en.wikipedia.org/wiki/Curses_(programming_library)">curses</a>-style interfaces) you've probably gotten a lot of practice re-implementing text wrap. But now that you know about the <a href="https://docs.python.org/3/library/textwrap.html#module-textwrap">textwrap</a> module, you're free to spend that time somewhere else. Go ahead, I release you.</p>
+<h2>IP Address Handling</h2>
+<p>Stop using strings for IP addresses! Stop it! We have the <a href="https://docs.python.org/3/library/ipaddress.html#module-ipaddress">ipaddress</a> module for that! Don't make me come over there!</p>
+<p>This is one of those things that I imagine most Python users will never need, but for automating network configuration stuff it's a godsend.</p>
+<pre><code class="language-python">&gt;&gt;&gt; from ipaddress import ip_address, IPv4Network
+&gt;&gt;&gt; ip = ip_address(&quot;192.168.0.1&quot;)
+&gt;&gt;&gt; ip.is_private # True
+&gt;&gt;&gt; ip.is_loopback # False
+
+
+&gt;&gt;&gt; network = IPv4Network(&quot;192.168.0.0/24&quot;)
+&gt;&gt;&gt; network.netmask # 255.255.255.0
+&gt;&gt;&gt; network.num_addressed # 256
+
+&gt;&gt;&gt; hosts = list(network.hosts())
+&gt;&gt;&gt; hosts[0] # IPv4Address('192.168.0.1')
+&gt;&gt;&gt; hosts[-1] # IPv4Address('192.168.0.254')
+</code></pre>
+<p>There's equivalent functionality for IPv6 as well, plus lots of other handy stuff - <code>IPv6Address</code> has a <code>sixtofour</code> property that can extract an IPv4 address from 6to4, for example.</p>
+<h2>Web Browser Control</h2>
+<p>Finally, the <a href="https://docs.python.org/3/library/webbrowser.html#module-webbrowser">webbrowser</a> module provides functions to open a url in the default web browser. That's it, really; it's not a proper browser automation toolkit like <a href="https://www.selenium.dev/">Selenium</a>, but often you don't need all that power anyway. If you think outside the box, even the most basic functions of a web browser can be tremendously useful.</p>
+<p>Here's an anecdote to  illustrate the versatility of <code>webbrowser</code>: once upon a time I was asked to write a script to take user-provided data and do various CRUD shenanigans with it -  nothing too crazy, but there were some unique constraints. Namely, no external dependencies whatsoever<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup> while remaining approachable to non-technical users. My solution was to use <code>webbrowser.open</code> and <code>http.server</code> simultaneously to create the world's smallest technically-a-web-app that, to the user, just presented as a friendly webpage with a form.<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup> That's an extreme example, but my point is that a web browser can be a surprisingly versatile component of your scripting toolkit.</p>
+<hr>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>You can check this for any version after 3.10 with  <code>python3 -c 'import sys; print(len(sys.stdlib_module_names))'</code>. For 3.11.9 it prints 305. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>You can also include Unicode in identifier names, but emoji doesn't seem to work, at least not in CPython 😥 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>Except <code>requests</code>, that is. This needed to be maximally portable with no setup, and the only guarantee for the runtime environment was that <code>requests</code> would be there, and that Some Kind Of Web Browser would be there. Everything else had to come from the standard library. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>Yes, I could have used tkinter to make a proper GUI, but this was a time-sensitive thing and I can hack together a basic webpage before I would have even finished skimming the tkinter docs. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+    
+    
+    <ul class="tags">
+        
+        <li><a href="/tags/python/">python</a></li>
+        
+        <li><a href="/tags/programming/">programming</a></li>
+        
+        <li><a href="/tags/100DaysToOffload/">100DaysToOffload</a></li>
+        
+    </ul>
+    
+
+
+</article>
+
+    </main>
+</body>
+</html>

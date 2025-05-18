@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shell Adventures: What's Inside an Anki Collection File? | implicit.computer</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@artalar/mono/mono.css">
+    <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/blog/">Blog</a>
+        </nav>
+    </header>
+    
+    <main>
+        <article>
+    <h1>Shell Adventures: What's Inside an Anki Collection File?</h1>
+    <time datetime="2024-03-08"</time>
+    
+    <p>I use <a href="https://apps.ankiweb.net/">Anki</a> a lot. In a nutshell, it's a <a href="https://en.wikipedia.org/wiki/Spaced_repetition">spaced repetition</a> program that works almost eerily well for memorizing certain kinds of data. Lately I've been using it to help study for the <a href="https://www.comptia.org/certifications/a">CompTIA A+</a> certification exam, which requires you to know, among other things, approximately a million facts about wireless communication standards -- exactly the sort of thing Anki is great at. Anki has a web sharing feature called <a href="https://ankiweb.net/shared/decks">AnkiWeb</a> where you can find pre-made decks on everything from Aramaic to Zoology, but I've found that there's no substitute for making your own cards; you get a deck tailored to exactly your needs, plus it's a great study exercise in itself.</p>
+<p>I wrote a small <a href="https://github.com/keagud/mkanki">Rust program</a> to convert the markdown notes I take as I read or watch video lectures into Anki cards in the <code>.apkg</code> format; It's not especially complex since most of the actual conversion work is offloaded to the <a href="https://docs.rs/genanki-rs/latest/genanki_rs/">genanki crate</a>. What's relevant here is that it takes a &quot;deck id&quot; parameter, which defines the deck where the generated cards will be placed once added to a user's collection. The deck id isn't normally shown to the user, though, it's an internal implementation detail without a matching UI element.  My workaround so far has been to generate the cards assigned to a dummy deck, then manually move them to the actual deck, but why spend one minute on a task when you could instead waste a whole morning automating it?</p>
+<p>Anyway, that was a lot of prelude to say this post is about cracking open a <code>.apkg</code> file to find where the deck id is hidden, and also just to generally see what's in there. I exported my main study deck (including media - this will come up later) to a file, and I invite you to join me on a tour of its internals. Let's go!</p>
+<h2>Part 1: Taking Inventory</h2>
+<p>Let's start by figuring out what a <code>.apkg</code> file actually is.</p>
+<pre><code class="language-bash">$ file COMPTIA\ A+\ 1.apkg 
+
+COMPTIA A+ 1.apkg: Zip archive data, at least v2.0 to extract, compression method=store
+
+$ 7z x COMPTIA\ A+\ 1.apkg 
+
+7-Zip [64] 16.02 : Copyright (c) 1999-2016 Igor Pavlov : 2016-05-21
+p7zip Version 16.02 (locale=en_US.UTF-8,Utf16=on,HugeFiles=on,64 bits,8 CPUs Intel(R) Core(TM) i7-8550U CPU @ 1.80GHz (806EA),ASM,AES-NI)
+
+Scanning the drive for archives:
+1 file, 3076466 bytes (3005 KiB)
+
+Extracting archive: COMPTIA A+ 1.apkg
+--
+Path = COMPTIA A+ 1.apkg
+Type = zip
+Physical Size = 3076466
+
+Everything is Ok
+
+Files: 183
+Size:       3891960
+Compressed: 3076466
+
+$ ls -alh # all files, with all data, human readable sizes
+
+total 7.3M
+drwxr-xr-x 2 k k 4.0K Mar  8 11:24  .
+drwxr-xr-x 6 k k 4.0K Mar  8 11:23  ..
+-rw-r--r-- 1 k k  213 Mar  8  2024  0
+-rw-r--r-- 1 k k  375 Mar  8  2024  1
+-rw-r--r-- 1 k k 1.4K Mar  8  2024  10
+-rw-r--r-- 1 k k  371 Mar  8  2024  100
+-rw-r--r-- 1 k k 1.1K Mar  8  2024  101
+-rw-r--r-- 1 k k  216 Mar  8  2024  102
+-rw-r--r-- 1 k k  782 Mar  8  2024  103
+-rw-r--r-- 1 k k  226 Mar  8  2024  104
+(...)
+-rw-r--r-- 1 k k 1.3K Mar  8  2024  98
+-rw-r--r-- 1 k k 1.8K Mar  8  2024  99
+-rw-r--r-- 1 k k  49K Mar  8  2024  collection.anki2
+-rw-r--r-- 1 k k 1.2M Mar  8  2024  collection.anki21
+-rw------- 1 k k 3.0M Mar  8 11:24 'COMPTIA A+ 1.apkg'
+-rw-r--r-- 1 k k 8.7K Mar  8  2024  media
+-rw-r--r-- 1 k k    2 Mar  8  2024  meta
+</code></pre>
+<p><sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>It's a zip archive with a whole lot of stuff:</p>
+<ul>
+<li><code>collection.anki2</code> and <code>collection.anki21</code>, which I suspect are where we'll find the actual deck data.</li>
+<li>a lil tiny <code>meta</code> file</li>
+<li>a beefier <code>media</code> file</li>
+<li>99 extensionless files ranging in size from a few hundred to a few thousand KiB</li>
+</ul>
+<p>Let's start with the collection files</p>
+<pre><code class="language-bash">$ file collection.anki2 
+collection.anki2: SQLite 3.x database, last written using SQLite version 3044000, page size 512, file counter 5, database pages 98, 1st free page 59, free pages 55, cookie 0x2f, schema 4, UTF-8, version-valid-for 5
+
+$ file collection.anki21
+collection.anki21: SQLite 3.x database, last written using SQLite version 3044000, file counter 3, database pages 303, 1st free page 300, free pages 27, cookie 0x2e, schema 4, UTF-8, version-valid-for 3
+
+</code></pre>
+<p>Aha! Sqlite! We can work with sqlite! First, though, I want to try identifying the other files</p>
+<pre><code class="language-bash">$ file meta 
+meta: data
+</code></pre>
+<p>Oh, it's <em>data</em>. That clears everything up.</p>
+<pre><code class="language-bash">$ cat meta
+$ hexdump meta
+0000000 0208                                   
+0000002
+</code></pre>
+<p>Checksum? ¯\_(ツ)_/¯ Anyhow, on to <code>media</code>:</p>
+<pre><code class="language-bash">$ file media 
+media: JSON text data
+
+$ jq '.' media 
+{
+  &quot;90&quot;: &quot;f3327b4a32294533a064d02a593d1bf8-ao-5-A.svg&quot;,
+  &quot;46&quot;: &quot;8136b7a2cf124cc98436eb041f6ac446-ao-2-A.svg&quot;,
+  &quot;51&quot;: &quot;ab18887cee264ca78e187ce85eb58c8a-ao-4-Q.svg&quot;,
+   (...)
+  &quot;130&quot;: &quot;raid.png&quot;,
+   (...)
+ &quot;105&quot;: &quot;8136b7a2cf124cc98436eb041f6ac446-ao-2-Q.svg&quot;,
+  &quot;86&quot;: &quot;e7078dd0ffd042c0a4266a828f47b3a2-oa-12-Q.svg&quot;
+}
+</code></pre>
+<p>It's a JSON mapping between integers and image file names, some PNG but mostly SVG. Maybe this is connected to all those files that are just numbers.</p>
+<pre><code class="language-bash">$ file 130
+130: PNG image data, 847 x 324, 8-bit/color RGB, non-interlaced
+
+$ du -hs 130 # size of single file, human readable
+148K    130
+</code></pre>
+<p>So there's the mystery of the wildly varying file sizes solved. The big ones are PNG, and the small ones are SVG. Anki lets you embed images in your cards; the PNG images with normal file names are ones I've added manually. <code>raid.png</code> is, predictably, a diagram of <a href="https://en.wikipedia.org/wiki/RAID">RAID</a> configuration types. The SVG files are programmatically generated compliments to those images<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>.</p>
+<p>Ok, enough stalling, it's time to look into the actual database(s).</p>
+<h2>Part 2: The database</h2>
+<pre><code class="language-bash">$ sqlite3 collection.anki2
+SQLite version 3.40.1 2022-12-28 14:03:47
+Enter &quot;.help&quot; for usage hints.
+sqlite&gt; .tables
+cards   col     graves  notes   revlog
+</code></pre>
+<p><em>hacker voice</em> I'm in.</p>
+<p>I'll spare you the full account of how I stumbled through this database through trial and error, and just link <a href="https://github.com/ankidroid/Anki-Android/wiki/Database-Structure">this comprehensive overview of the schema</a> from the AnkiDroid app repo (I only found this <em>after</em> expending a fair chunk of time on my own reverse engineering attempts, but it's about the journey, right?).</p>
+<p>There's five tables - <code>cards</code>, <code>col</code>, <code>graves</code>, <code>notes</code>, and <code>revlog</code><sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>. <code>graves</code> and <code>revlog</code> contain scheduling information we don't care about for now. <code>col</code> is short for &quot;collections&quot; and has metadata on the database as a whole. That leaves <code>cards</code> and <code>notes</code>; to be honest I'm not sure which one would have the deck id, so I'll check both.</p>
+<pre><code>sqlite&gt; pragma table_info(notes);
+0|id|INTEGER|0||1
+1|guid|TEXT|1||0
+2|mid|INTEGER|1||0
+3|mod|INTEGER|1||0
+4|usn|INTEGER|1||0
+5|tags|TEXT|1||0
+6|flds|TEXT|1||0
+7|sfld|INTEGER|1||0
+8|csum|INTEGER|1||0
+9|flags|INTEGER|1||0
+10|data|TEXT|1||0
+
+sqlite&gt; pragma table_info(cards);
+0|id|INTEGER|0||1
+1|nid|INTEGER|1||0
+2|did|INTEGER|1||0
+3|ord|INTEGER|1||0
+4|mod|INTEGER|1||0
+5|usn|INTEGER|1||0
+6|type|INTEGER|1||0
+7|queue|INTEGER|1||0
+8|due|INTEGER|1||0
+9|ivl|INTEGER|1||0
+10|factor|INTEGER|1||0
+11|reps|INTEGER|1||0
+12|lapses|INTEGER|1||0
+13|left|INTEGER|1||0
+14|odue|INTEGER|1||0
+15|odid|INTEGER|1||0
+16|flags|INTEGER|1||0
+17|data|TEXT|1||0
+</code></pre>
+<p>That <code>did</code> field should be what we're after (I now know, after reading the linked page). Let's get it.</p>
+<pre><code class="language-bash">sqlite&gt; select did from cards;
+1
+</code></pre>
+<p>Huh? There should be a row for each card in the deck, and I'm pretty sure the deck id is not 1. There's two database files in the archive though, let's check the other one.</p>
+<pre><code class="language-bash">$ sqlite3 collection.anki21
+SQLite version 3.40.1 2022-12-28 14:03:47
+Enter &quot;.help&quot; for usage hints.
+sqlite&gt; select * from cards limit 5;
+1706642722425|1706642722424|1706642737485|0|1707681587|94|2|2|42|29|2650|5|0|0|0|0|0|{&quot;pos&quot;:0}
+1706642722427|1706642722426|1706642737485|0|1708459261|164|2|2|80|58|2950|5|0|0|0|0|0|{&quot;pos&quot;:0}
+1706642722428|1706642722426|1706642737485|1|1709324046|242|2|2|113|81|2950|5|0|0|0|0|0|{&quot;pos&quot;:0}
+1706642722429|1706642722426|1706642737485|2|1708277757|151|2|2|61|41|2800|5|0|0|0|0|0|{&quot;pos&quot;:0}
+1706642722431|1706642722430|1706642737485|0|1708126546|141|2|2|50|32|2650|6|0|0|0|0|0|{&quot;pos&quot;:0}
+</code></pre>
+<p>That did it. My hypothesis is that <code>collection.anki2</code> has the default deck configuration, and <code>collection.anki21</code> has the actual user-supplied content, but I'm not positive. Anyway, all these cards ought to have the same deck id if we didn't mess up.</p>
+<pre><code class="language-bash">sqlite&gt; select distinct did from cards;
+1706642737485
+</code></pre>
+<p>Jackpot! <sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<h2>Final Thoughts</h2>
+<p>The <code>.apkg</code> format is pretty comprehensible, actually. It's just a zip archive containing sqlite database files with the actual note data, plus any associated media files. Finding the schema online was a big time save, but honestly I feel like I could've figured it out on my own eventually. My main takeaway is a desire to write an Anki add-on, now that I know it's just sqlite under the hood.</p>
+<hr>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>I love how 7zip reassures you that everything is OK. I wish more software provided positive affirmations. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>Specifically, they're part of the <a href="https://ankiweb.net/shared/info/1374772155">Image Occlusion Enhanced</a> plugin, which I highly recommend. In a nutshell, it lets you make cards by blocking out part of an image and guessing what's hidden. This is especially useful for learning spatial information like the regions of the cortex, or, if you're lazy like me, screenshotting a table from a PDF and blocking out cells to memorize. The SVG files are applied as a mask to accomplish this. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>If you're not already familiar with Anki you might be wondering why &quot;cards&quot; and &quot;notes&quot; are different entities with different tables. A note is a set of &quot;fields&quot; (which can be anything - text, images, audio, whatever) that are somehow conceptually linked. A card is a view over that set of fields. A note produces at least one card, but usually more.<br>
+For example, a note with fields containing &quot;Capital of France&quot; and &quot;Paris&quot; could produce 2 separate cards, one where you're given the prompt &quot;Capital of France&quot; and must answer &quot;Paris&quot;, and one where you're given &quot;Paris&quot; and must answer &quot;Capital of France.&quot; <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>I kind of misled you earlier. I <em>did</em> know the deck id at one point, because my Rust program is a rewrite of a much simpler Python script which I used to create the deck in the first place. That script needed to put something in the id field for the new deck,  so I declared it by fiat to be an arbitrary unique value, the epoch timestamp at the time of creation. But then, I lost the original script in a drive failure and with it the id for the deck, necessitating both a rewrite and all this spelunking.<br>
+But! One of the facts I discovered in this project was that Anki itself assigns deck ids as the current epoch timestamp anyway! I was accidentally correct all along! <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+    
+    
+    <ul class="tags">
+        
+        <li><a href="/tags/anki/">anki</a></li>
+        
+        <li><a href="/tags/100DaysToOffload/">100DaysToOffload</a></li>
+        
+        <li><a href="/tags/programming/">programming</a></li>
+        
+        <li><a href="/tags/shell/">shell</a></li>
+        
+    </ul>
+    
+
+
+</article>
+
+    </main>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+        <meta content="width=device-width, initial-scale=1" name="viewport"/>
+
+        
+        
+        
+
+        
+
+        
+        
+        
+
+        
+
+        
+        
+        
+
+        <title>A Handy Pattern for Rust Errors</title>
+        
+        <meta name="title" content="A Handy Pattern for Rust Errors">
+        
+        <meta name="description" content="you can visit it on the &quot;web&quot;, a &quot;web&quot; &quot;site&quot; if you will.">
+        <meta name="generator" content="Zola v0.16.1">
+
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://implicit.computer/blog/rust-errors/">
+        <meta property="og:site_name" content="Implicit Dot Computer">
+        <meta property="og:title" content="A Handy Pattern for Rust Errors">
+        <meta property="og:description" content="you can visit it on the &quot;web&quot;, a &quot;web&quot; &quot;site&quot; if you will.">
+        
+
+        
+        
+        <meta property="twitter:card" content="summary_large_image">
+        <meta property="twitter:url" content="https://implicit.computer/blog/rust-errors/">
+        <meta property="twitter:title" content="A Handy Pattern for Rust Errors">
+        <meta property="twitter:description" content="you can visit it on the &quot;web&quot;, a &quot;web&quot; &quot;site&quot; if you will.">
+        
+        
+        
+        <link rel="canonical" href="https://implicit.computer/blog/rust-errors/">
+        
+        <script type="application/ld+json">
+            {
+                "description":"you can visit it on the "web", a "web" "site" if you will.",
+                "url":"https://implicit.computer/blog/rust-errors/",
+                "@type":"WebSite",
+                "headline":"A Handy Pattern for Rust Errors",
+                "name":"A Handy Pattern for Rust Errors",
+                
+                "@context":"https://schema.org"
+            }
+        </script>
+        
+        
+        
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://implicit.computer/atom.xml">
+        
+        
+        
+  
+        <link rel="stylesheet" href="https://implicit.computer/style.css"/>
+        
+  
+<link rel="stylesheet" href="/ext.css"/>
+
+<script defer type="text/javascript" src="/script.js"> </script>
+  
+    </head>
+    <body theme="auto">
+        <div class="w">
+            <header>
+                
+                <nav>
+                    
+                    <a href="/" >&#x2F;home</a>
+                    
+                    <a href="/blog" >&#x2F;blog</a>
+                    
+                    <a href="/about" >&#x2F;about</a>
+                    
+                    <a href="/now" >&#x2F;now</a>
+                    
+                    <a href="/resume" >&#x2F;resume</a>
+                    
+                    <a href="/atom.xml" >&#x2F;feed</a>
+                    
+                </nav>
+                
+                
+<p><a href="..">..</a>/rust-errors</p>
+<p class="post-meta"><time datetime="2024-03-29">2024-03-29</time></p>
+<h1>A Handy Pattern for Rust Errors</h1>
+
+            </header>
+            <main class="page-content" aria-label="Content">
+                
+
+
+
+<p>Here's a nifty pattern I use for making Rust error handling more ergonomic. Feel free to skip to the code at the end if you're already well versed in Rust error types.</p>
+<p>For everyone else, a quick primer/refresher - Rust takes a cue from the functional side of the isle for its error handling approach. In a nutshell: if an operation <em>should</em> produce a type T, but it might also fail altogether, the Rusty idiom is to use the <code>Result</code> enum type. For example, what's the correct return type for the standard library function <code>fs::read_to_string</code>,  which reads the contents of a file as a string and returns it? Not just <code>String</code> --  what if the file isn't there, or doesn't have the right permissions, or its contents are invalid UTF-8 and so can't be represented as a <code>String</code>?</p>
+<p>The solution is to use the type <code>Result&lt;String, io::Error&gt;</code><sup class="footnote-reference"><a href="#1">1</a></sup>. Either you get the string you asked for or an <code>io::Error</code> that represents why the action failed, so you can handle errors without jumping out of normal program flow in the way exception-based error handling requires.</p>
+<p>Like a lot of Rust stuff, this is a very cool idea but can be fiddly in practice. Errors are values with types, so for a  function returning <code>Result&lt;T, E&gt;</code> any errors need to be <em>specifically</em> of type E. For example, this doesn't compile <sup class="footnote-reference"><a href="#2">2</a></sup></p>
+<pre data-lang="rust" style="background-color:#282828;color:#fdf4c1aa;" class="language-rust "><code class="language-rust" data-lang="rust"><span>
+</span><span style="color:#fa5c4b;">use </span><span>std::fs;
+</span><span style="color:#fa5c4b;">use </span><span>std::io;
+</span><span style="color:#fa5c4b;">use </span><span>reqwest::blocking::get;
+</span><span>
+</span><span style="color:#fa5c4b;">pub fn </span><span style="color:#8ec07c;">save_a_webpage</span><span>() -&gt; </span><span style="color:#fabd2f;">Result</span><span>&lt;(), io::Error&gt; {
+</span><span>    </span><span style="color:#fa5c4b;">let</span><span> page_content </span><span style="color:#fe8019;">= </span><span style="color:#fabd2f;">get</span><span>(</span><span style="color:#b8bb26;">&quot;https://www.example.com&quot;</span><span>)</span><span style="color:#fe8019;">?</span><span>.</span><span style="color:#fabd2f;">text</span><span>()</span><span style="color:#fe8019;">?</span><span>;
+</span><span>    fs::write(</span><span style="color:#b8bb26;">&quot;/home/user/website.html&quot;</span><span>, page_content)</span><span style="color:#fe8019;">?</span><span>;
+</span><span>
+</span><span>    </span><span style="color:#fabd2f;">Ok</span><span>(())
+</span><span>}
+</span><span>
+</span></code></pre>
+<p>The type <code>reqwest::Error</code>  is from  <a href="https://docs.rs/reqwest/latest/reqwest/index.html">reqwest</a>, the predominant HTTP client library for Rust. It's a type for HTTP errors, and it's used in the <code>get</code> function because a network request could fail for network-y reasons like no connection, invalid URI, or something else it makes sense to have defined in the same crate. It isn't the same as <code>io::Error</code>, but this function might fail for network <em>or</em> local IO reasons - what if we don't have permission to write to  <code>/home/user</code>, or that directory doesn't exist at all?</p>
+<p>You might define a new Error enum that includes both those types as varients:</p>
+<pre data-lang="rust" style="background-color:#282828;color:#fdf4c1aa;" class="language-rust "><code class="language-rust" data-lang="rust"><span>
+</span><span style="color:#fa5c4b;">pub enum </span><span style="color:#8ec07c;">NetworkOrIoError</span><span>{
+</span><span> IoError(std::io::Error),
+</span><span> NetworkError(reqwest::Error)
+</span><span>}
+</span><span>
+</span></code></pre>
+<p>This has the advantage of giving callers the option to behave differently depending on error type, e.g. a <code>NetworkError</code> might trigger a retry but an <code>IoError</code> might not. But what if you also want to distinguish an error for malformed HTML - now you need another variant, and another branch in any pattern match blocks that operate on this type. In the early stages of a project this is a real pace killer, plus you'll inevitably not get it correct the first time and need to go back and try something else.</p>
+<p>The other approach is to use generic error types. <code>Box&lt;dyn std::error::Error&gt;</code> more or less means "a type that you know implements the <code>std::error::Error</code> trait, but you can't say anything else for sure", and in a return type it works with any sort of error. The <a href="https://docs.rs/anyhow/latest/anyhow/">anyhow</a> crate provides the <code>anyhow::Error</code> type with a similar function. This lets you move fast and focus on the core control flow without distraction, but once the project matures and settles into something more stable it becomes frustratingly opaque for function callers and adds some friction to writing code that interfaces with the existing API.</p>
+<p>Here's my solution to this: an <code>error.rs</code> file containing this:</p>
+<pre data-lang="rust" style="background-color:#282828;color:#fdf4c1aa;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#fa5c4b;">pub type </span><span style="color:#8ec07c;">Error </span><span style="color:#fe8019;">= </span><span style="color:#fabd2f;">Box</span><span>&lt;dyn std::error::Error </span><span style="color:#fe8019;">+ </span><span style="color:#fabd2f;">Sync </span><span style="color:#fe8019;">+ </span><span style="color:#fabd2f;">Send</span><span>&gt;;
+</span><span style="color:#fa5c4b;">pub type </span><span style="color:#8ec07c;">Result</span><span style="color:#fe8019;">&lt;</span><span>T</span><span style="color:#fe8019;">&gt; = </span><span>std::result::Result&lt;T, crate::error::Error&gt;;
+</span></code></pre>
+<p>And then in <code>lib.rs</code>:</p>
+<pre data-lang="rust" style="background-color:#282828;color:#fdf4c1aa;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#fa5c4b;">pub mod </span><span style="color:#8ec07c;">error</span><span>;
+</span><span style="color:#fa5c4b;">pub use </span><span>error::{Error, </span><span style="color:#fabd2f;">Result</span><span>};
+</span></code></pre>
+<p>Now you can use <code>crate::Error</code> as a generic error type (<code>crate::Result</code> is just a convenience alias).  When you hit the point where clarity is more important than velocity, you can swap out the definition of <code>crate::Error</code> for an actual enum type with appropriate variants, without needing to change a million function signatures to match.</p>
+<p>I'm pretty sure I did not invent this pattern, but I did independently re-derive it and I haven't really seen anyone else talk about it online. Possibly this is because it's so obvious that no one considers it worth discussion, but I thought I'd share on the off chance someone finds it helpful.</p>
+<hr />
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>The actual <a href="https://doc.rust-lang.org/nightly/std/fs/fn.read_to_string.html">docs</a> give a return type of <code>io::Result&lt;String&gt;</code>, but that's just a more concise alias.</p>
+</div>
+<div class="footnote-definition" id="2"><sup class="footnote-definition-label">2</sup>
+<p>If you're not familiar with the question mark operator, it's just syntactic sugar for returning an error early.</p>
+</div>
+
+
+            </main>
+            <footer>
+                
+
+
+<p class="taxonomies">
+
+
+<a href="/tags/programming">#programming</a>
+
+<a href="/tags/rust">#rust</a>
+
+<a href="/tags/100daystooffload">#100DaysToOffload</a>
+
+
+
+
+</p>
+
+
+<hr />
+<div class="quote-container">
+  <p class="dynamic-quote" id="quote"></p>
+</div>
+
+                
+            </footer>
+        </div>
+    </body>
+</html>
+        

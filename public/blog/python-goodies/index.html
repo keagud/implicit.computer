@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+        <meta content="width=device-width, initial-scale=1" name="viewport"/>
+
+        
+        
+        
+
+        
+
+        
+        
+        
+
+        
+
+        
+        
+        
+
+        <title>Lesser-Known Python Goodies</title>
+        
+        <meta name="title" content="Lesser-Known Python Goodies">
+        
+        <meta name="description" content="you can visit it on the &quot;web&quot;, a &quot;web&quot; &quot;site&quot; if you will.">
+        <meta name="generator" content="Zola v0.16.1">
+
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://implicit.computer/blog/python-goodies/">
+        <meta property="og:site_name" content="Implicit Dot Computer">
+        <meta property="og:title" content="Lesser-Known Python Goodies">
+        <meta property="og:description" content="you can visit it on the &quot;web&quot;, a &quot;web&quot; &quot;site&quot; if you will.">
+        
+
+        
+        
+        <meta property="twitter:card" content="summary_large_image">
+        <meta property="twitter:url" content="https://implicit.computer/blog/python-goodies/">
+        <meta property="twitter:title" content="Lesser-Known Python Goodies">
+        <meta property="twitter:description" content="you can visit it on the &quot;web&quot;, a &quot;web&quot; &quot;site&quot; if you will.">
+        
+        
+        
+        <link rel="canonical" href="https://implicit.computer/blog/python-goodies/">
+        
+        <script type="application/ld+json">
+            {
+                "description":"you can visit it on the "web", a "web" "site" if you will.",
+                "url":"https://implicit.computer/blog/python-goodies/",
+                "@type":"WebSite",
+                "headline":"Lesser-Known Python Goodies",
+                "name":"Lesser-Known Python Goodies",
+                
+                "@context":"https://schema.org"
+            }
+        </script>
+        
+        
+        
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://implicit.computer/atom.xml">
+        
+        
+        
+  
+        <link rel="stylesheet" href="https://implicit.computer/style.css"/>
+        
+  
+<link rel="stylesheet" href="/ext.css"/>
+
+<script defer type="text/javascript" src="/script.js"> </script>
+  
+    </head>
+    <body theme="auto">
+        <div class="w">
+            <header>
+                
+                <nav>
+                    
+                    <a href="/" >&#x2F;home</a>
+                    
+                    <a href="/blog" >&#x2F;blog</a>
+                    
+                    <a href="/about" >&#x2F;about</a>
+                    
+                    <a href="/now" >&#x2F;now</a>
+                    
+                    <a href="/resume" >&#x2F;resume</a>
+                    
+                    <a href="/atom.xml" >&#x2F;feed</a>
+                    
+                </nav>
+                
+                
+<p><a href="..">..</a>/python-goodies</p>
+<p class="post-meta"><time datetime="2024-04-16">2024-04-16</time></p>
+<h1>Lesser-Known Python Goodies</h1>
+
+            </header>
+            <main class="page-content" aria-label="Content">
+                
+
+
+
+<p>Python is famously an easy language  to learn, but it's a hard language to <em>really</em> learn because there's so just much of it; Python's standard library has over <em>300</em> modules as of version 3.11! <sup class="footnote-reference"><a href="#1">1</a></sup> Knowing a programming language in depth includes knowing how to effectively wield its standard library to solve problems, but for Python that's a tough ask.</p>
+<p>In practice, you learn the subset of the standard library that's most useful in your day-to-day, and that's fine, but it also means there's potentially whole swaths of useful stuff you could be taking advantage of, but simply never encountered. So, here's my list of Python features you might not know about. Here are my selection criteria:</p>
+<ol>
+<li>I've excluded things I've already seen covered in these kinds of tips-and-tricks roundups, for example the very useful <a href="https://docs.python.org/3/library/http.server.html"><code>http.server</code></a></li>
+<li>These must be tools I've actually used to solve a real world problem. It's both very cool and not well known that Python has a full <a href="https://docs.python.org/3/library/turtle.html">turtle graphics library</a>, but I've never needed it in practice.</li>
+</ol>
+<h2 id="unicode-literals">Unicode Literals</h2>
+<p>First, a general trick rather than a module. You likely knew that Python's <code>str</code> type supports Unicode, and you maybe also knew that you can specify Unicode codepoints with the <code>\u</code> prefix:</p>
+<pre data-lang="python" style="background-color:#282828;color:#fdf4c1aa;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#fe8019;">&gt;</span><span style="color:#b8bb26;">&quot;\u0D9E&quot;
+</span><span style="color:#b8bb26;">&#39;ඞ&#39;
+</span></code></pre>
+<p>But did you know <a href="https://docs.python.org/3/howto/unicode.html#the-string-type">you can also include Unicode by name?</a><sup class="footnote-reference"><a href="#2">2</a></sup></p>
+<pre data-lang="python" style="background-color:#282828;color:#fdf4c1aa;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#fe8019;">&gt;</span><span style="color:#b8bb26;">&quot;\N{MAN IN BUSINESS SUIT LEVITATING}&quot;
+</span><span style="color:#b8bb26;">&#39;🕴️&#39;
+</span></code></pre>
+<p>I haven't run into too many uses for this, but I <em>did</em> once need to include a <a href="https://en.wikipedia.org/wiki/%C3%91">ñ</a> character in a string, and specifying it directly as <code>"\N{LATIN SMALL LETTER N WITH TILDE}"</code> rather than copy-pasting it made me feel very smug at least.</p>
+<h2 id="text-wrapping">Text Wrapping</h2>
+<p>Sure, you can write a text wrapping function in no time, it's not hard. And if you've done any amount of low-ish level text management (like for <a href="https://en.wikipedia.org/wiki/Curses_(programming_library)">curses</a>-style interfaces) you've probably gotten a lot of practice re-implementing text wrap. But now that you know about the <a href="https://docs.python.org/3/library/textwrap.html#module-textwrap">textwrap</a> module, you're free to spend that time somewhere else. Go ahead, I release you.</p>
+<h2 id="ip-address-handling">IP Address Handling</h2>
+<p>Stop using strings for IP addresses! Stop it! We have the <a href="https://docs.python.org/3/library/ipaddress.html#module-ipaddress">ipaddress</a> module for that! Don't make me come over there!</p>
+<p>This is one of those things that I imagine most Python users will never need, but for automating network configuration stuff it's a godsend.</p>
+<pre data-lang="python" style="background-color:#282828;color:#fdf4c1aa;" class="language-python "><code class="language-python" data-lang="python"><span style="color:#fe8019;">&gt;&gt;&gt; </span><span style="color:#fa5c4b;">from </span><span>ipaddress </span><span style="color:#fa5c4b;">import </span><span>ip_address, IPv4Network
+</span><span style="color:#fe8019;">&gt;&gt;&gt; </span><span>ip </span><span style="color:#fe8019;">= </span><span style="color:#fdf4c1;">ip_address(</span><span style="color:#b8bb26;">&quot;192.168.0.1&quot;</span><span style="color:#fdf4c1;">)
+</span><span style="color:#fe8019;">&gt;&gt;&gt; </span><span>ip.is_private </span><span style="font-style:italic;color:#928374;"># True
+</span><span style="color:#fe8019;">&gt;&gt;&gt; </span><span>ip.is_loopback </span><span style="font-style:italic;color:#928374;"># False
+</span><span>
+</span><span>
+</span><span style="color:#fe8019;">&gt;&gt;&gt; </span><span>network </span><span style="color:#fe8019;">= </span><span style="color:#fdf4c1;">IPv4Network(</span><span style="color:#b8bb26;">&quot;192.168.0.0/24&quot;</span><span style="color:#fdf4c1;">)
+</span><span style="color:#fe8019;">&gt;&gt;&gt; </span><span>network.netmask </span><span style="font-style:italic;color:#928374;"># 255.255.255.0
+</span><span style="color:#fe8019;">&gt;&gt;&gt; </span><span>network.num_addressed </span><span style="font-style:italic;color:#928374;"># 256
+</span><span>
+</span><span style="color:#fe8019;">&gt;&gt;&gt; </span><span>hosts </span><span style="color:#fe8019;">= </span><span style="color:#fabd2f;">list</span><span style="color:#fdf4c1;">(network.hosts())
+</span><span style="color:#fe8019;">&gt;&gt;&gt; </span><span>hosts[</span><span style="color:#d3869b;">0</span><span>] </span><span style="font-style:italic;color:#928374;"># IPv4Address(&#39;192.168.0.1&#39;)
+</span><span style="color:#fe8019;">&gt;&gt;&gt; </span><span>hosts[</span><span style="color:#fe8019;">-</span><span style="color:#d3869b;">1</span><span>] </span><span style="font-style:italic;color:#928374;"># IPv4Address(&#39;192.168.0.254&#39;)
+</span></code></pre>
+<p>There's equivalent functionality for IPv6 as well, plus lots of other handy stuff - <code>IPv6Address</code> has a <code>sixtofour</code> property that can extract an IPv4 address from 6to4, for example.</p>
+<h2 id="web-browser-control">Web Browser Control</h2>
+<p>Finally, the <a href="https://docs.python.org/3/library/webbrowser.html#module-webbrowser">webbrowser</a> module provides functions to open a url in the default web browser. That's it, really; it's not a proper browser automation toolkit like <a href="https://www.selenium.dev/">Selenium</a>, but often you don't need all that power anyway. If you think outside the box, even the most basic functions of a web browser can be tremendously useful.</p>
+<p>Here's an anecdote to  illustrate the versatility of <code>webbrowser</code>: once upon a time I was asked to write a script to take user-provided data and do various CRUD shenanigans with it -  nothing too crazy, but there were some unique constraints. Namely, no external dependencies whatsoever<sup class="footnote-reference"><a href="#3">3</a></sup> while remaining approachable to non-technical users. My solution was to use <code>webbrowser.open</code> and <code>http.server</code> simultaneously to create the world's smallest technically-a-web-app that, to the user, just presented as a friendly webpage with a form.<sup class="footnote-reference"><a href="#4">4</a></sup> That's an extreme example, but my point is that a web browser can be a surprisingly versatile component of your scripting toolkit.</p>
+<hr />
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>You can check this for any version after 3.10 with  <code>python3 -c 'import sys; print(len(sys.stdlib_module_names))'</code>. For 3.11.9 it prints 305.</p>
+</div>
+<div class="footnote-definition" id="2"><sup class="footnote-definition-label">2</sup>
+<p>You can also include Unicode in identifier names, but emoji doesn't seem to work, at least not in CPython 😥</p>
+</div>
+<div class="footnote-definition" id="3"><sup class="footnote-definition-label">3</sup>
+<p>Except <code>requests</code>, that is. This needed to be maximally portable with no setup, and the only guarantee for the runtime environment was that <code>requests</code> would be there, and that Some Kind Of Web Browser would be there. Everything else had to come from the standard library.</p>
+</div>
+<div class="footnote-definition" id="4"><sup class="footnote-definition-label">4</sup>
+<p>Yes, I could have used tkinter to make a proper GUI, but this was a time-sensitive thing and I can hack together a basic webpage before I would have even finished skimming the tkinter docs.</p>
+</div>
+
+
+            </main>
+            <footer>
+                
+
+
+<p class="taxonomies">
+
+
+<a href="/tags/python">#python</a>
+
+<a href="/tags/programming">#programming</a>
+
+<a href="/tags/100daystooffload">#100DaysToOffload</a>
+
+
+
+
+</p>
+
+
+<hr />
+<div class="quote-container">
+  <p class="dynamic-quote" id="quote"></p>
+</div>
+
+                
+            </footer>
+        </div>
+    </body>
+</html>
+        

@@ -1,0 +1,24 @@
+
+
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" 
+	width="600"
+	height="600" 
+	style="background-color:#FFFFFF"
+	>
+	<style>
+		text { 
+	font-family: "CommitMono Nerd Font"; 
+	font-weight: bold;
+	color: 000000;
+}
+
+	</style>
+
+	<g transform="rotate(90) 
+		translate(5, -40)
+		scale(3.5)">
+		
+		<text x="0" y="0">:^)</text>
+	</g>
+
+</svg>

@@ -163,10 +163,11 @@ output/
 _output/
 crontab
 
-public/
 *.tar.gz
 *.tar
 
 
 # used by deployment scripts
 updated
+
+node_modules/

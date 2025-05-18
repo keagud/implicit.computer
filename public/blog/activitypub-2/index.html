@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+        <meta content="width=device-width, initial-scale=1" name="viewport"/>
+
+        
+        
+        
+
+        
+
+        
+        
+        
+
+        
+
+        
+        
+        
+
+        <title>ActivityPub Part 2: GoToSocial Considered Neato</title>
+        
+        <meta name="title" content="ActivityPub Part 2: GoToSocial Considered Neato">
+        
+        <meta name="description" content="you can visit it on the &quot;web&quot;, a &quot;web&quot; &quot;site&quot; if you will.">
+        <meta name="generator" content="Zola v0.16.1">
+
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://implicit.computer/blog/activitypub-2/">
+        <meta property="og:site_name" content="Implicit Dot Computer">
+        <meta property="og:title" content="ActivityPub Part 2: GoToSocial Considered Neato">
+        <meta property="og:description" content="you can visit it on the &quot;web&quot;, a &quot;web&quot; &quot;site&quot; if you will.">
+        
+
+        
+        
+        <meta property="twitter:card" content="summary_large_image">
+        <meta property="twitter:url" content="https://implicit.computer/blog/activitypub-2/">
+        <meta property="twitter:title" content="ActivityPub Part 2: GoToSocial Considered Neato">
+        <meta property="twitter:description" content="you can visit it on the &quot;web&quot;, a &quot;web&quot; &quot;site&quot; if you will.">
+        
+        
+        
+        <link rel="canonical" href="https://implicit.computer/blog/activitypub-2/">
+        
+        <script type="application/ld+json">
+            {
+                "description":"you can visit it on the "web", a "web" "site" if you will.",
+                "url":"https://implicit.computer/blog/activitypub-2/",
+                "@type":"WebSite",
+                "headline":"ActivityPub Part 2: GoToSocial Considered Neato",
+                "name":"ActivityPub Part 2: GoToSocial Considered Neato",
+                
+                "@context":"https://schema.org"
+            }
+        </script>
+        
+        
+        
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://implicit.computer/atom.xml">
+        
+        
+        
+  
+        <link rel="stylesheet" href="https://implicit.computer/style.css"/>
+        
+  
+<link rel="stylesheet" href="/ext.css"/>
+
+<script defer type="text/javascript" src="/script.js"> </script>
+  
+    </head>
+    <body theme="auto">
+        <div class="w">
+            <header>
+                
+                <nav>
+                    
+                    <a href="/" >&#x2F;home</a>
+                    
+                    <a href="/blog" >&#x2F;blog</a>
+                    
+                    <a href="/about" >&#x2F;about</a>
+                    
+                    <a href="/now" >&#x2F;now</a>
+                    
+                    <a href="/resume" >&#x2F;resume</a>
+                    
+                    <a href="/atom.xml" >&#x2F;feed</a>
+                    
+                </nav>
+                
+                
+<p><a href="..">..</a>/activitypub-2</p>
+<p class="post-meta"><time datetime="2024-06-23">2024-06-23</time></p>
+<h1>ActivityPub Part 2: GoToSocial Considered Neato</h1>
+
+            </header>
+            <main class="page-content" aria-label="Content">
+                
+
+
+
+<p>Here's the lesson I've learned since my last post: making a simple ActivityPub server that implements the minimum subset of the spec is not difficult. But to have the server be <em>actually usable and viable for federation</em>... well I don't think that's too difficult either, but it's more effort than I'm willing to expend on something that's only 25% of the overall project goal.</p>
+<p>Once you need to post messages to the inboxes of other servers, you need to keep track of which servers should be notified, and the keys needed to sign the messages, so naturally a database comes to mind. And at that point it's easier to just keep the actual post content in the database as well, so you need to make a mechanism to keep the database state in sync with the static site content, plus a bunch of SQL queries to fetch and organize the required data for each ActivityPub object, and eventually, while you're elbow-deep in yak fur, you remember that you still need to get going on the other three planned protocol integrations.</p>
+<p>So I snapped out of my haze and turned to <a href="https://gotosocial.org/">GoToSocial</a>, a minimalist ActivityPub server designed for tiny or single-user instances that, most helpfully, also implements the Mastodon client API. That means I can offload the fiddly stuff to the GoToSocial process and just write some pretty standard REST API calls to interact with it as needed.</p>
+<p>Before I get into the specific code, I need to talk about the overall deployment strategy I'm trying to stick to for this project. Everything is running on a Digital Ocean VPS (Debian) at the lowest tier (512 MB RAM, 1 CPU, 10GB disk) - partially this is because I like the challenge of programming with low resource availability, and partially it's because I'm not made of money. I have a systemd timer that runs this python script every minute:</p>
+<pre data-lang="python" style="background-color:#282828;color:#fdf4c1aa;" class="language-python "><code class="language-python" data-lang="python"><span style="font-style:italic;color:#928374;">#!/bin/env python3
+</span><span>
+</span><span style="color:#fa5c4b;">from </span><span>pathlib </span><span style="color:#fa5c4b;">import </span><span>Path
+</span><span style="color:#fa5c4b;">import </span><span>datetime </span><span style="color:#fa5c4b;">as </span><span>dt
+</span><span style="color:#fa5c4b;">import </span><span>subprocess
+</span><span style="color:#fa5c4b;">import </span><span>sys
+</span><span>
+</span><span style="color:#fdf4c1;">LOCAL_PATH</span><span style="color:#fe8019;">=</span><span style="color:#fdf4c1;">Path(</span><span style="color:#b8bb26;">&quot;/var/site/&quot;</span><span style="color:#fdf4c1;">)
+</span><span style="color:#fdf4c1;">REPO_URL </span><span style="color:#fe8019;">= </span><span style="color:#b8bb26;">&quot;https://github.com/keagud/implicit.computer.git&quot;
+</span><span style="color:#fdf4c1;">LOCAL_PATH.mkdir(parents</span><span style="color:#fe8019;">=</span><span style="color:#d3869b;">True</span><span style="color:#fdf4c1;">, exist_ok</span><span style="color:#fe8019;">=</span><span style="color:#d3869b;">True</span><span style="color:#fdf4c1;">)
+</span><span>
+</span><span style="color:#fa5c4b;">def </span><span style="color:#8ec07c;">update_last_changed</span><span>():
+</span><span>    </span><span style="color:#fa5c4b;">with </span><span style="color:#fabd2f;">open</span><span style="color:#fdf4c1;">(LOCAL_PATH.joinpath(</span><span style="color:#b8bb26;">&quot;updated&quot;</span><span style="color:#fdf4c1;">), </span><span style="color:#b8bb26;">&#39;w&#39;</span><span style="color:#fdf4c1;">) </span><span style="color:#fa5c4b;">as </span><span>fp:
+</span><span>        </span><span style="color:#fdf4c1;">fp.write(dt.datetime.now().isoformat())
+</span><span>
+</span><span style="color:#fa5c4b;">def </span><span style="color:#8ec07c;">main</span><span>():
+</span><span>    head_file </span><span style="color:#fe8019;">=  </span><span style="color:#fdf4c1;">LOCAL_PATH.joinpath(</span><span style="color:#b8bb26;">&quot;.git/refs/heads/master&quot;</span><span style="color:#fdf4c1;">)
+</span><span>    </span><span style="color:#fa5c4b;">if </span><span style="color:#fdf4c1;">head_file.exists()</span><span>:
+</span><span>        old_head </span><span style="color:#fe8019;">= </span><span style="color:#fabd2f;">open</span><span style="color:#fdf4c1;">(head_file, </span><span style="color:#b8bb26;">&quot;r&quot;</span><span style="color:#fdf4c1;">).read().strip()
+</span><span>        res </span><span style="color:#fe8019;">= </span><span style="color:#fdf4c1;">subprocess.run(</span><span style="color:#b8bb26;">&quot;git reset HEAD --hard &amp;&amp; git pull&quot;</span><span style="color:#fdf4c1;">, shell</span><span style="color:#fe8019;">=</span><span style="color:#d3869b;">True</span><span style="color:#fdf4c1;">, cwd</span><span style="color:#fe8019;">=</span><span style="color:#fdf4c1;">LOCAL_PATH)
+</span><span>        </span><span style="color:#fdf4c1;">res.check_returncode()
+</span><span>
+</span><span>        new_head </span><span style="color:#fe8019;">= </span><span style="color:#fabd2f;">open</span><span style="color:#fdf4c1;">(head_file, </span><span style="color:#b8bb26;">&quot;r&quot;</span><span style="color:#fdf4c1;">).read().strip()
+</span><span>        </span><span style="color:#fa5c4b;">if </span><span>new_head </span><span style="color:#fe8019;">== </span><span>old_head:
+</span><span>            </span><span style="color:#fdf4c1;">subprocess.run(</span><span style="color:#b8bb26;">&#39;logger -t &quot;check-updates&quot; &quot;No changes to remote&quot;&#39;</span><span style="color:#fdf4c1;">, shell</span><span style="color:#fe8019;">=</span><span style="color:#d3869b;">True</span><span style="color:#fdf4c1;">)
+</span><span>            </span><span style="color:#fdf4c1;">sys.exit(</span><span style="color:#d3869b;">0</span><span style="color:#fdf4c1;">)
+</span><span>    </span><span style="color:#fa5c4b;">else</span><span>:
+</span><span>        </span><span style="color:#fdf4c1;">subprocess.run(</span><span style="color:#fa5c4b;">f</span><span style="color:#b8bb26;">&quot;git clone </span><span style="color:#fdf4c1;">{REPO_URL} {LOCAL_PATH.as_posix()}</span><span style="color:#b8bb26;">&quot;</span><span style="color:#fdf4c1;">, shell</span><span style="color:#fe8019;">=</span><span style="color:#d3869b;">True</span><span style="color:#fdf4c1;">).check_returncode()
+</span><span>
+</span><span>        </span><span style="color:#fdf4c1;">subprocess.run(</span><span style="color:#fa5c4b;">f</span><span style="color:#b8bb26;">&quot;git submodule update --init&quot;</span><span style="color:#fdf4c1;">, shell</span><span style="color:#fe8019;">=</span><span style="color:#d3869b;">True</span><span style="color:#fdf4c1;">, cwd</span><span style="color:#fe8019;">=</span><span style="color:#fdf4c1;">LOCAL_PATH).check_returncode()
+</span><span>
+</span><span>    </span><span style="color:#fdf4c1;">update_last_changed()
+</span><span>
+</span><span>
+</span><span style="color:#fa5c4b;">if </span><span style="color:#fabd2f;">__name__ </span><span style="color:#fe8019;">== </span><span style="color:#b8bb26;">&quot;__main__&quot;</span><span>:
+</span><span>    </span><span style="color:#fdf4c1;">main()
+</span></code></pre>
+<p>The gist is, it checks for changes to the remote and, if there are any, pulls them and pokes <code>/var/site/updated</code>.  Then I have another systemd service that watches for changes to that file<sup class="footnote-reference"><a href="#1">1</a></sup> and runs all the scripts in <code>/opt/site/on_change/</code> - for example, the script <code>/opt/site/on_change/build_web.sh</code> looks like this:</p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="font-style:italic;color:#928374;">#!/bin/bash
+</span><span>
+</span><span style="color:#fdf4c1;">zola --root /var/site build \
+</span><span style="color:#fdf4c1;">	--output-dir /var/www/implicit.computer/html \
+</span><span style="color:#fdf4c1;">	--force
+</span><span>
+</span></code></pre>
+<p>Nginx is then configured to serve static files from that directory, etc etc. I like this flow, because it means the git repo where I keep my posts is the single source of truth and I can trivially tack on extra build tasks by adding a new script to that directory.</p>
+<p>Getting back to ActivityPub, though, there's a problem with this setup. A static site builder is kind of like a pure function  (in the functional programming sense) in that it deterministically maps an input (markdown files and configuration) into an output (the built site) without any kind of internal state. For the Web that's fine; some pages will be re-rendered unnecessarily on each build, but that's invisible from the perspective of the client.</p>
+<p>ActivityPub differs in that each posted status has a unique ID assigned by the server -GoToSocial in this case, which is out of my direct control - that's used for deduplication. A naive ActivityPub integration script that just sends a POST to GoToSocial for every content file on every build will result in a lot of duplicate entries that nonetheless have different IDs,  and hence spam for everyone that's federating with my instance.</p>
+<p>To avoid that, each post is sent with a spoiler text field generated from the slug and the posted date, acting as an ersatz primary key. When a rebuild is triggered, first all the previously sent posts are fetched and it's determined if any of the slugs for the posts in the local repo directory are unaccounted for in the spoiler text fields from the server. If not, there's nothing to do, so the program exits, otherwise it submits the new post content.  One downside here is that if I edit a post later for typos or clarification, there's no automated way to update the version GoToSocial has as well, and I instead need to manually update.</p>
+<p>Overall this seems to work pretty well! The spoiler text workaround even doubles as a "see more" function to avoid showing huge walls of text unprompted. You can check it out by looking up <code>@blog@activity.implicit.computer</code> in the ActivityPub client of your choice (no included web view unfortunately - that's the cost of minimalism)</p>
+<p>I do want to return to my from-scratch ActivityPub server eventually, but GoToSocial already has a lot of the properties I would want to emphasize - it's a single binary, it uses sqlite and it's very light on resource usage - so I'm not in a rush. Setting it up was also quite straightforward thanks to their excellent <a href="https://docs.gotosocial.org/en/latest/">documentation.</a></p>
+<p>The minimal client I wrote in Rust to handle API interactions is <a href="https://codeberg.org/keagud/protocols">here</a> if you're curious. I'll also be using that repo going forward for any other code I write for this project. Speaking of, next time I'll be looking into <a href="https://nostr.com/">nostr</a>, and I hope to actually write the server myself for that.</p>
+<hr />
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>That's kind of a hacky way to do it, I know, but I couldn't find an established "real" way to do this kind of thing with systemd.</p>
+</div>
+
+
+            </main>
+            <footer>
+                
+
+
+<p class="taxonomies">
+
+
+<a href="/tags/100daystooffload">#100DaysToOffload</a>
+
+<a href="/tags/protocolapalooza">#Protocolapalooza</a>
+
+<a href="/tags/tech">#tech</a>
+
+<a href="/tags/activitypub">#ActivityPub</a>
+
+<a href="/tags/gotosocial">#gotosocial</a>
+
+
+
+
+</p>
+
+
+<hr />
+<div class="quote-container">
+  <p class="dynamic-quote" id="quote"></p>
+</div>
+
+                
+            </footer>
+        </div>
+    </body>
+</html>
+        

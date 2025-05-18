@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+        <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+        <meta content="width=device-width, initial-scale=1" name="viewport"/>
+
+        
+        
+        
+
+        
+
+        
+        
+        
+
+        
+
+        
+        
+        
+
+        <title>Shell Adventures: What&#x27;s Inside an Anki Collection File?</title>
+        
+        <meta name="title" content="Shell Adventures: What&#x27;s Inside an Anki Collection File?">
+        
+        <meta name="description" content="you can visit it on the &quot;web&quot;, a &quot;web&quot; &quot;site&quot; if you will.">
+        <meta name="generator" content="Zola v0.16.1">
+
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://implicit.computer/blog/anki-apkg/">
+        <meta property="og:site_name" content="Implicit Dot Computer">
+        <meta property="og:title" content="Shell Adventures: What&#x27;s Inside an Anki Collection File?">
+        <meta property="og:description" content="you can visit it on the &quot;web&quot;, a &quot;web&quot; &quot;site&quot; if you will.">
+        
+
+        
+        
+        <meta property="twitter:card" content="summary_large_image">
+        <meta property="twitter:url" content="https://implicit.computer/blog/anki-apkg/">
+        <meta property="twitter:title" content="Shell Adventures: What&#x27;s Inside an Anki Collection File?">
+        <meta property="twitter:description" content="you can visit it on the &quot;web&quot;, a &quot;web&quot; &quot;site&quot; if you will.">
+        
+        
+        
+        <link rel="canonical" href="https://implicit.computer/blog/anki-apkg/">
+        
+        <script type="application/ld+json">
+            {
+                "description":"you can visit it on the "web", a "web" "site" if you will.",
+                "url":"https://implicit.computer/blog/anki-apkg/",
+                "@type":"WebSite",
+                "headline":"Shell Adventures: What's Inside an Anki Collection File?",
+                "name":"Shell Adventures: What's Inside an Anki Collection File?",
+                
+                "@context":"https://schema.org"
+            }
+        </script>
+        
+        
+        
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="https://implicit.computer/atom.xml">
+        
+        
+        
+  
+        <link rel="stylesheet" href="https://implicit.computer/style.css"/>
+        
+  
+<link rel="stylesheet" href="/ext.css"/>
+
+<script defer type="text/javascript" src="/script.js"> </script>
+  
+    </head>
+    <body theme="auto">
+        <div class="w">
+            <header>
+                
+                <nav>
+                    
+                    <a href="/" >&#x2F;home</a>
+                    
+                    <a href="/blog" >&#x2F;blog</a>
+                    
+                    <a href="/about" >&#x2F;about</a>
+                    
+                    <a href="/now" >&#x2F;now</a>
+                    
+                    <a href="/resume" >&#x2F;resume</a>
+                    
+                    <a href="/atom.xml" >&#x2F;feed</a>
+                    
+                </nav>
+                
+                
+<p><a href="..">..</a>/anki-apkg</p>
+<p class="post-meta"><time datetime="2024-03-08">2024-03-08</time></p>
+<h1>Shell Adventures: What&#x27;s Inside an Anki Collection File?</h1>
+
+            </header>
+            <main class="page-content" aria-label="Content">
+                
+
+
+
+<p>I use <a href="https://apps.ankiweb.net/">Anki</a> a lot. In a nutshell, it's a <a href="https://en.wikipedia.org/wiki/Spaced_repetition">spaced repetition</a> program that works almost eerily well for memorizing certain kinds of data. Lately I've been using it to help study for the <a href="https://www.comptia.org/certifications/a">CompTIA A+</a> certification exam, which requires you to know, among other things, approximately a million facts about wireless communication standards -- exactly the sort of thing Anki is great at. Anki has a web sharing feature called <a href="https://ankiweb.net/shared/decks">AnkiWeb</a> where you can find pre-made decks on everything from Aramaic to Zoology, but I've found that there's no substitute for making your own cards; you get a deck tailored to exactly your needs, plus it's a great study exercise in itself.</p>
+<p>I wrote a small <a href="https://github.com/keagud/mkanki">Rust program</a> to convert the markdown notes I take as I read or watch video lectures into Anki cards in the <code>.apkg</code> format; It's not especially complex since most of the actual conversion work is offloaded to the <a href="https://docs.rs/genanki-rs/latest/genanki_rs/">genanki crate</a>. What's relevant here is that it takes a "deck id" parameter, which defines the deck where the generated cards will be placed once added to a user's collection. The deck id isn't normally shown to the user, though, it's an internal implementation detail without a matching UI element.  My workaround so far has been to generate the cards assigned to a dummy deck, then manually move them to the actual deck, but why spend one minute on a task when you could instead waste a whole morning automating it?</p>
+<p>Anyway, that was a lot of prelude to say this post is about cracking open a <code>.apkg</code> file to find where the deck id is hidden, and also just to generally see what's in there. I exported my main study deck (including media - this will come up later) to a file, and I invite you to join me on a tour of its internals. Let's go!</p>
+<h2 id="part-1-taking-inventory">Part 1: Taking Inventory</h2>
+<p>Let's start by figuring out what a <code>.apkg</code> file actually is.</p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">$ file COMPTIA</span><span style="color:#b8bb26;">\ </span><span style="color:#fdf4c1;">A+</span><span style="color:#b8bb26;">\ </span><span style="color:#fdf4c1;">1.apkg 
+</span><span>
+</span><span style="color:#fdf4c1;">COMPTIA A+ 1.apkg: Zip archive data, at least v2.0 to extract, compression method=store
+</span><span>
+</span><span style="color:#fdf4c1;">$ 7z x COMPTIA</span><span style="color:#b8bb26;">\ </span><span style="color:#fdf4c1;">A+</span><span style="color:#b8bb26;">\ </span><span style="color:#fdf4c1;">1.apkg 
+</span><span>
+</span><span style="color:#fdf4c1;">7-Zip </span><span style="color:#fa5c4b;">[</span><span style="color:#fdf4c1;">64</span><span style="color:#fa5c4b;">]</span><span style="color:#fdf4c1;"> 16.02 : Copyright (c</span><span>) </span><span style="color:#fdf4c1;">1999-2016 Igor Pavlov : 2016-05-21
+</span><span style="color:#fdf4c1;">p7zip Version 16.02 (locale=en_US.UTF-8,Utf16=on,HugeFiles=on,64 bits,8 CPUs Intel(R</span><span>) </span><span style="color:#fdf4c1;">Core(TM</span><span>) </span><span style="color:#fdf4c1;">i7-8550U CPU @ 1.80GHz (806EA</span><span>)</span><span style="color:#fdf4c1;">,ASM,AES-NI</span><span>)
+</span><span>
+</span><span style="color:#fdf4c1;">Scanning the drive for archives:
+</span><span style="color:#fdf4c1;">1 file, 3076466 bytes (3005 KiB</span><span>)
+</span><span>
+</span><span style="color:#fdf4c1;">Extracting archive: COMPTIA A+ 1.apkg
+</span><span style="color:#fdf4c1;">--
+</span><span style="color:#fdf4c1;">Path = COMPTIA A+ 1.apkg
+</span><span style="color:#fdf4c1;">Type = zip
+</span><span style="color:#fdf4c1;">Physical Size = 3076466
+</span><span>
+</span><span style="color:#fdf4c1;">Everything is Ok
+</span><span>
+</span><span style="color:#fdf4c1;">Files: 183
+</span><span style="color:#fdf4c1;">Size:       3891960
+</span><span style="color:#fdf4c1;">Compressed: 3076466
+</span><span>
+</span><span style="color:#fdf4c1;">$ ls -alh </span><span style="font-style:italic;color:#928374;"># all files, with all data, human readable sizes
+</span><span>
+</span><span style="color:#fdf4c1;">total 7.3M
+</span><span style="color:#fdf4c1;">drwxr-xr-x 2 k k 4.0K Mar  8 11:24  .
+</span><span style="color:#fdf4c1;">drwxr-xr-x 6 k k 4.0K Mar  8 11:23  ..
+</span><span style="color:#fdf4c1;">-rw-r--r-- 1 k k  213 Mar  8  2024  0
+</span><span style="color:#fdf4c1;">-rw-r--r-- 1 k k  375 Mar  8  2024  1
+</span><span style="color:#fdf4c1;">-rw-r--r-- 1 k k 1.4K Mar  8  2024  10
+</span><span style="color:#fdf4c1;">-rw-r--r-- 1 k k  371 Mar  8  2024  100
+</span><span style="color:#fdf4c1;">-rw-r--r-- 1 k k 1.1K Mar  8  2024  101
+</span><span style="color:#fdf4c1;">-rw-r--r-- 1 k k  216 Mar  8  2024  102
+</span><span style="color:#fdf4c1;">-rw-r--r-- 1 k k  782 Mar  8  2024  103
+</span><span style="color:#fdf4c1;">-rw-r--r-- 1 k k  226 Mar  8  2024  104
+</span><span>(</span><span style="color:#fdf4c1;">...</span><span>)
+</span><span style="color:#fdf4c1;">-rw-r--r-- 1 k k 1.3K Mar  8  2024  98
+</span><span style="color:#fdf4c1;">-rw-r--r-- 1 k k 1.8K Mar  8  2024  99
+</span><span style="color:#fdf4c1;">-rw-r--r-- 1 k k  49K Mar  8  2024  collection.anki2
+</span><span style="color:#fdf4c1;">-rw-r--r-- 1 k k 1.2M Mar  8  2024  collection.anki21
+</span><span style="color:#fdf4c1;">-rw------- 1 k k 3.0M Mar  8 11:24 </span><span style="color:#b8bb26;">&#39;COMPTIA A+ 1.apkg&#39;
+</span><span style="color:#fdf4c1;">-rw-r--r-- 1 k k 8.7K Mar  8  2024  media
+</span><span style="color:#fdf4c1;">-rw-r--r-- 1 k k    2 Mar  8  2024  meta
+</span></code></pre>
+<p><sup class="footnote-reference"><a href="#1">1</a></sup></p>
+<p>It's a zip archive with a whole lot of stuff:</p>
+<ul>
+<li><code>collection.anki2</code> and <code>collection.anki21</code>, which I suspect are where we'll find the actual deck data.</li>
+<li>a lil tiny <code>meta</code> file</li>
+<li>a beefier <code>media</code> file</li>
+<li>99 extensionless files ranging in size from a few hundred to a few thousand KiB</li>
+</ul>
+<p>Let's start with the collection files</p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">$ file collection.anki2 
+</span><span style="color:#fdf4c1;">collection.anki2: SQLite 3.x database, last written using SQLite version 3044000, page size 512, file counter 5, database pages 98, 1st free page 59, free pages 55, cookie 0x2f, schema 4, UTF-8, version-valid-for 5
+</span><span>
+</span><span style="color:#fdf4c1;">$ file collection.anki21
+</span><span style="color:#fdf4c1;">collection.anki21: SQLite 3.x database, last written using SQLite version 3044000, file counter 3, database pages 303, 1st free page 300, free pages 27, cookie 0x2e, schema 4, UTF-8, version-valid-for 3
+</span><span>
+</span></code></pre>
+<p>Aha! Sqlite! We can work with sqlite! First, though, I want to try identifying the other files</p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">$ file meta 
+</span><span style="color:#fdf4c1;">meta: data
+</span></code></pre>
+<p>Oh, it's <em>data</em>. That clears everything up.</p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">$ cat meta
+</span><span style="color:#fdf4c1;">$ hexdump meta
+</span><span style="color:#fdf4c1;">0000000 0208                                   
+</span><span style="color:#fdf4c1;">0000002
+</span></code></pre>
+<p>Checksum? ¯\_(ツ)_/¯ Anyhow, on to <code>media</code>:</p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">$ file media 
+</span><span style="color:#fdf4c1;">media: JSON text data
+</span><span>
+</span><span style="color:#fdf4c1;">$ jq </span><span style="color:#b8bb26;">&#39;.&#39;</span><span style="color:#fdf4c1;"> media 
+</span><span>{
+</span><span>  </span><span style="color:#b8bb26;">&quot;90&quot;</span><span style="color:#fdf4c1;">: </span><span style="color:#b8bb26;">&quot;f3327b4a32294533a064d02a593d1bf8-ao-5-A.svg&quot;</span><span style="color:#fdf4c1;">,
+</span><span>  </span><span style="color:#b8bb26;">&quot;46&quot;</span><span style="color:#fdf4c1;">: </span><span style="color:#b8bb26;">&quot;8136b7a2cf124cc98436eb041f6ac446-ao-2-A.svg&quot;</span><span style="color:#fdf4c1;">,
+</span><span>  </span><span style="color:#b8bb26;">&quot;51&quot;</span><span style="color:#fdf4c1;">: </span><span style="color:#b8bb26;">&quot;ab18887cee264ca78e187ce85eb58c8a-ao-4-Q.svg&quot;</span><span style="color:#fdf4c1;">,
+</span><span>   (</span><span style="color:#fdf4c1;">...</span><span>)
+</span><span>  </span><span style="color:#b8bb26;">&quot;130&quot;</span><span style="color:#fdf4c1;">: </span><span style="color:#b8bb26;">&quot;raid.png&quot;</span><span style="color:#fdf4c1;">,
+</span><span>   (</span><span style="color:#fdf4c1;">...</span><span>)
+</span><span> </span><span style="color:#b8bb26;">&quot;105&quot;</span><span style="color:#fdf4c1;">: </span><span style="color:#b8bb26;">&quot;8136b7a2cf124cc98436eb041f6ac446-ao-2-Q.svg&quot;</span><span style="color:#fdf4c1;">,
+</span><span>  </span><span style="color:#b8bb26;">&quot;86&quot;</span><span style="color:#fdf4c1;">: </span><span style="color:#b8bb26;">&quot;e7078dd0ffd042c0a4266a828f47b3a2-oa-12-Q.svg&quot;
+</span><span>}
+</span></code></pre>
+<p>It's a JSON mapping between integers and image file names, some PNG but mostly SVG. Maybe this is connected to all those files that are just numbers.</p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">$ file 130
+</span><span style="color:#fdf4c1;">130: PNG image data, 847 x 324, 8-bit/color RGB, non-interlaced
+</span><span>
+</span><span style="color:#fdf4c1;">$ du -hs 130 </span><span style="font-style:italic;color:#928374;"># size of single file, human readable
+</span><span style="color:#fdf4c1;">148K    130
+</span></code></pre>
+<p>So there's the mystery of the wildly varying file sizes solved. The big ones are PNG, and the small ones are SVG. Anki lets you embed images in your cards; the PNG images with normal file names are ones I've added manually. <code>raid.png</code> is, predictably, a diagram of <a href="https://en.wikipedia.org/wiki/RAID">RAID</a> configuration types. The SVG files are programmatically generated compliments to those images<sup class="footnote-reference"><a href="#2">2</a></sup>.</p>
+<p>Ok, enough stalling, it's time to look into the actual database(s).</p>
+<h2 id="part-2-the-database">Part 2: The database</h2>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">$ sqlite3 collection.anki2
+</span><span style="color:#fdf4c1;">SQLite version 3.40.1 2022-12-28 14:03:47
+</span><span style="color:#fdf4c1;">Enter </span><span style="color:#b8bb26;">&quot;.help&quot;</span><span style="color:#fdf4c1;"> for usage hints.
+</span><span style="color:#fdf4c1;">sqlite</span><span style="color:#fe8019;">&gt;</span><span style="color:#fdf4c1;"> .tables
+</span><span style="color:#fdf4c1;">cards   col     graves  notes   revlog
+</span></code></pre>
+<p><em>hacker voice</em> I'm in.</p>
+<p>I'll spare you the full account of how I stumbled through this database through trial and error, and just link <a href="https://github.com/ankidroid/Anki-Android/wiki/Database-Structure">this comprehensive overview of the schema</a> from the AnkiDroid app repo (I only found this <em>after</em> expending a fair chunk of time on my own reverse engineering attempts, but it's about the journey, right?).</p>
+<p>There's five tables - <code>cards</code>, <code>col</code>, <code>graves</code>, <code>notes</code>, and <code>revlog</code><sup class="footnote-reference"><a href="#3">3</a></sup>. <code>graves</code> and <code>revlog</code> contain scheduling information we don't care about for now. <code>col</code> is short for "collections" and has metadata on the database as a whole. That leaves <code>cards</code> and <code>notes</code>; to be honest I'm not sure which one would have the deck id, so I'll check both.</p>
+<pre style="background-color:#282828;color:#fdf4c1aa;"><code><span>sqlite&gt; pragma table_info(notes);
+</span><span>0|id|INTEGER|0||1
+</span><span>1|guid|TEXT|1||0
+</span><span>2|mid|INTEGER|1||0
+</span><span>3|mod|INTEGER|1||0
+</span><span>4|usn|INTEGER|1||0
+</span><span>5|tags|TEXT|1||0
+</span><span>6|flds|TEXT|1||0
+</span><span>7|sfld|INTEGER|1||0
+</span><span>8|csum|INTEGER|1||0
+</span><span>9|flags|INTEGER|1||0
+</span><span>10|data|TEXT|1||0
+</span><span>
+</span><span>sqlite&gt; pragma table_info(cards);
+</span><span>0|id|INTEGER|0||1
+</span><span>1|nid|INTEGER|1||0
+</span><span>2|did|INTEGER|1||0
+</span><span>3|ord|INTEGER|1||0
+</span><span>4|mod|INTEGER|1||0
+</span><span>5|usn|INTEGER|1||0
+</span><span>6|type|INTEGER|1||0
+</span><span>7|queue|INTEGER|1||0
+</span><span>8|due|INTEGER|1||0
+</span><span>9|ivl|INTEGER|1||0
+</span><span>10|factor|INTEGER|1||0
+</span><span>11|reps|INTEGER|1||0
+</span><span>12|lapses|INTEGER|1||0
+</span><span>13|left|INTEGER|1||0
+</span><span>14|odue|INTEGER|1||0
+</span><span>15|odid|INTEGER|1||0
+</span><span>16|flags|INTEGER|1||0
+</span><span>17|data|TEXT|1||0
+</span></code></pre>
+<p>That <code>did</code> field should be what we're after (I now know, after reading the linked page). Let's get it.</p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">sqlite</span><span style="color:#fe8019;">&gt;</span><span style="color:#fdf4c1;"> select did from cards</span><span style="color:#fe8019;">;
+</span><span style="color:#fdf4c1;">1
+</span></code></pre>
+<p>Huh? There should be a row for each card in the deck, and I'm pretty sure the deck id is not 1. There's two database files in the archive though, let's check the other one.</p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">$ sqlite3 collection.anki21
+</span><span style="color:#fdf4c1;">SQLite version 3.40.1 2022-12-28 14:03:47
+</span><span style="color:#fdf4c1;">Enter </span><span style="color:#b8bb26;">&quot;.help&quot;</span><span style="color:#fdf4c1;"> for usage hints.
+</span><span style="color:#fdf4c1;">sqlite</span><span style="color:#fe8019;">&gt;</span><span style="color:#fdf4c1;"> select </span><span style="color:#fe8019;">*</span><span style="color:#fdf4c1;"> from cards limit 5</span><span style="color:#fe8019;">;
+</span><span style="color:#fdf4c1;">1706642722425</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">1706642722424</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">1706642737485</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">1707681587</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">94</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">2</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">2</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">42</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">29</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">2650</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">5</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">{</span><span style="color:#b8bb26;">&quot;pos&quot;</span><span style="color:#fdf4c1;">:0</span><span>}
+</span><span style="color:#fdf4c1;">1706642722427</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">1706642722426</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">1706642737485</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">1708459261</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">164</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">2</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">2</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">80</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">58</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">2950</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">5</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">{</span><span style="color:#b8bb26;">&quot;pos&quot;</span><span style="color:#fdf4c1;">:0</span><span>}
+</span><span style="color:#fdf4c1;">1706642722428</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">1706642722426</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">1706642737485</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">1</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">1709324046</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">242</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">2</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">2</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">113</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">81</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">2950</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">5</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">{</span><span style="color:#b8bb26;">&quot;pos&quot;</span><span style="color:#fdf4c1;">:0</span><span>}
+</span><span style="color:#fdf4c1;">1706642722429</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">1706642722426</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">1706642737485</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">2</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">1708277757</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">151</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">2</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">2</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">61</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">41</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">2800</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">5</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">{</span><span style="color:#b8bb26;">&quot;pos&quot;</span><span style="color:#fdf4c1;">:0</span><span>}
+</span><span style="color:#fdf4c1;">1706642722431</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">1706642722430</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">1706642737485</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">1708126546</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">141</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">2</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">2</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">50</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">32</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">2650</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">6</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">0</span><span style="color:#fe8019;">|</span><span style="color:#fdf4c1;">{</span><span style="color:#b8bb26;">&quot;pos&quot;</span><span style="color:#fdf4c1;">:0</span><span>}
+</span></code></pre>
+<p>That did it. My hypothesis is that <code>collection.anki2</code> has the default deck configuration, and <code>collection.anki21</code> has the actual user-supplied content, but I'm not positive. Anyway, all these cards ought to have the same deck id if we didn't mess up.</p>
+<pre data-lang="bash" style="background-color:#282828;color:#fdf4c1aa;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#fdf4c1;">sqlite</span><span style="color:#fe8019;">&gt;</span><span style="color:#fdf4c1;"> select distinct did from cards</span><span style="color:#fe8019;">;
+</span><span style="color:#fdf4c1;">1706642737485
+</span></code></pre>
+<p>Jackpot! <sup class="footnote-reference"><a href="#4">4</a></sup></p>
+<h2 id="final-thoughts">Final Thoughts</h2>
+<p>The <code>.apkg</code> format is pretty comprehensible, actually. It's just a zip archive containing sqlite database files with the actual note data, plus any associated media files. Finding the schema online was a big time save, but honestly I feel like I could've figured it out on my own eventually. My main takeaway is a desire to write an Anki add-on, now that I know it's just sqlite under the hood.</p>
+<hr />
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>I love how 7zip reassures you that everything is OK. I wish more software provided positive affirmations.</p>
+</div>
+<div class="footnote-definition" id="2"><sup class="footnote-definition-label">2</sup>
+<p>Specifically, they're part of the <a href="https://ankiweb.net/shared/info/1374772155">Image Occlusion Enhanced</a> plugin, which I highly recommend. In a nutshell, it lets you make cards by blocking out part of an image and guessing what's hidden. This is especially useful for learning spatial information like the regions of the cortex, or, if you're lazy like me, screenshotting a table from a PDF and blocking out cells to memorize. The SVG files are applied as a mask to accomplish this.</p>
+</div>
+<div class="footnote-definition" id="3"><sup class="footnote-definition-label">3</sup>
+<p>If you're not already familiar with Anki you might be wondering why "cards" and "notes" are different entities with different tables. A note is a set of "fields" (which can be anything - text, images, audio, whatever) that are somehow conceptually linked. A card is a view over that set of fields. A note produces at least one card, but usually more.
+For example, a note with fields containing "Capital of France" and "Paris" could produce 2 separate cards, one where you're given the prompt "Capital of France" and must answer "Paris", and one where you're given "Paris" and must answer "Capital of France."</p>
+</div>
+<div class="footnote-definition" id="4"><sup class="footnote-definition-label">4</sup>
+<p>I kind of misled you earlier. I <em>did</em> know the deck id at one point, because my Rust program is a rewrite of a much simpler Python script which I used to create the deck in the first place. That script needed to put something in the id field for the new deck,  so I declared it by fiat to be an arbitrary unique value, the epoch timestamp at the time of creation. But then, I lost the original script in a drive failure and with it the id for the deck, necessitating both a rewrite and all this spelunking.
+But! One of the facts I discovered in this project was that Anki itself assigns deck ids as the current epoch timestamp anyway! I was accidentally correct all along!</p>
+</div>
+
+
+            </main>
+            <footer>
+                
+
+
+<p class="taxonomies">
+
+
+<a href="/tags/anki">#anki</a>
+
+<a href="/tags/100daystooffload">#100DaysToOffload</a>
+
+<a href="/tags/programming">#programming</a>
+
+<a href="/tags/shell">#shell</a>
+
+
+
+
+</p>
+
+
+<hr />
+<div class="quote-container">
+  <p class="dynamic-quote" id="quote"></p>
+</div>
+
+                
+            </footer>
+        </div>
+    </body>
+</html>
+        

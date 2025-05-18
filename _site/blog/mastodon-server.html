@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes on Setting Up a Mastodon Server | implicit.computer</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@artalar/mono/mono.css">
+    <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/blog/">Blog</a>
+        </nav>
+    </header>
+    
+    <main>
+        <article>
+    <h1>Notes on Setting Up a Mastodon Server</h1>
+    <time datetime="2024-06-04"</time>
+    
+    <p>Welcome to <a href="/tags/protocolapalooza">Protocolapalooza</a>, my project to add support to this site for a bunch of wacky protocols other than the Web. We're starting with ActivityPub, but before we can get into the implementation there's some business to take care of.</p>
+<p>My general plan for this project is to use third party clients to validate my work as I go, but with ActivityPub that present a unique challenge because the &quot;client&quot; is really another server that implements ActivityPub. In fact that's what federation - as in &quot;fediverse&quot; - actually means at the root.</p>
+<p>ActivityPub is actually two protocols, one for client-server interactions (e.g. your Mastodon app sends the toot you just wrote to your Mastodon instance) and one for server-server interactions ( e.g. your Mastodon instance informs the instances of your followers about your hot new toot.) <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> The good news is I only need to implement the second one, but since I can't test if I'm federating correctly without a peer to federate with, I'll also need to spin up a second ActivityPub server.</p>
+<p>Luckily, Digital Ocean has a <a href="https://marketplace.digitalocean.com/apps/mastodon">prebuilt image</a> for a VPS (a 'droplet' in their lingo) with all the setup for a Mastodon instance already done. Unluckily, it doesn't seem to actually work. I ran the setup script, entered my domain name and SMTP server, and everything looked hunky-dory, but visiting the page in the browser resulted in broken CSS, unloaded assets, and a stream of errors in the console.</p>
+<p>Very possibly I could have corrected this without starting over, but I figured that since the whole point of this venture is learning about how protocols work under the hood it would be best to walk through all the steps myself at least once. Also, troubleshooting what I suspected to be CORS-based issues in the prebuilt image is not the chill lofi hiphop time I'd had planned for that afternoon.</p>
+<p>I ended up doing the setup manually on a fresh Ubuntu 22.04 LTS (&quot;jammy jellyfish&quot;) droplet, following <a href="https://www.linuxbabe.com/ubuntu/how-to-install-mastodon-on-ubuntu">this guide</a> <em>mostly</em> to the letter. The guide claims Mastodon doesn't work with Node v18 or later and advises using v16 via PPA (the default Node version for Jammy is 12.22, which also won't work). Trying the setup with v16 gave me some odd errors that resolved once I tried using <a href="https://github.com/nvm-sh/nvm">nvm</a> to run it with v18; I think it's safe to say that for the current stable release branch the advice to avoid newer Node versions is outdated. However, the <code>mastodon</code> user doesn't have <code>nvm</code> binaries in its PATH and I wasn't able to easily add them. My terrible hack of a solution was to run <code>sudo cp /root/.nvm/versions/node/v18.20.3/bin/node  /usr/bin/node</code> rather than actually do the proper reconfiguration in <code>/etc/apt/sources.list</code> to track the correct Node version, which, if this were anything other than a throwaway one-off, would 100% break something down the line. Don't try this at home, kids!</p>
+<p>One other minor deviation: the guide includes a step to install the yarn package manager, but not to actually run <code>yarn install</code> in the Mastodon directory. Maybe that part was automated at some point, but it doesn't seem to be now, so don't forget about that.</p>
+<p>Finally - and this is not the fault of the guide, in fact it explicitly warns <em>against</em> doing this - keep in mind that Mastodon is like, a full-on Rails app. I'm so used to working with static and nearly-static sites that I instinctually selected the lowest tier VPS, with 512MiB memory and 1 CPU. At the asset pre-compilation step it ran out of memory and crashed, which was not unexpected, so I gave it an extra CPU and 3 more GB of RAM, planning to re-downgrade once the build was complete. But when I switched back to the lower tier, the web interface was unusably slow and the Mastodon process was constantly crashing and restarting. I experimented a bit and settled on 2 vCPUs / 2GB memory as the minimum workable resource allowance. On Digital Ocean that's $18 a month - more than I'd like, certainly, but it'll just be up for a week or so while I'm working on my ActivityPub implementation, so I'll bite the bullet. For comparison, the VPS where implicit.computer lives is $4/month with compute to spare. Static Websites: Save The Planet And Your Wallet!(TM)</p>
+<p>I'd been idly considering spinning up an instance for my own Mastodon use for a while now, but this adventure convinced me that I actually do not want to do that, at least not for a primary account. For one thing, there's the aforementioned price of hosting, but I'm also not into being my own social media support tech. It's fun to dork around over SSH to troubleshoot, say, a broken Nginx rule (or it's fun to me, anyway, don't judge), but I'd prefer to do that on my own terms, and not as a forced prerequisite to accessing my memes. Plus I like the people on my instance, they're nice!</p>
+<p>Apparently there's services offering managed hosting for Mastodon, so that's potentially something else to explore later. For now though, I've achieved my goal of a minimal ActivityPub server, and the next step is to make another server it can federate with.</p>
+<hr>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>I'm treating Mastodon and ActivityPub as basically synonymous here, but of course they're not. I could have set up an ActivityPub server that's <em>not</em> also a Mastodon instance - many such programs exist - but in practice I'd only consider the ActivityPub implementation a success if it works well with Mastodon anyway, so I didn't see a good reason to use something else. Plus, it's not every day I can peek under the hood of a service I use so frequently. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+    
+    
+    <ul class="tags">
+        
+        <li><a href="/tags/100DaysToOffload/">100DaysToOffload</a></li>
+        
+        <li><a href="/tags/Protocolapalooza/">Protocolapalooza</a></li>
+        
+        <li><a href="/tags/tech/">tech</a></li>
+        
+    </ul>
+    
+
+
+</article>
+
+    </main>
+</body>
+</html>
