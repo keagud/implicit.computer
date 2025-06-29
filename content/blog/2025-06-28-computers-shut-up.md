@@ -4,7 +4,7 @@ title =  "All Robots And Computers Must Shut The Hell Up"
 slug =  "computers-shut-up"
 
 [taxonomies]
-tags = ["uncategorised"]
+tags = ["uncategorized"]
 +++
 
 The language our machines use to speak to us has changed. 
@@ -18,7 +18,7 @@ The flaw in this reasoning lies in the initial premise - we should not humanize 
 
 Sometimes people will rag on Linux with an  anecdote of trying to do something simple like fetch OS updates and getting an arcane, incomprehensible error message like `Could not get lock /var/lib/apt/lists/lock - open (11: Resource temporarily unavailable)`[^1] But the thing about "classical" error messages like this one is *if you read them you will learn what the problem is.* Or if it uses terms that go over your head you can Google it to learn what the problem is in more basic language, *and* you also gain some knowledge about how your computer works. Maybe you can even fix it without googling next time!
 
-The "friendly" windows equivalent message would be something like "We couldn't get updates right now, try again later". Does that "humanize" the user interaction? Maybe, but it also withholds information and makes troubleshooting much harder. The signal-to-noise ratio when interacting with most software is so low, I've just flat out stopped reading UI dialogs for the most part.   
+The "friendly" Windows equivalent message would be something like "We couldn't get updates right now, try again later". Does that "humanize" the user interaction? Maybe, but it also withholds information and makes troubleshooting much harder. The signal-to-noise ratio when interacting with most software is so low, I've just flat out stopped reading UI dialogs for the most part.   
 
 That's the pragmatic argument against excessive humanization, but there's another more visceral one that compelled me to write this in the first place: it's insulting to the very concept of personhood.
 
