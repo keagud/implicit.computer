@@ -7,7 +7,7 @@ tags=["python", "programming", "100DaysToOffload"]
 +++
 
 
-Python is famously an easy language  to learn, but it's a hard language to *really* learn because there's so just much of it; Python's standard library has over *300* modules as of version 3.11! [^1] Knowing a programming language in depth includes knowing how to effectively wield its standard library to solve problems, but for Python that's a tough ask. 
+Python is famously an easy language  to learn, but it's a hard language to *really* learn because there's just so much of it; Python's standard library has over *300* modules as of version 3.11! [^1] Knowing a programming language in depth includes knowing how to effectively wield its standard library to solve problems, but for Python that's a tough ask. 
 
 In practice, you learn the subset of the standard library that's most useful in your day-to-day, and that's fine, but it also means there's potentially whole swaths of useful stuff you could be taking advantage of, but simply never encountered. So, here's my list of Python features you might not know about. Here are my selection criteria:
 
