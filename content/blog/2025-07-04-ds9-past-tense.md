@@ -18,11 +18,11 @@ First you need to find out when exactly your buds ended up. You've narrowed it d
 
 As a trained Starfleet engineer you of course instantly recall that the canonical solution to this kind of problem is binary search, and put together a plan:
 
-	1. Arrange the possible target dates chronologically and select the one in the middle.
-	2. Use some of your magic time sauce on the transporter to beam to that date, bringing with you a handheld computer that includes historical details on that time period from your exhaustive Starfleet records[^1].
-	3. See if this timeline still differs from the records. Since you have a tricorder with future technology powers it should be simple to scan every communications channel and collect the relevant data, or maybe there's just a telltale residue of wumbumbus particles or whatever left behind when the timeline is altered
-	4. If the timeline is disturbed, you know your crewmates must have arrived *earlier* to introduce the disturbance. If it's unchanged, they must have arrived *after*. In the first case, eliminate all later dates from consideration, and in the second eliminate all earlier dates.
-	5. Repeat from step 1 with the new pool of possible dates.
+1. Arrange the possible target dates chronologically and select the one in the middle.
+2. Use some of your magic time sauce on the transporter to beam to that date, bringing with you a handheld computer that includes historical details on that time period from your exhaustive Starfleet records[^1].
+3. See if this timeline still differs from the records. Since you have a tricorder with future technology powers it should be simple to scan every communications channel and collect the relevant data, or maybe there's just a telltale residue of wumbumbus particles or whatever left behind when the timeline is altered
+4. If the timeline is disturbed, you know your crewmates must have arrived *earlier* to introduce the disturbance. If it's unchanged, they must have arrived *after*. In the first case, eliminate all later dates from consideration, and in the second eliminate all earlier dates.
+5. Repeat from step 1 with the new pool of possible dates.
 
 Now instead of *n* doses of magic time sauce to check *n* dates, you merely need *Log(n)* doses. Much more achievable! You're able to locate and retrieve your pals, fix the timeline, and go back home to your beautiful wife and daughter with a story of how you saved the universe with the power of intro-level computer science. Roll credits.
 
@@ -33,6 +33,6 @@ Boy, I hope somebody got fired for that blunder!
 
 ---
 
-[^1] Of course it'd be preferable to bring *all* your historical records, but that'd be what, *terabytes* of data? Sure it's the future and you have FTL travel and matter replicators, but you still can't just carry that much data in your pocket, that's absurd. So it'll have to be just the relevant slice of the records.
+[^1]: Of course it'd be preferable to bring *all* your historical records, but that'd be what, *terabytes* of data? Sure it's the future and you have FTL travel and matter replicators, but you still can't just carry that much data in your pocket, that's absurd. So it'll have to be just the relevant slice of the records.
 
 
