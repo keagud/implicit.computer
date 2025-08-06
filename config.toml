@@ -3,6 +3,7 @@ base_url = "https://implicit.computer"
 title = "Implicit Dot Computer"
 author = "keagud"
 description = 'you can visit it on the "web", a "web" "site" if you will.'
+minify_html = true
 
 generate_feeds = true
 feed_filenames = ["atom.xml"]
@@ -14,7 +15,7 @@ build_search_index = true
 [markdown]
 highlight_code = true
 highlight_theme = "gruvbox-dark"
-
+definition_list = true
 
 [[taxonomies]] 
 name = "tags"
