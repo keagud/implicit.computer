@@ -170,3 +170,6 @@ public/
 
 # used by deployment scripts
 updated
+
+*.bin
+zola
