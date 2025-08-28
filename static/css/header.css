@@ -1,0 +1,24 @@
+header {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	padding: 2rem 1rem;
+}
+
+.site-title-container,
+.quote-container {
+	width: 100%;
+}
+
+.site-title {
+	margin: 0 0 0.5rem 0;
+	font-size: 2.5rem;
+	font-weight: bold;
+}
+
+.dynamic-quote {
+	margin: 0;
+	font-size: 1.2rem;
+	color: #666;
+}

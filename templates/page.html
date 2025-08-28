@@ -1,9 +1,20 @@
-{% extends "no-style-please/templates/page.html" %}
+{% extends "base.html" %}
+
+{% block content %}
+  <article>
+      <h1>{{ page.title }}</h1>
+
+      <time class="post-timestamp"  datetime={{ page.date }}> {{page.date }} </time>
+      
+      <hr/>
+  {{ page.content | safe  }}
+  </article>
+
+  {% endblock content %}
 
 
 {% block footer %}
 
-{{ super() }}
 
 <hr />
 <div class="quote-container">

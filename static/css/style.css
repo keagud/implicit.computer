@@ -1,0 +1,51 @@
+@import "normalize.css";
+@import "writ.css";
+@import "header.css"
+
+
+
+body {
+    font-family: Garamond, Georgia, 'Times New Roman', Times, serif;
+}
+
+hr {
+    /* padding: revert; */
+    /* border: revert; */
+    /* height: 2px; */
+    /* border-width: 2px; */
+    /* width: 60%; */
+    /* color: black; */
+    /* margin: auto; */
+    /* margin-top: 1.5rem; */
+    /* margin-bottom: 1.5rem; */
+
+    all: revert;
+    margin: auto;
+    width: 60%;
+    margin-top: 1.5rem;
+    margin-bottom: : 1.5rem;
+}
+
+
+main {
+    margin: auto;
+    width: 60%;
+}
+
+em {
+    font-weight: normal;
+    font-style: italic;
+}
+
+a {
+    color: revert;
+}
+
+a.site-title-link {
+    color: inherit;
+}
+
+a.site-title-link:hover {
+    text-decoration: underline;
+
+}

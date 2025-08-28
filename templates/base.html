@@ -1,18 +1,64 @@
-{% extends "no-style-please/templates/base.html" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block css %}
-  {{ super() }}
-  {# SCSS extensions/modifications to the base theme #}
-<link rel="stylesheet" href="/ext.css"/>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<script defer type="text/javascript" src="/script.js"> </script>
-  {% endblock css %}
+  <!-- <link rel="stylesheet" href="/css/normalize.css"> -->
+  <!-- <link rel="stylesheet" href="/css/w3c.css"> -->
+  <link rel="stylesheet" href="/css/style.css">
+  <!-- <link rel="stylesheet" href="/css/splendor.css"> -->
+</head>
 
-{% block header %}{% endblock header %}
+<body>
 
-{% block footer %}
+  <header class="title-container">
+    <div class="site-title-container container">
+      <h1 class="site-title item">
+          <a href = "/" class = "site-title-link" >
+        Implicit Dot Computer
+          </a>
+      </h1>
+    </div>
+    <div class="quote-container container">
+      <i>
+        <p class="dynamic-quote item"></p>
+      </i>
+    </div>
+    <br>
 
-  {{ super() }}
+    <nav class="top-nav-container">
 
-{% endblock footer %}
+        <ul>
+        {% for item in config.extra.header_nav %}
+          <li> 
+            <a class = "navbar-link" href = "{{ item.url }}">
+            {{ item.name }}
+            </a>
+          </li>
 
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <hr />
+  </header>
+  <br />
+  <script defer type="text/javascript" src="/script.js"> </script>
+
+
+
+  <main>
+    {% block content %} {% endblock content %}
+  </main>
+
+
+  {% block footer %}
+
+
+  {% endblock footer %}
+
+</body>
+
+</html>
