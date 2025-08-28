@@ -23,12 +23,13 @@ feed = false
 
 [extra]
 header_nav = [
-{ name = "blog", url = "/blog"},
-{ name = "about", url = "/about"},
+{ name = "/home ", url = "/"},
+{ name = "/about ", url = "/about"},
+{ name = "/blog ", url = "/blog"},
   # {name = "/now", url = "/now"},
-# {name = "resume", url = "/resume"},
-{name = "feed", url = "/atom.xml"},
-{name = "blogroll", url = "/atom.xml"}
+  #{name = "/resume ", url = "/resume"},
+{name = "/feed ", url = "/atom.xml"},
+{name = "/blogroll ", url = "/feeds.opml.xml"}
 
 ]
 
