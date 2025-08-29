@@ -1,6 +1,6 @@
 +++
 date = 2025-07-04
-title =  "What O'Brien Should Have Done In *Past Tense*"
+title =  "What O'Brien Should Have Done In Past Tense"
 slug =  "ds9-past-tense"
 
 [taxonomies]

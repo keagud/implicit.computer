@@ -1,8 +1,4 @@
-/* @import "normalize.css"; */
-/* @import "writ.css"; */
 @import "header.css";
-/* @import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap'); */
-/* @import url("https://fonts.bunny.net/css?family=ibm-plex-mono:400,400i,700,700i"); */
 
 
 
@@ -10,10 +6,30 @@
     font-family: 'IBM Plex Mono', monospace;
 }
 
+.dynamic-quote {
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1em;
+}
+
+header * {
+    margin: auto;
+
+}
 
 nav {
+    margin-top: 2%;
     width: 90%;
+}
 
+.site-title {
+    margin-bottom: 1%;
+    margin-top: 3%;
+}
+
+h3.post-title {
+    font-size: 1.3em;
 }
 
 nav ul {
@@ -21,7 +37,6 @@ nav ul {
 }
 
 nav ul li {
-
     display: inline;
     padding-right: 2%;
     padding-left: 2%;
@@ -34,17 +49,17 @@ nav a {
 }
 
 main h1 {
-    font-size: 2em;
+    font-size: 1.5em;
 }
 
 main h2 {
 
-    font-size: 1.7em;
+    font-size: 1.3em;
 }
 
 main h3 {
 
-    font-size: 1.5em;
+    font-size: 1.1em;
 
 }
 
@@ -129,17 +144,17 @@ pre code {
 
 
 
-
-
 em {
     font-weight: normal;
     font-style: italic;
 }
 
-
-
 a {
     color: revert;
+}
+
+a:visited {
+    all: revert;
 }
 
 a.site-title-link {
