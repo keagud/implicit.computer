@@ -10,7 +10,7 @@ I'm on [github](https://github.com/keagud) as well.
 
 
 # About the Site
-This site is generated with [Zola](https://www.getzola.org) using the [no style, please!](https://gitlab.com/atgumx/no-style-please) theme (plus some light CSS tweaks). Source is available [here](https://github.com/keagud/implicit.computer). I use [Cloudflare Pages](https://pages.cloudflare.com/) to host it.
+This site is generated with [Zola](https://www.getzola.org). Source is available [here](https://github.com/keagud/implicit.computer). I use [Cloudflare Pages](https://pages.cloudflare.com/) to host it.
 
 Everything here is under the [Creative Commons Attribution License](https://creativecommons.org/licenses/by/4.0/deed.en) unless stated otherwise. That means you can do whatever with it, so long as you credit the original somehow.
 
