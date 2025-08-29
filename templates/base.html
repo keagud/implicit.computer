@@ -4,11 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- <link rel="stylesheet" href="/css/normalize.css"> -->
-  <!-- <link rel="stylesheet" href="/css/w3c.css"> -->
   <link rel="stylesheet" href="/css/style.css">
-  <!-- <link rel="stylesheet" href="/css/splendor.css"> -->
 </head>
 
 <body>
@@ -16,9 +12,9 @@
   <header class="title-container">
     <div class="site-title-container container">
       <h1 class="site-title item">
-          <a href = "/" class = "site-title-link" >
-        Implicit Dot Computer
-          </a>
+        <a href="/" class="site-title-link">
+          Implicit Dot Computer
+        </a>
       </h1>
     </div>
     <div class="quote-container container">
@@ -30,13 +26,13 @@
 
     <nav class="top-nav-container">
 
-        <ul>
+      <ul>
         {% for item in config.extra.header_nav %}
-          <li> 
-            <a class = "navbar-link" href = "{{ item.url }}">
+        <li>
+          <a class="navbar-link" href="{{ item.url }}">
             {{ item.name }}
-            </a>
-          </li>
+          </a>
+        </li>
 
         {% endfor %}
       </ul>

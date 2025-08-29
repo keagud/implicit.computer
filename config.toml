@@ -1,7 +1,7 @@
 base_url = "https://implicit.computer"
 
 title = "Implicit Dot Computer"
-author = "keagud"
+author = "keaton"
 description = 'you can visit it on the "web", a "web" "site" if you will.'
 minify_html = true
 
@@ -9,7 +9,6 @@ generate_feeds = true
 feed_filenames = ["atom.xml"]
 #theme = "no-style-please"
 default_language = "en"
-compile_sass = true
 build_search_index = true
 
 [markdown]
@@ -23,13 +22,10 @@ feed = false
 
 [extra]
 header_nav = [
-{ name = "/home ", url = "/"},
-{ name = "/about ", url = "/about"},
-{ name = "/blog ", url = "/blog"},
-  # {name = "/now", url = "/now"},
-  #{name = "/resume ", url = "/resume"},
-{name = "/feed ", url = "/atom.xml"},
-{name = "/blogroll ", url = "/feeds.opml.xml"}
+{ name = "about", url = "/about"},
+{ name = "posts", url = "/blog"},
+{name = "feed", url = "/atom.xml"},
+{name = "blogroll", url = "/feeds.opml.xml"}
 
 ]
 

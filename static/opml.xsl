@@ -11,9 +11,8 @@
         </title>
       </head>
 
-      <link rel="stylesheet" href="/style.css" />
-      <link rel="stylesheet" href="/ext.css" />
-      <link rel="stylesheet" href="/blogroll.css" />
+      <link rel="stylesheet" href="css/style.css" />
+      <link rel="stylesheet" href="css/blogroll.css" />
 
 
       <body>

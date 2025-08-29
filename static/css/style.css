@@ -1,29 +1,90 @@
-@import "normalize.css";
-@import "writ.css";
-@import "header.css"
+/* @import "normalize.css"; */
+/* @import "writ.css"; */
+@import "header.css";
+/* @import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&display=swap'); */
+/* @import url("https://fonts.bunny.net/css?family=ibm-plex-mono:400,400i,700,700i"); */
 
 
 
-body {
-    font-family: Garamond, Georgia, 'Times New Roman', Times, serif;
+* {
+    font-family: 'IBM Plex Mono', monospace;
+}
+
+
+nav {
+    width: 90%;
+
+}
+
+nav ul {
+    list-style-type: none;
+}
+
+nav ul li {
+
+    display: inline;
+    padding-right: 2%;
+    padding-left: 2%;
+}
+
+nav a {
+    text-decoration: none;
+    font-weight: bold;
+
+}
+
+main h1 {
+    font-size: 2em;
+}
+
+main h2 {
+
+    font-size: 1.7em;
+}
+
+main h3 {
+
+    font-size: 1.5em;
+
+}
+
+.footnote-definition,
+.footnote-reference {
+    vertical-align: baseline;
+    position: relative;
+    bottom: 0em;
+    size: 1em;
+}
+
+
+
+.footnote-definition sup:before,
+.footnote-reference:before {
+    content: '[';
+
+}
+
+
+
+.footnote-definition sup:after,
+.footnote-reference:after {
+    content: ']';
+
+}
+
+
+
+main h4 {
+    font-size: 1.4em;
 }
 
 hr {
-    /* padding: revert; */
-    /* border: revert; */
-    /* height: 2px; */
-    /* border-width: 2px; */
-    /* width: 60%; */
-    /* color: black; */
-    /* margin: auto; */
-    /* margin-top: 1.5rem; */
-    /* margin-bottom: 1.5rem; */
 
     all: revert;
     margin: auto;
     width: 60%;
     margin-top: 1.5rem;
-    margin-bottom: : 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
 
@@ -32,10 +93,50 @@ main {
     width: 60%;
 }
 
+
+blockquote {
+    padding: 1.2em 30px 1.2em 30px;
+    border-left: 3px solid slategray;
+    position: relative;
+    /* background:#EDEDED; */
+}
+
+
+
+
+blockquote span {
+    display: block;
+    color: #333333;
+    font-style: normal;
+    font-weight: bold;
+    margin-top: 1em;
+}
+
+
+
+
+code {
+    border: 1px solid black;
+    background-color: #9a999666;
+}
+
+pre code {
+    border: inherit;
+    background-color: inherit;
+
+
+}
+
+
+
+
+
 em {
     font-weight: normal;
     font-style: italic;
 }
+
+
 
 a {
     color: revert;
@@ -48,4 +149,19 @@ a.site-title-link {
 a.site-title-link:hover {
     text-decoration: underline;
 
+}
+
+
+table {
+
+    margin: auto;
+}
+
+dt {
+    margin-bottom: 1em;
+
+}
+
+dd+dt {
+    margin-top: 5%;
 }
