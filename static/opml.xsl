@@ -10,11 +10,8 @@
           <xsl:value-of select="/opml/head/title" />
         </title>
       </head>
-
       <link rel="stylesheet" href="css/style.css" />
       <link rel="stylesheet" href="css/blogroll.css" />
-
-
       <body>
         <header>
           <h1>
@@ -39,66 +36,11 @@
             </p>
           </div>
 
-          <hr/>
-
-
-          <!--
-        <ul>
-          <xsl:for-each select="/opml/body/outline/outline">
-            <li class="blogroll-entry">
-              <span>
-
-                <xsl:value-of select="@text" />
-              </span>
-
-              <ul>
-
-                <li>
-                  <xsl:element name="a">
-                    <xsl:attribute name="href">
-                      <xsl:value-of select="@htmlUrl" />
-                    </xsl:attribute>
-                    <span>
-                      <xsl:value-of select="@displayLink" />
-                    </span>
-                  </xsl:element>
-
-
-                </li>
-                <li>
-
-
-                  <xsl:element name="a">
-                    <xsl:attribute name="href">
-                      <xsl:value-of select="@xmlUrl" />
-                    </xsl:attribute>
-                    <span>
-                      feed link
-                    </span>
-                  </xsl:element>
-
-                </li>
-              </ul>
-
-
-            </li>
-
-          </xsl:for-each>
-
-
-        </ul>
-          -->
-
+          <hr />
 
           <table>
             <xsl:for-each select="/opml/body/outline/outline">
               <tr>
-                <!--
-                <td class="cell-feed-source-name">
-                  <xsl:value-of select="@text" />
-                </td>
-                -->
-
                 <td class="cell-feed-html-link">
                   <xsl:element name="a">
                     <xsl:attribute name="href">
