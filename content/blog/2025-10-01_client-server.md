@@ -40,7 +40,7 @@ When I recently wiped and re-imaged the aforementioned MacBook, I just needed to
 The only real downside for servermaxxing is the requirement for network connectivity from client devices.
 When you're on the same LAN as the server this is a non-issue; even if my ISP is down and I can't reach the Internet, the link between my desk and my server rack is unaffected. 
 Tailscale (or if you're adamant on fully self-hosting, your own homebrewed Wireguard setup) makes access from elsewhere pretty seamless, but YMMV on the usability of remote machines, especially if you're outside an urban area with good WiFi and cell access.
-For coding on the go or working off a cell hotspot only,  a TUI editor workflow ([neovim](https://neovim.io/) + [tmux](https://github.com/tmux/tmux)) with [https://mosh.org/](mosh) has served me well. 
+For coding on the go or working off a cell hotspot only,  a TUI editor workflow ([neovim](https://neovim.io/) + [tmux](https://github.com/tmux/tmux)) with [mosh](https://mosh.org/) has served me well. 
 
 
 The best way to determine if this kind of setup  would work for you is to try it out yourself!

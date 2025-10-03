@@ -2,7 +2,14 @@
 @import "normalize.min.css";
 
 * {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "courier", monospace;
+}
+
+
+p {
+  font-size: 1.3em;
+  line-height: 1.4;
+  
 }
 
 .dynamic-quote {
@@ -191,3 +198,10 @@ pre table {
   width: 100%;
   border-collapse: collapse;
 }
+
+img {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
