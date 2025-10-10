@@ -24,20 +24,23 @@
     </div>
     <br>
 
-    <nav class="top-nav-container">
 
-      <ul>
-        {% for item in config.extra.header_nav %}
-        <li>
-          <a class="navbar-link" href="{{ item.url }}">
-            {{ item.name }}
-          </a>
-        </li>
+    <div class="top-nav-container">
+      <nav>
 
-        {% endfor %}
-      </ul>
-    </nav>
+        <ul>
+          {% for item in config.extra.header_nav %}
+          <li>
+            <a class="navbar-link" href="{{ item.url }}">
+              {{ item.name }}
+            </a>
+          </li>
 
+          {% endfor %}
+        </ul>
+      </nav>
+
+    </div>
     <hr />
   </header>
   <br />

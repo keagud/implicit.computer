@@ -5,12 +5,53 @@
   font-family: "courier", monospace;
 }
 
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.site-title-container,
+.quote-container {
+  width: 100%;
+}
+
+.site-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.dynamic-quote {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+  .top-nav-container {
+    text-align: center;
+  width: 100%;
+
+  }
+
+img,
+svg,
+video {
+  max-width: min(70ch, 100% - 2rem);
+  display: block;
+  margin: auto;
+
+}
 
 p {
   font-size: 1.3em;
   line-height: 1.4;
-  
+
 }
+
+
 
 .dynamic-quote {
   width: 30%;
@@ -19,6 +60,7 @@ p {
   font-size: 1em;
 }
 
+
 header * {
   margin: auto;
 }
@@ -26,6 +68,8 @@ header * {
 nav {
   margin-top: 2%;
   width: 90%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .site-title {
@@ -105,8 +149,9 @@ article hr+* {
 
 
 main {
-  margin: auto;
-  width: 60%;
+  max-width: min(70ch, 100% - 4rem);
+  margin-inline: auto;
+  /* width: 60%; */
 }
 
 blockquote {
@@ -177,33 +222,68 @@ pre {
   padding: 1rem;
   overflow: auto;
 }
+
 /* The line numbers already provide some kind of left/right padding */
 pre[data-linenos] {
   padding: 1rem 0;
 }
+
 pre table td {
   padding: 0;
 }
+
 /* The line number cells */
 pre table td:nth-of-type(1) {
   text-align: center;
   vertical-align: top;
   user-select: none;
 }
+
 pre mark {
   /* If you want your highlights to take the full width */
   display: block;
   /* The default background colour of a mark is bright yellow */
   background-color: rgba(254, 252, 232, 0.9);
 }
+
 pre table {
   width: 100%;
   border-collapse: collapse;
 }
 
-img {
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
-}
+/* img { */
+/*   margin-left: auto; */
+/*   margin-right: auto; */
+/*   display: block; */
+/* } */
 
+
+
+/* small screens */
+@media (max-width: 768px) {
+
+
+  p {
+    font-size: 1em;
+    line-height: 1.2;
+
+  }
+
+
+  .dynamic-quote {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: .8em;
+  }
+
+  .site-title {
+    font-size: 1.8rem;
+  }
+
+  nav ul li {
+    display: inline-block;
+  }
+
+
+}
