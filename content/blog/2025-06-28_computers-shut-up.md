@@ -34,7 +34,7 @@ When a SaaS widget says "We're sorry", the actual emotion of remorse is absent, 
 I know I'm not alone in feeling this way. I don't remember when I first saw this image, but the phrase "I am a divine being, you are an object" has become a personal mantra. 
 
 
-<img src = "/images/shut-the-hell-up.jpg"/>
+<img src = "/images/2025-06-28/shut-the-hell-up.jpg"/>
 
 This is only going to get worse. Software acts like this because it's profitable for the corporations that fund their creation if we consumers think of our apps as our friends. I invite you, next time your email client says it's excited to show you its new AI features, to join me in recalling that you are a divine being; it is an object. It has no right to speak in your holy tongue. 
 
