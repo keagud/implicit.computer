@@ -1,5 +1,12 @@
-@import "reset.min.css";
+/* @import "reset.min.css"; */
 
+
+/* reset  */
+
+* {
+  margin: 0;
+  padding: 0;
+}
 
 /*** Page-wide values  */
 
