@@ -1,11 +1,71 @@
-@import "header.css";
-@import "normalize.min.css";
+@import "reset.min.css";
 
-* {
-  font-family: "courier", monospace;
+
+/*** Page-wide values  */
+
+:root {
+
+  --content-width: min(120ch, 100% - 2rem);
+  /* light mode colors */
+  --bg-light: #f9f5d7;
+  --text-light: #3c3836;
+  --link-light: #076678;
+  --link-visited-light: #8f3f71;
+
+  /*dark mode colors*/
+  --text-dark: #ebdbb2;
+  --bg-dark: #282828;
+  --link-dark: #83a598;
+  --link-visited-dark: #d3869b;
+
+
+  /* default is light mode */
+  --text-color: var(--text-light);
+  --bg-color: var(--bg-light);
+  --link-color: var(--link-light);
+  --link-visited-color: var(--link-visited-light);
+
 }
 
-header {
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-color: var(--text-dark);
+    --bg-color: var(--bg-dark);
+    --link-color: var(--link-dark);
+    --link-visited-color: var(--link-visited-dark);
+  }
+
+  pre code {
+    border: 1px solid var(--text-color);
+
+  }
+
+}
+
+body {
+  font-family: "courier new", monospace;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+a {
+  color: var(--link-color);
+}
+
+a:visited {
+  color: var(--link-visited-color);
+
+}
+
+
+@media (max-width: 768px) {}
+
+
+
+/*** The top site-wide header and splash text*/
+
+header.title-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,19 +82,49 @@ header {
   margin: 0 0 0.5rem 0;
   font-size: 2.5rem;
   font-weight: bold;
+  font-family: inherit;
 }
 
 .dynamic-quote {
   margin: 0;
   font-size: 1.2rem;
   color: #666;
+  font-style: italic;
 }
 
-  .top-nav-container {
-    text-align: center;
+.top-nav-container {
+  text-align: center;
   width: 100%;
+  width: 30%;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1em;
 
-  }
+}
+
+header.title-container>* {
+  margin-top: 1em;
+}
+
+nav {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.site-title {
+  margin-bottom: 1%;
+  margin-top: 3%;
+}
+
+/*** Main landing page */
+section#recent-posts .post-preview {
+  margin-top: 1.5em;
+}
+
+#greeting {}
+
+/*** Content styles */
 
 img,
 svg,
@@ -45,36 +135,34 @@ video {
 
 }
 
-p {
-  font-size: 1.3em;
-  line-height: 1.4;
+p,
+dd,
+dt {
+  font-size: 1em;
+  line-height: 1.3;
+  text-indent: 15px;
+}
+
+article time {
+  font-style: italic;
 
 }
 
 
 
-.dynamic-quote {
-  width: 30%;
-  margin-left: auto;
-  margin-right: auto;
-  font-size: 1em;
+main header * {
+  line-height: 1.7em;
+}
+
+
+.post-header h1 {
+  font-size: revert;
+
 }
 
 
 header * {
   margin: auto;
-}
-
-nav {
-  margin-top: 2%;
-  width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.site-title {
-  margin-bottom: 1%;
-  margin-top: 3%;
 }
 
 h3.post-title {
@@ -113,7 +201,8 @@ main h3 {
   vertical-align: baseline;
   position: relative;
   bottom: 0em;
-  size: 1em;
+  font-size: .8em;
+  margin-top: 1em;
 }
 
 .footnote-definition sup:before,
@@ -149,7 +238,7 @@ article hr+* {
 
 
 main {
-  max-width: min(70ch, 100% - 4rem);
+  max-width: var(--content-width);
   margin-inline: auto;
   /* width: 60%; */
 }
@@ -159,6 +248,13 @@ blockquote {
   border-left: 3px solid slategray;
   position: relative;
   /* background:#EDEDED; */
+}
+
+blockquote p {
+  all: revert;
+  line-height: 1em;
+  font-size: .9em;
+
 }
 
 blockquote span {
@@ -184,9 +280,9 @@ em {
   font-style: italic;
 }
 
-a {
-  color: revert;
-}
+/* a { */
+/*   color: revert; */
+/* } */
 
 a.site-title-link {
   color: inherit;
@@ -217,6 +313,16 @@ dd+dt {
   margin-top: 5%;
 }
 
+
+
+p+*,
+*+p {
+  margin-top: 1%;
+
+}
+
+
+/*** from the Zola docs*/
 
 pre {
   padding: 1rem;
@@ -251,13 +357,7 @@ pre table {
   border-collapse: collapse;
 }
 
-/* img { */
-/*   margin-left: auto; */
-/*   margin-right: auto; */
-/*   display: block; */
-/* } */
-
-
+/* end Zola content*/
 
 /* small screens */
 @media (max-width: 768px) {

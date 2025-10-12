@@ -13,6 +13,7 @@
 
 
 {% for post in blog_section.pages | sort(attribute="date") | reverse | slice(end=5) %}
+<div class="post-preview">
 
 <div class = "post-preview-header">
     <a href = "{{ post.permalink }}">
@@ -27,6 +28,7 @@
 <div class="post-description">
 <em>{{ post.description |  safe }}</em>
 </div>
+    </div>
 <br/>
 {% endif %}
 
