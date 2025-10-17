@@ -48,7 +48,7 @@ All you need is a computer with internet connectivity; it doesn't need to be esp
 A Raspberry Pi is a classic starting point, but an old desktop PC or even a laptop rescued from e-waste or from gathering dust in the closet can also be a great server.
 In practice most (but not all!) of my server devices are "actual" rack-mounted servers, or virtual machines running on such servers, but that's mostly for the same reason the men of generations past would build scale model railroad layouts in the basement, rather than any practical reason. 
 
-A [NAS](https://en.wikipedia.org/wiki/Network-attached_storage) for network file sharing is probably the best place to start; it's simple enough you can get it going in a weekend if you're even somewhat technically inclined, and it has a high return on investment regardless of your specific needs and workflow (everybody uses files)[^3]. 
+A [NAS](https://en.wikipedia.org/wiki/Network-attached_storage) for network file sharing is probably the best place to start; it's simple enough you can get it going in a weekend if you're even somewhat technically inclined, and it has a high return on investment regardless of your specific needs and workflow (everybody uses files).[^3] 
 This isn't primarily a how-to guide --- you can find many of those out there on the Internet already --- but I will at least recommend [TrueNAS](https://www.truenas.com/) if your hardware supports it for a nice GUI management interface, and [SMB](https://en.wikipedia.org/wiki/Server_Message_Block) as your file share protocol over the alternative [NFS](https://en.wikipedia.org/wiki/Network_File_System) to maximize compatibility with client devices.
  
 
@@ -56,7 +56,7 @@ This isn't primarily a how-to guide --- you can find many of those out there on 
 
 [^1]: When did we decide that was OK, btw? I must have missed the vote.
 
-[^2]: In descending order of importance: 
+[^2]: <div>In descending order of importance: 
 
 - Basically all the code I write will run in "prod" on Debian or Ubuntu; it's way more straightforward to do the development on a Debian-based box as well.
 
@@ -66,6 +66,7 @@ This isn't primarily a how-to guide --- you can find many of those out there on 
 
 -  I can't shake the muscle memory of `/home/username` instead of `/Users/username` 
 
+</div>
 
 [^3]: [The files are IN [another] computer! ](https://www.youtube.com/watch?v=L_o_O7v1ews)
 

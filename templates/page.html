@@ -13,8 +13,6 @@
 {% block content %}
   <article>
 
-
-
     {% if page.title %}
     <header class="post-header">
       <h1>{{ page.title }}</h1>
@@ -23,6 +21,25 @@
     {% if page.date %}
       <time class="post-timestamp"  datetime={{ page.date }}> {{page.date }} </time>
     {% endif %}
+
+      {% if "tags" in page.taxonomies %}
+      {% set tags = page.taxonomies.tags %}
+
+        <div class="tags">
+          tags: 
+          {% for tag in tags %}
+          {% set url = get_taxonomy_url(kind="tags", name=tag, lang=page.lang) %}
+          <span class="tag-link">
+            <a href ="{{url}}">
+           #{{-tag-}}
+            {% if not loop.last %},{% endif %}
+            </a>
+          </span>
+          {% endfor %}
+        </div>
+
+
+      {% endif %}
 
       {% if page.title %} 
     </header> 
@@ -36,8 +53,6 @@
 
 
 {% block footer %}
-
-
 <hr />
 <div class="quote-container">
   <p class="dynamic-quote" id="quote"></p>

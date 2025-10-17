@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+
+<div>
+  {{ __tera_context }}
+
+</div>
+
+<ul>
+
+  {% for p in terms %}
+   <li>
+    {{ p }}
+
+  </li>
+
+  {% endfor %}
+
+</ul>
+

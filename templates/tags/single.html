@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<h2 class="tags-title">
+  all posts tagged "{{ term.name }}"
+</h2>
+<ul>
+  {% for page in term.pages %}
+  <li>
+    <span class="post-index-entry">
+      {{ page.date }} 
+      <a href="{{ page.permalink }}">
+        {{ page.title }}
+      </a>
+    </span>
+
+  </li>
+
+  {% endfor %}
+
+</ul>
+
+{% endblock %}
