@@ -56,6 +56,10 @@ body {
   color: var(--text-color);
 }
 
+li + li {
+  margin-top: 10px;
+}
+
 a {
   color: var(--link-color);
 }

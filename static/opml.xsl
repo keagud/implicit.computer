@@ -11,10 +11,9 @@
         </title>
       </head>
       <link rel="stylesheet" href="css/style.css" />
-      <link rel="stylesheet" href="css/blogroll.css" />
       <body>
-        <header>
-          <h1>
+        <header class="blogroll-header title-container">
+          <h1 class="blogroll-title">
             <xsl:value-of select="/opml/head/title" />
           </h1>
         </header>
