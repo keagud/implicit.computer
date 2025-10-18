@@ -7,7 +7,6 @@ minify_html = true
 
 generate_feeds = true
 feed_filenames = ["atom.xml"]
-#theme = "no-style-please"
 default_language = "en"
 build_search_index = true
 
@@ -24,6 +23,7 @@ feed = false
 header_nav = [
 { name = "about", url = "/about"},
 { name = "posts", url = "/blog"},
+{ name = "notes", url = "/notes" },
 {name = "feed", url = "/atom.xml"},
 {name = "blogroll", url = "/feeds.opml.xml"}
 

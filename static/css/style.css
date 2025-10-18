@@ -151,6 +151,11 @@ video {
 
 }
 
+img {
+  max-height: 780px;
+
+}
+
 p,
 dd,
 dt {
