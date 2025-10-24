@@ -23,7 +23,7 @@ feed = false
 header_nav = [
 { name = "about", url = "/about"},
 { name = "posts", url = "/blog"},
-{ name = "notes", url = "/notes" },
+  #{ name = "notes", url = "/notes" },
 {name = "feed", url = "/atom.xml"},
 {name = "blogroll", url = "/feeds.opml.xml"}
 
