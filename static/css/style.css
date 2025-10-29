@@ -425,7 +425,7 @@ pre table {
   }
 
   nav ul li {
-    display: inline-block;
+    display: revert;
   }
 
 
