@@ -24,7 +24,7 @@ header_nav = [
 { name = "about", url = "/about"},
 { name = "posts", url = "/blog"},
 { name = "notes", url = "/notes" },
-{name = "feed", url = "/atom.xml"},
+{name = "feeds", url = "/feeds"},
 {name = "blogroll", url = "/feeds.opml.xml"}
 ]
 
