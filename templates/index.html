@@ -2,49 +2,84 @@
 
 {% block content %}
 <section id="greeting">
-    <p>Hello! I'm Keaton, welcome to my "Web site"!  </p>
-    <p>You can "click" the "links" in the top bar to learn more about me and the site, or maybe look at one of these recent blog posts.  </p>
+  <p>Hello! I'm Keaton, welcome to my "Web site"! </p>
+  <p>You can "click" the "links" in the top bar to learn more about me and the site, or maybe look at one of these
+    recent blog posts. </p>
 </section>
 
 <section id="recent-posts">
 
 
-    {% set blog_section = get_section(path="blog/_index.md") %}
+  {% set blog_section = get_section(path="blog/_index.md") %}
 
 
-{% for post in blog_section.pages | sort(attribute="date") | reverse | slice(end=5) %}
-<div class="post-preview">
+  {% for post in blog_section.pages | sort(attribute="date") | reverse | slice(end=5) %}
+  <div class="post-preview">
 
-<div class = "post-preview-header">
-    <a href = "{{ post.permalink }}">
-    <h3 class="post-title">{{ post.title | safe }}</h3>
-    </a>
-    {{ post.date }}
+    <div class="post-preview-header">
+      <a href="{{ post.permalink }}">
+        <h3 class="post-title">{{ post.title | safe }}</h3>
+      </a>
+      {{ post.date }}
 
-</div>
-
-    <br/>
-{% if post.description %}
-<div class="post-description">
-<em>{{ post.description |  safe }}</em>
-</div>
     </div>
-<br/>
-{% endif %}
 
-        {{ post.content | striptags |  truncate(length=200) | safe }}
+    <br />
+    {% if post.description %}
+    <div class="post-description">
+      <em>{{ post.description | safe }}</em>
+    </div>
+  </div>
+  <br />
+  {% endif %}
+
+  {{ post.content | striptags | truncate(length=200) | safe }}
 
 
-        {% endfor %}
+  {% endfor %}
 
+  <br />
 </section>
 
 
-
-<br/>
-    <hr/>
 <div class="all-posts-footer-container container">
-    <a class="all-posts-footer" href="/blog"> All Posts </a>
+  <a class="all-posts-footer" href="/blog"> All Posts </a>
+
+</div>
+<br />
+<hr />
+
+<section id="recent-notes">
+
+  <p>
+    I also keep notes of things I want to remember and make available to the Web at large,
+    but that don't
+  </p>
+
+  {% set notes_section = get_section(path="notes/_index.md") %}
+
+  <ul class="notes-previews">
+    {% for note in notes_section.pages | sort(attribute="date") | reverse | slice(end=10) %}
+    <li>
+      <span class="note-entry-preview">
+        {{- note.date ~ " " -}}
+        <a href="{{ note.permalink }}">
+          {{- note.title -}}
+
+        </a>
+      </span>
+    </li>
+
+    {% endfor %}
+
+  </ul>
+</section>
+
+
+<br />
+<hr />
+<div class="all-posts-footer-container container">
+  <a class="all-posts-footer" href="/blog"> All Posts </a>
 
 </div>
 
