@@ -6,7 +6,9 @@ updated = 2025-06-28
 # About Me
 I'm Keaton, I live in the Pacific Northwest and I like computers. I work in IT doing network-y stuff. Previously, I wrote internal software for a manufacturing company; before that, I was a graduate student in [audiology](https://en.wikipedia.org/wiki/Audiology). 
 
+<!--
 I'm on [github](https://github.com/keagud) as well.
+-->
 
 
 # About the Site
