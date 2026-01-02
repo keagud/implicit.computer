@@ -98,7 +98,7 @@ It was just then I noticed I was alone in my car - actually, I hadn't seen anyon
 
 The ground beneath me lurched hard to the left and threw me onto the floor. I touched a finger to my temple and felt blood. The [train's voice](https://en.wikipedia.org/wiki/The_Little_Engine_That_Could) was more felt than heard, a low rumble that rattled the windowpanes. *Oh, I think I can, Mr. Spade. I think I **can.***
 
-Outside, the outskirts of town zipped past the window in a blur. We were going full steam ahead now, too late to bail out.  The weight of Dagwood's notebook in my coat pocket came into sharp focus. The dining car was next to mine; if Bumstead was onto something, maybe I could make it work. If not...I tried not to think about if not. I stumbled to my feet and into the next car, the broke down the door to the kitchen.
+Outside, the outskirts of town zipped past the window in a blur. We were going full steam ahead now, too late to bail out.  The weight of Dagwood's notebook in my coat pocket came into sharp focus. The dining car was next to mine; if Bumstead was onto something, maybe I could make it work. If not...I tried not to think about if not. I stumbled to my feet and into the next car, then broke down the door to the kitchen.
 
 I needed to buy some time, keep the engine talking.  "Just tell me this - why? Why them?"
 
