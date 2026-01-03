@@ -75,7 +75,6 @@ a:visited {
 }
 
 
-@media (max-width: 768px) {}
 
 
 
@@ -138,7 +137,6 @@ section#recent-posts .post-preview {
   margin-top: 1.5em;
 }
 
-#greeting {}
 
 /*** Content styles */
 
@@ -188,11 +186,20 @@ main header * {
 }
 
 
+p+p {
+  margin-top: 1.2em;
+}
+
 .post-header h1 {
   font-size: revert;
 
 }
 
+
+header {
+  margin-bottom: 2em;
+
+}
 
 header * {
   margin: auto;
@@ -420,7 +427,6 @@ pre table {
 
 /* small screens */
 @media (max-width: 768px) {
-
 
 
   .dynamic-quote {
