@@ -9,7 +9,7 @@ tags = ["programming", "rust" ,  "100DaysToOffload"]
 
 Here's a nifty pattern I use for making Rust error handling more ergonomic. Feel free to skip to the code at the end if you're already well versed in Rust error types.
 
-For everyone else, a quick primer/refresher - Rust takes a cue from the functional side of the isle for its error handling approach. In a nutshell: if an operation *should* produce a type T, but it might also fail altogether, the Rusty idiom is to use the `Result` enum type. For example, what's the correct return type for the standard library function `fs::read_to_string`,  which reads the contents of a file as a string and returns it? Not just `String` --  what if the file isn't there, or doesn't have the right permissions, or its contents are invalid UTF-8 and so can't be represented as a `String`? 
+For everyone else, a quick primer/refresher - Rust takes a cue from the functional side of the isle for its error handling approach. In a nutshell: if an operation *should* produce a type T, but it might also fail altogether, the Rusty idiom is to use the `Result<T, Error>` enum type. For example, what's the correct return type for the standard library function `fs::read_to_string`,  which reads the contents of a file as a string and returns it? Not just `String` --  what if the file isn't there, or doesn't have the right permissions, or its contents are invalid UTF-8 and so can't be represented as a `String`? 
 
 The solution is to use the type `Result<String, io::Error>`[^1]. Either you get the string you asked for or an `io::Error` that represents why the action failed, so you can handle errors without jumping out of normal program flow in the way exception-based error handling requires.
 
