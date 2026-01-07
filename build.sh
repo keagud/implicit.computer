@@ -1,6 +1,16 @@
 #!/bin/bash
 
 
+BUILD_DIR=_dirty
+
+mkdir -p $BUILD_DIR
+
+rm -rf $BUILD_DIR/*
+
+cp -r ./*  $BUILD_DIR/ 2> /dev/null
+
+pushd $BUILD_DIR
+
 # get the latest blogroll from the file host
 curl -L "https://files.implicit.computer/f/feeds.opml.xml" > /tmp/feeds && mv /tmp/feeds ./static/feeds.opml.xml
 
@@ -15,4 +25,9 @@ curl -L "https://github.com/getzola/zola/releases/download/v$ZOLA_VERSION/zola-v
 # post-build script
 chmod +x ./scripts/post_build.py && ./scripts/post_build.py
 
-npx prettier -w public/**/*.{html,css,js} && echo "Prettified"
+popd
+
+cp -r $BUILD_DIR/public .
+
+
+rm -rf $BUILD_DIR
