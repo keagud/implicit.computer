@@ -65,8 +65,11 @@ li+li {
   margin-top: 10px;
 }
 
-a {
+a,
+.link-styled {
   color: var(--link-color);
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 a:visited {
