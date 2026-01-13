@@ -73,7 +73,7 @@ def mark_future_posts_as_draft(root_dir: Path):
             header_lines[draft_line_index] = "draft = true"
 
         else:
-            header_lines.append("draft = true")
+            header_lines = ["draft = true"] + header_lines
 
 
 

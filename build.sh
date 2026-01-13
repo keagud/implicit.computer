@@ -30,4 +30,4 @@ popd
 cp -r $BUILD_DIR/public .
 
 
-rm -rf $BUILD_DIR
+ rm -rf $BUILD_DIR
