@@ -8,6 +8,7 @@ import subprocess
 from pprint import pprint
 from math import floor
 from string import ascii_lowercase
+import random
 
 
 FILE_SIZE_BENCHMARKS_BYTES = {"Doom (1993)": 25772, "english wikipedia": 213964533268}
@@ -126,6 +127,8 @@ def make_letter_count_quotes():
         letter_data[floor(len(letter_data) * 0.5)],
         letter_data[floor(len(letter_data) * 0.75)],
         letter_data[-1],
+        random.choice(letter_data),
+        random.choice(letter_data)
     ]
 
     return [f"contains {c} '{l}'s!" for l, c in set(selected)]
