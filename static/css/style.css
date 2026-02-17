@@ -207,9 +207,8 @@ h3.post-title {
 
 nav ul {
   list-style-type: none;
-
-
-
+  padding: 0;
+  margin: 0;
 }
 
 nav ul li {
@@ -430,8 +429,13 @@ pre table {
     font-size: 1.8rem;
   }
 
+  .top-nav-container {
+    width: 100%;
+  }
+
   nav ul li {
-    display: revert;
+    display: block;
+    text-align: center;
   }
 
 
