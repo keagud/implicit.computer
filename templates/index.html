@@ -24,14 +24,12 @@
 
     </div>
 
-    <br />
     {% if post.description %}
     <div class="post-description">
       <em>{{ post.description | safe }}</em>
     </div>
+    {% endif %}
   </div>
-  <br />
-  {% endif %}
 
   {{ post.content | striptags | truncate(length=200) | safe }}
 

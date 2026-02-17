@@ -125,6 +125,14 @@ section#recent-posts .post-preview {
   margin-top: 1.5em;
 }
 
+section#recent-posts .post-preview h3 {
+  margin: 0;
+}
+
+section#recent-posts .post-preview-header {
+  margin-bottom: 0.2em;
+}
+
 
 /*** Content styles */
 
