@@ -1,4 +1,5 @@
 +++
+aliases = ["blog/blackberries"]
 date = 2025-07-07
 title =  "Blackberries"
 slug =  "blackberries"

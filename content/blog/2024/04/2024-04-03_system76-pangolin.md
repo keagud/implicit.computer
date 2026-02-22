@@ -1,4 +1,5 @@
 +++
+aliases = ["blog/system76-pangolin"]
 title =  "I guess this is a review of the System76 Pangolin laptop"
 slug =  "system76-pangolin"
 date = 2024-04-03

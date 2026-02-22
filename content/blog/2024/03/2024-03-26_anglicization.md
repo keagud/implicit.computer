@@ -1,4 +1,5 @@
 +++
+aliases = ["blog/anglicization"]
 title = "You Can't Just Not Anglicise"
 date = 2024-03-26
 slug = "anglicization"

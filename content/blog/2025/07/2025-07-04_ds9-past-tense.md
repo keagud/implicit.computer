@@ -1,4 +1,5 @@
 +++
+aliases = ["blog/ds9-past-tense"]
 date = 2025-07-04
 title =  "What O'Brien Should Have Done In Past Tense"
 slug =  "ds9-past-tense"
@@ -34,5 +35,3 @@ Boy, I hope somebody got fired for that blunder!
 ---
 
 [^1]: Of course it'd be preferable to bring *all* your historical records, but that'd be what, *terabytes* of data? Sure it's the future and you have FTL travel and matter replicators, but you still can't just carry that much data in your pocket, that's absurd. So it'll have to be just the relevant slice of the records.
-
-

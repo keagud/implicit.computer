@@ -1,4 +1,5 @@
 +++
+aliases = ["blog/protocol-month"]
 title="Announcing Protocolapalooza!"
 date=2024-06-03
 slug="protocol-month"

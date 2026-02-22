@@ -1,4 +1,5 @@
 +++
+aliases = ["blog/blackmail"]
 title="Should You Pay A Blackmailer?"
 slug="blackmail"
 date=2024-05-28

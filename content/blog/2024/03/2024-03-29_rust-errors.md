@@ -1,4 +1,5 @@
 +++
+aliases = ["blog/rust-errors"]
 title =  "A Handy Pattern for Rust Errors"
 slug =  "rust-errors"
 date = 2024-03-29

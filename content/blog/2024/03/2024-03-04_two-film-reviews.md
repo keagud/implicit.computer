@@ -1,4 +1,5 @@
 +++
+aliases = ["blog/2-film-reviews"]
 title = "Film Reviews: Across the Bridge and Zero Focus"
 slug = "2-film-reviews"
 date = 2024-03-04

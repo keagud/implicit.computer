@@ -1,4 +1,5 @@
 +++
+aliases = ["blog/murder-in-the-public-domain"]
 title = "Murder in the Public Domain"
 slug = "murder-in-the-public-domain"
 date = 2026-01-02
@@ -116,7 +117,3 @@ The train shook violently with the demon engine's howling as layer upon miraculo
 The shaking stopped. The engine choked out its final words, in a whisper like venting steam: *I...thought...I...could...* I could feel a tension in the air release as the train returned to inanimacy and chugged to a halt. It was dead.
 
 I looked back down at Dagwood's notebook, and thought back to what Spaulding had said. *Outside of a dog, a book is man's best friend.* That might well be true, somewhere else. But there was a darkness in this city, a darkness of the very soul, a darkness that extended its fingers beyond the dim, rain-soaked streets outside the train windows into the cruel hearts of men.  Here, in this city of sin, it was too dark to read.
-
-
-
-

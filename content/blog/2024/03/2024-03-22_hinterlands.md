@@ -1,4 +1,5 @@
 +++
+aliases = ["blog/hinterlands"]
 title = "Hie to the Hinterlands"
 date = 2024-03-22
 slug = "hinterlands"

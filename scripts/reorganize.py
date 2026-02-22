@@ -2,12 +2,16 @@
 
 from pathlib import Path
 
+
+from pre_build import extract_metadata
 import shutil
 import os
 import datetime as dt
 
+import toml
 
 PREFIX_LEN = len("YYYY-MM-DD")
+ROOT_DIR = Path(__file__).parent.parent.resolve()
 
 
 
@@ -28,6 +32,27 @@ def make_index_toml(title: str):
     +++
 
     """.strip()
+
+def insert_alias(content:str , alias_dir: Path | str) -> str:
+
+
+    metadata = extract_metadata(content)
+
+    if metadata is None:
+        raise Exception(f"No metadata found")
+
+    parsed_metadata = toml.loads(metadata)
+
+    slug = parsed_metadata["slug"]
+
+    alias_path = f"{alias_dir}/{slug}"
+
+
+    aliases_line = f'aliases = ["{alias_path}"]'
+    content_lines = content.strip().splitlines()
+
+    content_lines.insert(1, aliases_line)
+    return "\n".join(content_lines)
 
 
 def reorg_dir(dir: Path, label_plural: str):
@@ -52,7 +77,15 @@ def reorg_dir(dir: Path, label_plural: str):
         write_index_toml(f"{label_plural} from {y}", year_dir)
         write_index_toml(f"{label_plural} from {month_name} {y}", month_dir)
 
-        shutil.copy2(f, month_dir)
+
+        with open(f, "r") as fp:
+            file_content = insert_alias(fp.read(), str(f.parent.name))
+
+        new_path = month_dir.joinpath(f.name)
+
+        with open(new_path, "w") as fp:
+            fp.write(file_content)
+
         os.unlink(f)
         
     print(f"Copied {len(markdown_files)} posts" )
@@ -65,16 +98,13 @@ def reorg_dir(dir: Path, label_plural: str):
     pass
 
 def main():
-    root  = Path(__file__).parent
 
-    dirs = [root.joinpath("content/blog"), root.joinpath( "content/notes")]
+    posts_dir = ROOT_DIR.joinpath("content/blog")
+    notes_dir = ROOT_DIR.joinpath("content/notes")
 
+    reorg_dir(posts_dir, "Posts")
+    reorg_dir(notes_dir, "Notes")
 
-    reorg_dir(Path("content/blog"), "Posts")
-
-    reorg_dir(Path("content/notes"), "Notes")
-
-    pass
 
 if __name__ == "__main__":
     main()

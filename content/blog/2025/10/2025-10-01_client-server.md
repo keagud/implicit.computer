@@ -1,4 +1,5 @@
 +++
+aliases = ["blog/client-server"]
 date = 2025-10-01
 title =  "Living the Client-Server Lifestyle"
 slug =  "client-server"
@@ -69,4 +70,3 @@ This isn't primarily a how-to guide --- you can find many of those out there on 
 </div>
 
 [^3]: [The files are IN [another] computer! ](https://www.youtube.com/watch?v=L_o_O7v1ews)
-

@@ -1,4 +1,5 @@
 +++
+aliases = ["blog/mastodon-server"]
 title="Notes on Setting Up a Mastodon Server"
 date=2024-06-04
 slug="mastodon-server"
@@ -32,5 +33,3 @@ Apparently there's services offering managed hosting for Mastodon, so that's pot
 
 ---
 [^1]: I'm treating Mastodon and ActivityPub as basically synonymous here, but of course they're not. I could have set up an ActivityPub server that's *not* also a Mastodon instance - many such programs exist - but in practice I'd only consider the ActivityPub implementation a success if it works well with Mastodon anyway, so I didn't see a good reason to use something else. Plus, it's not every day I can peek under the hood of a service I use so frequently.
-
-

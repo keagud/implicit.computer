@@ -1,4 +1,5 @@
 +++
+aliases = ["blog/python-strings"]
 title =  "Implicit String Concatenation Considered Harmful"
 slug =  "python-strings"
 date = 2023-10-10

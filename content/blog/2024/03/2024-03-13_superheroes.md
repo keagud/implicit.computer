@@ -1,4 +1,5 @@
 +++
+aliases = ["blog/superheroes"]
 title =  "A Dichotomy of Failed Superhero Media"
 slug =  "superheroes"
 date = 2024-03-13

@@ -1,4 +1,5 @@
 +++
+aliases = ["blog/computers-shut-up"]
 date = 2025-06-28
 title =  "All Robots And Computers Must Shut The Hell Up"
 slug =  "computers-shut-up"
@@ -46,4 +47,4 @@ This is only going to get worse. Software acts like this because it's profitable
 [^1]: If you found your way to this page there's a very good chance that error is *not* arcane or incomprehensible to you, and you know exactly how to resolve it, but pretend for a moment that you are Average Nontechnical Joe.
 
 
-[^2]: The trending story is a short vertical video of a young woman in revealing clothing, as it always is. 
+[^2]: The trending story is a short vertical video of a young woman in revealing clothing, as it always is.

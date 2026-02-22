@@ -1,4 +1,5 @@
 +++
+aliases = ["blog/mental-modes"]
 title = "Mental Modes"
 date= 2024-04-07
 slug = "mental-modes"
@@ -26,6 +27,4 @@ Blob Mode is always undesirable, but which of Activity or Adventure mode is pref
 
 Sometimes a situation can fall right between the Activity and Adventure modes without fully activating either. This happens when a task is rigid but ambiguous in specifics. You might remember this combination from... most of modern life! Yay!
 
-One other thought that I might expand on later: I said Activity Mode is where I tend to live most of the time, but that's actually contingent on access to my ADHD medication. If I'm unmedicated my default mode becomes Adventure Mode, and it's Activity Mode that's the occasional welcome visitor.  Adventure Mode is very useful in certain situations, e.g. travelling, sudden emergencies, but for ordinary day-to-day life it is a special kind of hell. 
-
-
+One other thought that I might expand on later: I said Activity Mode is where I tend to live most of the time, but that's actually contingent on access to my ADHD medication. If I'm unmedicated my default mode becomes Adventure Mode, and it's Activity Mode that's the occasional welcome visitor.  Adventure Mode is very useful in certain situations, e.g. travelling, sudden emergencies, but for ordinary day-to-day life it is a special kind of hell.

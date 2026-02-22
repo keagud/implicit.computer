@@ -1,4 +1,5 @@
 +++
+aliases = ["blog/activitypub-1"]
 title="ActivityPub Part 1: Static Files Are All You Need* (*to have a visible profile)"
 date=2024-06-10
 slug="activitypub-1"

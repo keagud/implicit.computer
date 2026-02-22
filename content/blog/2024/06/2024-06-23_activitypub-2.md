@@ -1,4 +1,5 @@
 +++
+aliases = ["blog/activitypub-2"]
 title="ActivityPub Part 2: GoToSocial Considered Neato"
 date=2024-06-23
 slug="activitypub-2"
@@ -89,6 +90,3 @@ The minimal client I wrote in Rust to handle API interactions is [here](https://
 
 ---
 [^1]: That's kind of a hacky way to do it, I know, but I couldn't find an established "real" way to do this kind of thing with systemd.
-
-
-

@@ -1,4 +1,5 @@
 +++
+aliases = ["blog/vegetarian"]
 title="My Nearly Meatless Decade"
 slug="vegetarian"
 date=2024-05-29

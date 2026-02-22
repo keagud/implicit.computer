@@ -1,4 +1,5 @@
 +++
+aliases = ["blog/ultrakill"]
 title = "Game Review: ULTRAKILL"
 date = 2024-05-11
 slug="ultrakill"
@@ -53,7 +54,3 @@ ULTRAKILL is still in early access and at time of writing ends unceremoniously a
 [^1]: My favorite area, both in the *Inferno* and in the game, is Limbo, the outermost ring of hell for "righteous pagans" who didn't actually commit any mortal sins but never had the opportunity to accept Christ and so can't get into actual heaven. "Discount knockoff of paradise" is a top tier environment aesthetic. 
 
 [^2]: Pun only partially intended
-
-
-
-

@@ -1,4 +1,5 @@
 +++
+aliases = ["blog/python-goodies"]
 title="Lesser-Known Python Goodies"
 date=2024-04-16
 slug="python-goodies"

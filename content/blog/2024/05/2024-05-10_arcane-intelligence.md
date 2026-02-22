@@ -1,4 +1,5 @@
 +++
+aliases = ["blog/arcane-intelligence"]
 title="An Introduction to Arcane Intelligence"
 date=2024-05-10
 slug="arcane-intelligence"
@@ -52,5 +53,3 @@ Regardless, it's clear that AI will continue to shape sorcery in the eras to com
 [^1]: Which is of course the premier hub for clairvoyants and divination-related news
 
 [^2]: A representative for the library at Unseen University was approached for comment but could not be reached, as he was perched on a high chandelier at the time.
-
-
