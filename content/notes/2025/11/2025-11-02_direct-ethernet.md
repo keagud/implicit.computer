@@ -3,6 +3,8 @@ title = "You Can Just Connect Two Devices With An Ethernet Cable, That Works"
 slug = "direct-ethernet"
 date = 2025-11-02
 
+aliases = ["notes/direct/ethernet"]
+
 [taxonomies]
 tags = [ "networking",]
 +++

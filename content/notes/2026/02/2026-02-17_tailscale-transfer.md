@@ -3,6 +3,8 @@ title = "Transfer Tailscale As-Is Between (Linux) Hosts"
 slug = "tailscale-transfer"
 date = 2026-02-17
 
+aliases = ["notes/tailscale-transfer"]
+
 [taxonomies]
 tags = [ "tailscale", "linux", "sysadmin",]
 +++

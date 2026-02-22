@@ -3,6 +3,8 @@ title = "Resizing XFS Partitions"
 slug = "xfs-resize"
 date = 2026-02-13
 
+aliases = ["notes/xfs-resize"]
+
 [taxonomies]
 tags = [ "xfs", "linux", "sysadmin",]
 +++

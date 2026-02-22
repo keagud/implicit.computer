@@ -3,6 +3,8 @@ title = "Simple Systemd Services"
 slug = "simple-systemd-services"
 date = 2025-10-29
 
+aliases = ["notes/simple-systemd-services"]
+
 [taxonomies]
 tags = [ "systemd", "linux", "sysadmin",]
 +++
