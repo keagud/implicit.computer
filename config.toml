@@ -1,6 +1,6 @@
 base_url = "https://implicit.computer"
 
-title = "Implicit Dot Computer"
+title = "Implicit Computer"
 author = "keaton"
 description = 'you can visit it on the "web", a "web" "site" if you will.'
 minify_html = true
