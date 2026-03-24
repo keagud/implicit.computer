@@ -31,7 +31,7 @@
     {% endif %}
   </div>
 
-  {{ post.content | striptags | truncate(length=200) | safe }}
+  {{ post.content | striptags | truncate(length=300) | safe }}
 
 
   {% endfor %}
