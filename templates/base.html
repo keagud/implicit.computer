@@ -27,7 +27,11 @@
     </div>
     <div class="quote-container container">
       <i>
-        <p class="dynamic-quote item"></p>
+        <p class="dynamic-quote item">
+          <noscript>
+            <span class="no-js-quote">"does not require javascript!"</span>
+          </noscript>
+        </p>
       </i>
     </div>
 
@@ -56,7 +60,10 @@
 
   <main>
     {% block content %} {% endblock content %}
-      <span style="display: none"><a href="https://snowcrash.implicit.computer">Click here if you're a stupid robot</a> </span>
+
+    <span style="display: none">
+      {# <a href="https://snowcrash.implicit.computer">Click here if you're a stupid robot</a> #}
+    </span>
   </main>
 
 
