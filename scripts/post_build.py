@@ -9,9 +9,13 @@ from pprint import pprint
 from math import floor
 from string import ascii_lowercase
 import random
+import datetime as dt
 
 
 FILE_SIZE_BENCHMARKS_BYTES = {"Doom (1993)": 25772, "english wikipedia": 213964533268}
+
+
+CSS_NAKED_DAY = dt.date(year=dt.date.today().year, month=4, day=9)
 
 
 def get_root():
@@ -134,9 +138,32 @@ def make_letter_count_quotes():
     return [f"contains {c} '{l}'s!" for l, c in set(selected)]
 
 
+def handle_css_naked_day():
+    pass
+
+
+def clear_file(p: Path, new_content = ''):
+    with open(p, 'w') as fp:
+        fp.write(new_content)
+
+
 def main():
+
+    
     public_dir = get_root().joinpath("public")
     quotes_file = public_dir.joinpath("quotes.json")
+
+
+    if dt.date.today() == CSS_NAKED_DAY or os.environ.get("CSS_NAKED_DAY")  :
+        for css_file in public_dir.rglob("*.css"):
+            clear_file(css_file)
+
+
+        clear_file(quotes_file, new_content = '{"quotes" : ["Happy CSS Naked Day!"]}')
+
+
+        return
+            
 
     with open(quotes_file, "r") as fp:
         quotes_json: dict = json.load(fp)
