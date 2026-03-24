@@ -1,7 +1,7 @@
 /*** Page-wide values  */
 :root {
 
-  --content-width: min(120ch, 100% - 2rem);
+  --content-width: min(90ch, 100% - 2rem);
   /* light mode colors */
   --bg-light: #f9f5d7;
   --text-light: #3c3836;
