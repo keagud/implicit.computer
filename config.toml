@@ -13,13 +13,6 @@ build_search_index = true
 [markdown]
 definition_list = true
 
-[markdown.highlighting]
-style = "inline"
-dark_theme = "gruvbox-dark-medium"
-light_theme = "gruvbox-light-hard"
-error_on_missing_langauges = true
-
-
 [[taxonomies]] 
 name = "tags"
 feed = false
