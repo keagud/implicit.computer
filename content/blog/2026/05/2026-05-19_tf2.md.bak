@@ -1,0 +1,49 @@
++++
+title = "The Beautiful Anomaly That Is Team Fortress 2"
+slug = "tf2"
+date = 2026-05-19
+aliases = [ "blog/tf2",]
+
+[taxonomies]
+tags = [ "gaming",]
++++
+
+
+*Team Fortress 2* is a 2007 multiplayer first-person shooter game by Valve, a company better known for *Half-Life*, *Portal*, and essentially all improvements to Linux gaming over the past decade[^1].  It's the only game in my Steam library where I've clocked a four-digit number of hours[^2].  It's also the only competitive multiplayer game in my top 20 Steam games and one of only 2 multiplayer-only games (the other is *Helldivers 2*). 
+
+
+I've stepped away from the game for extended periods, sometimes for years at a time, but whenever I get the itch again and queue up for a round of Badwater Basin it feels like coming home. TF2 is the ur-specimen of the modern class-based team shooter ("hero" shooter) later expanded by *Overwatch*, *Paladins* and the like (and invented its signature game mode, [payload](https://wiki.teamfortress.com/wiki/Payload)), but those other games never captured my interest quite like TF2. Probably a non-negligable part of that is down to the same reason they mysteriously stopped making good music around the time when I, specifically, turned 22, i.e.  humans are predisposed to think the media they first experienced in their formative years is objectively superior, but I think it's also telling that TF2 has retained a solid playerbase and a perennial slot near the top of the Steam concurrent player rankings for nearly *two decades.* How many multiplayer-only games can make than claim, other than maybe World of Warcraft?
+
+I think there's two primary elements to TF2's design that account for this. First, TF2 is infused at every level with a timeless *style* that's never been replicated. The Normal Rockwell inspired visual design has aged with effortless grace over the years[^3] (notwithstanding the decade-old tradition of the player base bemoaning the latest cosmetics as ruining the art style - I think these complaints are generally overblown, and TF2 still maintains a distinctive visual identity impressively well). But bright colors and cartoonish character models alone do not an appealing game make (insert snarky comment about Overwatch here); TF2's aesthetic identity is reinforced by gameplay design as well. If you kill the same player four times in a row without being killed by them once, you trigger a "X is DOMINATING Y" message to the whole server with a fantastic [jazzy music sting](/embed/tf2-domination-sound)[^4]. If you kill the player dominating you, you trigger a "Y got REVENGE on X" message and a [different, also excellent jazzy music sting](/embed/tf2-revenge-sound). When the game ends the losing team enters a "humiliation" state, locked in a pose with their hands up and unable to attack, while the soundscape switches to a crowd booing; meanwhile the winning team gets a few seconds of guaranteed critical hits as a sort of victory lap. I'm continually baffled that none of the many games inspired by TF2 have included [taunt kills](https://wiki.teamfortress.com/wiki/Taunts#Kill_taunts). None of these little touches have any impact on gameplay but in combination they infuse the whole experience with an unparalleled *panache.*
+
+
+
+Second, TF2 has the best *pacing* of any competitive multiplayer game I'm aware of. Much has been written on the [AI "Director"](https://left4dead.fandom.com/wiki/The_Director) in *Left 4 Dead,* that modulates enemy types and their spawn rates dynamically during play. The result is that a match of *L4D* is formed of "arcs" of rising tension, peaking in dramatic life-or-death battles with hordes of zombies and coordinated attacks by special miniboss enemies, reaching a *denouement* followed by some downtime of relative peace to let the players process and strategize.  TF2 similarly has a tightly engineered sense of pace, made more impressive by not leaning on enemy spawning and behavior - it's a PvP game, the enemies are unpredictable, messy humans - but emerging from the incentives of individual players. 
+
+
+The pacing of TF2 is driven primarily by the Medic and Engineer, two classes that uniquely grow more powerful the longer they're left alive at the cost of reduced efficacy in normal combat. The Medic can heal teammates to fill an "Ubercharge" meter, and once it's full can spend it to grant himself and a teammate temporary invincibility. The Engineer can build constructs to aid his team: sentry guns that can deal massive burst damage and completely shut down access to an area, dispensers to refill health and ammo, and teleporters to close the gap between the spawn point and the front line. The ebb and flow of TF2 is determined in large part by the Medic's Ubercharge and the Engineer's buildings: the defending team fortifies the objective with sentries, the attacking team waits to time their push for when they have Ubercharge, and if they succeed the defenders fall back to the next objective and rebuild in preparation for the next forward push. In between the main assault attempts there's periods of lower tension with smaller skirmishes, attempts to sneak behind enemy lines, and, crucially, plenty of time for *goofing off.*
+
+TF2 is undeniably a silly game by design - I mean, there's an item that lets you [damage enemies by stomping on their heads like Mario on a goomba](https://wiki.teamfortress.com/wiki/Mantreads) - but I think the wax-and-wane pacing deserves much of the credit for enabling its emergent comedy. As an FPS it has a full suite of standard verbs for interacting with other players in a combat context  (shoot gun at enemy, shoot rocket at enemy, hit enemy with a frying pan) but its secret sauce is in providing plenty of player interactions *other than* direct combat (say "thanks" and give a thumbs up to the Medic that healed you, invite an enemy player to play rock-paper-scissors where the loser explodes, hit an ally with a frying pan to do no damage but make a really loud noise), *and* pacing matches with enough downtime to allow players to fully explore those interactions without fear of falling behind for playing "sub-optimally."
+
+This is an element I found missing from my brief time playing *Overwatch,* the game TF2 has most overtly influenced. One might think that because all players have abilities with cooldowns there would be *more* of a rising and falling tempo, and maybe that's the case at higher competitive levels or when everyone on your team is in the same ~~Mumble~~ ~~TeamSpeak~~ Discord voice call, but on the pub servers I tend to play on there wasn't much of an overall flow, just constant skirmishing and sometimes someone would complete an objective. TF2 was designed before modern esports and so the match pacing is self-organizing without any assumption that players will be using voice chat to coordinate pushes. *Overwatch* also adapted the main non-combat interaction methods of TF2 - voice lines, ~~taunts~~ emotes, sprays - but I never felt safe to *use* them outside of the spawn area. The risk of being distracted or getting locked into an uninterruptible animation just as an enemy rounded the corner was always present.
+
+
+TF2's last major update - as in, one that added new weapons and significant changes beyond small bugfixes - was, at time of writing, the Jungle Inferno update in 2017. That's 9 years of no major content updates from Valve. "TF2 is dying" has been a running theme in community discussions for the entire time I've played the game, so much so that at this point it's a bit of an in-joke that the game has been "dying" for over a decade. The game is emphatically *not* abandonware - official matchmaking servers are still up and consistently populated, new bugfix patches and community content updates are still pushed out with some regularity - but it's undeniably in its sunset years. 
+
+I am OK with this. TF2 has a *maturity* that can only come from two decades of iteration, addition, and refinement. Considering the sheer number of weapons and potential interactions it's remarkably balanced[^5]. There's an overwhelming number of maps now, of varying quality; the good ones are very good and the worse ones you can filter out of your matchmaking preferences easily. The community remains fantastic. It's free to play, but since Valve takes a cut of all transactions on the player item marketplace and enjoys massive profit margins on sales from the official in-game item store I'd be surprised if it didn't at least make enough money to be self-sustaining.
+
+TF2 is a rare case of an online game given the time to flower into its full potential over years instead of being shut down once server maintenance is deemed too steep for the returns. This kind of thing doesn't happen often. Of course at some point TF2 will be shut down for good, if only because the ever-expanding sun has engulfed the servers, but as long as it's still running I remain grateful for its existence and for the unlikely intersection of factors that's let it survive this long. 
+
+
+
+
+---
+[^1]:*TF2* itself runs flawlessly on my Arch desktop with zero futzing required.
+
+[^2] *Civilization 5* is a distant second at around 500 hours
+
+[^3]: Perhaps it's not a coincidence that WoW's art also favors stylization over realism. A game with a lifespan measured in decades needs to look good (and run well) on a massive range of possible hardware, and carefully designed polygon-light and stylized graphics can do that quite well.
+
+[^4]: I had the Domination sound effect as my phone notification sound for a while.
+
+[^5]: Noteworthy exception: random critical hits have always sucked. Valve pls fix.
