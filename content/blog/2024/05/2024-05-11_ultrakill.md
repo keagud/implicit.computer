@@ -5,7 +5,7 @@ date = 2024-05-11
 slug="ultrakill"
 
 [taxonomies]
-tags=["100DaysToOffload", "vidya", "reviews"]
+tags=["100DaysToOffload", "gaming", "reviews"]
 +++
 
 [ULTRAKILL](https://store.steampowered.com/app/1229490/ULTRAKILL/) does not advertise its unique strengths right from the start. With the first few levels set in that Id Software-style "hell, but industrial" environment, poking away at zombie-like mobs with a revolver and shotgun, you'd be forgiven for thinking, as I initially did, that this was just one more entry in the current ["boomer shooter"](https://en.wiktionary.org/wiki/boomer_shooter) trend.  
